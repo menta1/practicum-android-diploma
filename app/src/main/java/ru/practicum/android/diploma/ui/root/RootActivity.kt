@@ -3,6 +3,7 @@ package ru.practicum.android.diploma.ui.root
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import ru.practicum.android.diploma.BuildConfig
+/*import ru.practicum.android.diploma.BuildConfig*/
 import ru.practicum.android.diploma.R
 
 class RootActivity : AppCompatActivity() {
@@ -17,5 +18,6 @@ class RootActivity : AppCompatActivity() {
     private fun networkRequestExample(accessToken: String) {
         // ...
     }
+
 
 }

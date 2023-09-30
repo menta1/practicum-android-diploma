@@ -2,6 +2,9 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("ru.practicum.android.diploma.plugins.developproperties")
+    id("kotlin-kapt")
+    id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -17,25 +20,33 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField(type = "String", name = "HH_ACCESS_TOKEN", value = "\"${developProperties.hhAccessToken}\"")
+        buildConfigField(
+            type = "String",
+            name = "HH_ACCESS_TOKEN",
+            value = "\"${developProperties.hhAccessToken}\""
+        )
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
 
     buildFeatures {
         buildConfig = true
+        viewBinding = true
     }
 }
 
@@ -48,4 +59,41 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+    //dagger
+    val daggerVersion = "2.48"
+    implementation("com.google.dagger:dagger:$daggerVersion")
+    kapt("com.google.dagger:dagger-compiler:$daggerVersion")
+
+    //retrofit & Gson converter
+    val retrofitVersion = "2.9.0"
+    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+
+    //Gson
+    implementation("com.google.code.gson:gson:2.10.1")
+
+    //Splash screen
+    implementation("androidx.core:core-splashscreen:1.0.1")
+
+    //glide
+    val glideVersion = "4.15.0"
+    implementation ("com.github.bumptech.glide:glide:$glideVersion")
+    annotationProcessor ("com.github.bumptech.glide:compiler:$glideVersion")
+
+    // Navigation
+    val navVersion = "2.6.0"
+    implementation ("androidx.navigation:navigation-fragment-ktx:$navVersion")
+    implementation ("androidx.navigation:navigation-ui-ktx:$navVersion")
+
+    // ViewModel & LiveData
+    val lifecycleVersion = "2.6.1"
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion")
+    implementation ("androidx.fragment:fragment-ktx:1.6.1")
+
+    // Room
+    val roomVersion = "2.5.2"
+    implementation ("androidx.room:room-runtime:$roomVersion")
+    implementation ("androidx.room:room-ktx:$roomVersion")
 }
