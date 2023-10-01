@@ -1,16 +1,16 @@
-package ru.practicum.android.diploma.presentation
+package ru.practicum.android.diploma.presentation.similar.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ru.practicum.android.diploma.databinding.FragmentFilterSettingsBinding
+import ru.practicum.android.diploma.databinding.FragmentSimilarBinding
 
 
-class FilterSettingsFragment : Fragment() {
+class SimilarFragment : Fragment() {
 
-    private var _binding: FragmentFilterSettingsBinding? = null
+    private var _binding: FragmentSimilarBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +24,7 @@ class FilterSettingsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentFilterSettingsBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentSimilarBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -38,5 +38,4 @@ class FilterSettingsFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }

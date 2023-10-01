@@ -1,16 +1,16 @@
-package ru.practicum.android.diploma.presentation
+package ru.practicum.android.diploma.presentation.favourite.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ru.practicum.android.diploma.databinding.FragmentDevelopersBinding
+import ru.practicum.android.diploma.databinding.FragmentFavouriteBinding
 
 
-class DevelopersFragment : Fragment() {
+class FavouriteFragment : Fragment() {
 
-    private var _binding: FragmentDevelopersBinding? = null
+    private var _binding: FragmentFavouriteBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +24,8 @@ class DevelopersFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentDevelopersBinding.inflate(layoutInflater, container, false)
+
+        _binding = FragmentFavouriteBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 

@@ -1,16 +1,16 @@
-package ru.practicum.android.diploma.presentation
+package ru.practicum.android.diploma.presentation.developers.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ru.practicum.android.diploma.databinding.FragmentFilterPlaceBinding
+import ru.practicum.android.diploma.databinding.FragmentDevelopersBinding
 
 
-class FilterPlaceFragment : Fragment() {
+class DevelopersFragment : Fragment() {
 
-    private var _binding: FragmentFilterPlaceBinding? = null
+    private var _binding: FragmentDevelopersBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +24,7 @@ class FilterPlaceFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentFilterPlaceBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentDevelopersBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 

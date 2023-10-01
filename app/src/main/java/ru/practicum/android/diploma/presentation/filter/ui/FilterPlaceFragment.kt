@@ -1,16 +1,16 @@
-package ru.practicum.android.diploma.presentation
+package ru.practicum.android.diploma.presentation.filter.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import ru.practicum.android.diploma.databinding.FragmentFavouriteBinding
+import ru.practicum.android.diploma.databinding.FragmentFilterPlaceBinding
 
 
-class FavouriteFragment : Fragment() {
+class FilterPlaceFragment : Fragment() {
 
-    private var _binding: FragmentFavouriteBinding? = null
+    private var _binding: FragmentFilterPlaceBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,8 +24,7 @@ class FavouriteFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        _binding = FragmentFavouriteBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentFilterPlaceBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
