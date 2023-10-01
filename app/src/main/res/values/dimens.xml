@@ -3,6 +3,7 @@
     <dimen name="title_text_size">22sp</dimen>
     <dimen name="margin_horizontal">16dp</dimen>
     <dimen name="title_margin_vertical">19dp</dimen>
+    <dimen name="margin_top">16dp</dimen>
     <dimen name="edit_text_margin_vertical">8dp</dimen>
     <dimen name="vacancy_item_margin_vertical">9dp</dimen>
     <dimen name="message_margin_vertical">4dp</dimen>

@@ -11,14 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_horizontal"
-        android:layout_marginTop="@dimen/title_margin_vertical"
+        android:layout_marginVertical="@dimen/title_margin_vertical"
         android:text="@string/favourite" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_favourite"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="@dimen/margin_horizontal"
         android:visibility="gone" />
 
     <LinearLayout
@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/margin_horizontal"
+            android:layout_marginTop="@dimen/margin_top"
             android:text="@string/list_empty" />
 
     </LinearLayout>
