@@ -3,12 +3,8 @@
 
     <style name="Toolbar">
         <item name="android:layout_height">@dimen/toolbar_height</item>
-        <item name="contentInsetStartWithNavigation">0dp</item>
-        <item name="titleMarginStart">@dimen/horizontal_margin</item>
-        <item name="titleTextAppearance">@style/ToolbarTextAppearance</item>
-    </style>
-
-    <style name="ToolbarTextAppearance">
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">@dimen/horizontal_margin</item>
         <item name="fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">@dimen/headline_size</item>
         <item name="android:textColor">@color/black</item>
