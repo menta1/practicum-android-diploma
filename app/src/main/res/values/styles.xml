@@ -25,6 +25,23 @@
         <item name="fontFamily">@font/ys_display_medium</item>
         <item name="android:textColor">@color/black</item>
     </style>
-    
-    
+
+
+    <style name="title_text" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:textSize">@dimen/title_text_size</item>
+        <item name="android:textColor">@color/text_color_light</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+    </style>
+
+    <style name="base_text" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textColor">@color/text_color_light</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+
+    <style name="search_message_text" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textColor">@color/text_color_night</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
 </resources>
