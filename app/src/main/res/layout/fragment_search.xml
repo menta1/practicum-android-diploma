@@ -22,12 +22,14 @@
             android:text="@string/search_title" />
 
         <ImageView
+            android:id="@+id/search_icon_filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:src="@drawable/ic_filter"
-            android:contentDescription="@string/filter_description" />
+            android:contentDescription="@string/filter_description"
+            android:clickable="true"/>
     </LinearLayout>
 
     <LinearLayout
