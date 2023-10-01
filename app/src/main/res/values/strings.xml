@@ -2,4 +2,15 @@
     <string name="app_name">Practicum-Android-Diploma</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Search screen -->
+    <string name="search_title">Поиск вакансий</string>
+    <string name="search_hint">Введите запрос</string>
+    <string name="image_description">Изображение что поиск еще не был осуществлен</string>
+    <string name="filter_description">Фильтр поиска</string>
+    <string name="vacancy_not_found">Таких вакансий нет</string>
+    <string name="vacancy_found">Найдено %1$s вакансий</string>
+
+    <!-- Vacancy item -->
+    <string name="image_vacancy_description">Логотип компании</string>
 </resources>
