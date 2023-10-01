@@ -1,14 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".presentation.search.ui.SearchFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginVertical="@dimen/title_margin_vertical"
+        android:layout_marginHorizontal="@dimen/title_margin_horizontal">
+
+        <TextView
+            style="@style/title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"
+            android:gravity="center_vertical"
+            android:text="@string/search_title" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:src="@drawable/ic_filter" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <EditText
+            android:id="@+id/edit_search"
+            style="@style/edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/edit_text_margin_horizontal"
+            android:layout_marginVertical="@dimen/edit_text_margin_vertical"
+            android:autofillHints=""
+            android:background="@drawable/search_edit_background"
+            android:drawableEnd="@drawable/ic_search"
+            android:hint="@string/search_hint"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:lines="1"
+            android:paddingVertical="@dimen/edit_text_margin_horizontal"
+            android:paddingStart="@dimen/edit_text_margin_horizontal"
+            android:paddingEnd="@dimen/edit_text_margin_horizontal"
+            android:singleLine="true"
+            android:textColorHint="@color/text_hint" />
+
+        <TextView
+            android:id="@+id/search_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/search_message_background"
+            android:layout_gravity="center"
+            android:paddingHorizontal="@dimen/message_margin_horizontal"
+            android:paddingVertical="@dimen/message_margin_vertical"
+            android:visibility="gone"
+            style="@style/search_message_text"
+            tools:text="@string/vacancy_not_found"/>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:gravity="center"
+        android:orientation="vertical">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/image_search_not_started"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image_description"
+            android:src="@drawable/search_not_started"
+            android:visibility="visible" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_vacancy"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/main_blue"
+            android:visibility="gone" />
+    </LinearLayout>
+</LinearLayout>

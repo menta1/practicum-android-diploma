@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="title_text" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:textSize">@dimen/title_text_size</item>
+        <item name="android:textColor">@color/text_color_night</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+    </style>
+    <style name="edit_text" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textColor">@color/text_color_night</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+</resources>
