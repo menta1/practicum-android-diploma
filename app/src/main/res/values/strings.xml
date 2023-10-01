@@ -2,4 +2,10 @@
     <string name="app_name">Practicum-Android-Diploma</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="worked_on_app">Над приложением работали</string>
+    <string name="team">Команда</string>
+    <string name="first_developer">Булатов Айнур</string>
+    <string name="second_developer">Абрамочкина Владислава</string>
+    <string name="third_developer">Мамонов Александр</string>
+    <string name="fourth_developer">Тарасенко Агния</string>
 </resources>
