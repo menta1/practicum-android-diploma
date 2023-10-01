@@ -13,5 +13,8 @@ data class VacancyDetail(
     val employmentType: String,
     val schedule: String,
     val description: String,
-    val keySkills: List<String>
+    val keySkills: List<String>,
+    val phone: String,
+    val email: String,
+    val contactPerson: String
 )

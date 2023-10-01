@@ -6,6 +6,6 @@ data class Vacancy(
     val city: String,
     val employer: String,
     val currency: String,
-    val salaryFrom: Int,
-    val salaryTo: Int?,
+    val salaryFrom: Int?,
+    val salaryTo: Int?
 )
