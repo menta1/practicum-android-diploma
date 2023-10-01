@@ -13,4 +13,7 @@
 
     <!-- Vacancy item -->
     <string name="image_vacancy_description">Логотип компании</string>
+    <string name="favourite">Избранное</string>
+    <string name="list_empty">Список пуст</string>
+    <string name="image_description_favourite">Изображение - список избранного пуст</string>
 </resources>
