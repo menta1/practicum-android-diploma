@@ -30,7 +30,7 @@
         <item name="enforceMaterialTheme">true</item>
         <item name="android:background">@color/black</item>
         <item name="itemIconTint">@color/bottom_nav_day</item>
-        <item name="itemRippleColor">@color/white</item>
+        <item name="itemRippleColor">@color/black</item>
         <item name="itemTextAppearanceInactive">?attr/textAppearanceCaption</item>
         <item name="itemTextAppearanceActive">?attr/textAppearanceCaption</item>
         <item name="itemTextColor">@color/bottom_nav_day</item>
