@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Practicum-Android-Diploma</string>
 
+    <!--Bottom menu-->
+    <string name="main_page">Главная</string>
+
+
     <!-- Developers screen -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="worked_on_app">Над приложением работали</string>
@@ -20,9 +24,40 @@
 
     <!-- Vacancy item -->
     <string name="image_vacancy_description">Логотип компании</string>
+
+    <!-- Details screen -->
     <string name="favourite">Избранное</string>
     <string name="list_empty">Список пуст</string>
     <string name="image_description_favourite">Изображение - список избранного пуст</string>
+    <string name="vacancy">Вакансия</string>
+    <string name="phone">Телефон</string>
+    <string name="similar_vacancies">Похожие вакансии</string>
+    <string name="e_mail">E-mail</string>
+    <string name="contact_person">Контактное лицо</string>
+    <string name="contacts">Контакты</string>
+    <string name="key_skills">Ключевые навыки</string>
+    <string name="mock_key_skills">Знание классических алгоритмов и структуры данных
+Программирование для Android больше одного года
+Знание WebRTC</string>
+    <string name="mock_description">Обязанности
+Разрабатывать новую функциональность приложения
+Помогать с интеграцией нашего SDK в другие приложения
+Проектировать большие новые модули
+Писать UI- и unit-тесты
+Следить за работоспособностью сервиса и устранять технический долг
+Требования
+100% Kotlin
+WebRTC
+CI по модели Trunk Based Development
+Условия
+сильная команда, с которой можно расти
+возможность влиять на процесс и результат
+расширенная программа ДМС: стоматология, обследования, вызов врача на дом и многое другое</string>
+    <string name="vacancy_description">Описание вакансии</string>
+    <string name="required_experience">Требуемый опыт</string>
+    <string name="share">Поделиться</string>
+    <string name="back">Назад</string>
+    <string name="logo_company">Логотип компании</string>
 
     <!-- Filters screen -->
     <string name="settings_filter_title">Настройки фильтрации</string>

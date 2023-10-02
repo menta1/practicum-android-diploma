@@ -10,11 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginVertical="@dimen/title_margin_vertical"
+        android:layout_marginVertical="@dimen/margin_vertical_19"
         android:layout_marginHorizontal="@dimen/margin_horizontal">
 
         <TextView
-            style="@style/title_text"
+            style="@style/titleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="9"
@@ -38,7 +38,7 @@
         android:orientation="vertical">
         <EditText
             android:id="@+id/edit_search"
-            style="@style/base_text"
+            style="@style/baseText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_horizontal"
@@ -54,7 +54,7 @@
             android:paddingStart="@dimen/margin_horizontal"
             android:paddingEnd="@dimen/margin_horizontal"
             android:singleLine="true"
-            android:textColorHint="@color/text_hint" />
+            android:textColorHint="@color/grey" />
 
         <TextView
             android:id="@+id/search_message"
@@ -65,7 +65,7 @@
             android:paddingHorizontal="@dimen/message_margin_horizontal"
             android:paddingVertical="@dimen/message_margin_vertical"
             android:visibility="gone"
-            style="@style/search_message_text"
+            style="@style/searchMessageText"
             tools:text="@string/vacancy_not_found"/>
     </LinearLayout>
 
@@ -94,7 +94,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_gravity="center"
-            android:indeterminateTint="@color/base_blue"
+            android:indeterminateTint="@color/blue"
             android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>

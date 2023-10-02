@@ -4,9 +4,11 @@
     <dimen name="main_headline_size">32sp</dimen>
     <dimen name="headline_size">22sp</dimen>
     <dimen name="text_size">16sp</dimen>
-    <dimen name="horizontal_margin">16dp</dimen>
     <dimen name="title_text_size">22sp</dimen>
     <dimen name="margin_horizontal">16dp</dimen>
+    <dimen name="margin_vertical_19">19dp</dimen>
+    <dimen name="margin_vertical_16">16dp</dimen>
+    <dimen name="margin_vertical_8">8dp</dimen>
     <dimen name="margin_vertical">16dp</dimen>
     <dimen name="small_margin_horizontal">4dp</dimen>
     <dimen name="title_margin_vertical">19dp</dimen>

@@ -25,11 +25,11 @@
             android:layout_weight="1"
             android:src="@drawable/ic_arrow_back"
             android:contentDescription="@string/arrow_back_description"
-            android:layout_marginEnd="@dimen/horizontal_margin"
+            android:layout_marginEnd="@dimen/margin_horizontal"
             android:clickable="true"/>
 
         <TextView
-            style="@style/title_text"
+            style="@style/titleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="9"
@@ -74,7 +74,7 @@
         android:background="@drawable/rounder_background"
         android:hint="@string/expected_salary"
         android:paddingTop="@dimen/edit_text_margin_vertical"
-        android:textColorHint="@color/text_hint"
+        android:textColorHint="@color/grey"
         app:boxBackgroundMode="none"
         app:expandedHintEnabled="false"
         app:layout_constraintTop_toBottomOf="@id/filter_industry"
@@ -82,7 +82,7 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
-            style="@style/base_text"
+            style="@style/baseText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounder_background"
@@ -92,7 +92,7 @@
             android:paddingTop="8dp"
             android:paddingEnd="@dimen/margin_horizontal"
             android:paddingBottom="8dp"
-            android:textColorHint="@color/text_hint" />
+            android:textColorHint="@color/grey" />
     </com.google.android.material.textfield.TextInputLayout>
     <CheckBox
         android:id="@+id/filter_salary"
@@ -102,11 +102,11 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginVertical="@dimen/margin_vertical"
         android:layoutDirection="rtl"
-        app:buttonTint="@color/base_blue"
+        app:buttonTint="@color/blue"
         app:layout_constraintTop_toBottomOf="@id/filter_input_layout"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        style="@style/base_text" />
+        style="@style/baseText" />
 
     <Button
         android:id="@+id/filter_setting_select"
@@ -116,7 +116,7 @@
         android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:layout_marginBottom="24dp"
         android:background="@drawable/rounder_background"
-        android:backgroundTint="@color/base_blue"
+        android:backgroundTint="@color/blue"
         android:text="@string/select_button"
         android:visibility="gone"
         app:backgroundTint="@null"
