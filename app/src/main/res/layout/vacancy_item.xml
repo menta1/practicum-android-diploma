@@ -23,21 +23,21 @@
             android:id="@+id/vacancy_item_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/title_text"
+            style="@style/titleText"
             tools:text="Title"/>
 
         <TextView
             android:id="@+id/vacancy_item_employer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/base_text"
+            style="@style/baseText"
             tools:text="Title"/>
 
         <TextView
             android:id="@+id/vacancy_item_salary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/base_text"
+            style="@style/baseText"
             tools:text="Title"/>
     </LinearLayout>
 </LinearLayout>

@@ -1,14 +1,267 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".presentation.details.ui.DetailsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:contentDescription="@string/back"
+            android:src="@drawable/ic_back_arrow" />
+
+        <TextView
+            style="@style/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_vertical_19"
+            android:layout_weight="7"
+            android:gravity="center_vertical"
+            android:text="@string/vacancy" />
+
+        <ImageView
+            android:id="@+id/share_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:contentDescription="@string/share"
+            android:src="@drawable/ic_share" />
+
+        <ImageView
+            android:id="@+id/favourite_button_off"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:contentDescription="@string/favourite"
+            android:src="@drawable/ic_favourite_off" />
+
+        <ImageView
+            android:id="@+id/favourite_button_on"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:clickable="true"
+            android:contentDescription="@string/favourite"
+            android:src="@drawable/ic_favourite_on"
+            android:visibility="gone" />
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_marginHorizontal="@dimen/margin_horizontal">
 
-</FrameLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text_name_vacancy"
+                style="@style/mainHeadline"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hello_blank_fragment"
+                tools:text="Android-разработчик" />
+
+            <TextView
+                android:id="@+id/text_currency"
+                style="@style/titleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/hello_blank_fragment"
+                tools:text="от 100 000 ₽" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/search_edit_background">
+
+                <ImageView
+                    android:id="@+id/employer_logo"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginVertical="@dimen/margin_vertical_16"
+                    android:layout_marginStart="@dimen/margin_horizontal"
+                    android:background="@drawable/search_edit_background"
+                    tools:background="@color/black"
+                    android:contentDescription="@string/logo_company" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="@dimen/margin_vertical_16"
+                    android:layout_marginStart="@dimen/margin_vertical_8"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/employer_name"
+                        style="@style/titleText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_color_light"
+                        tools:text="Еда" />
+
+                    <TextView
+                        android:id="@+id/employer_city"
+                        style="@style/baseText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_color_light"
+                        tools:text="Москва" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                style="@style/baseLineMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/required_experience" />
+
+            <TextView
+                android:id="@+id/text_experience"
+                style="@style/baseText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                tools:text="От 1 года до 3 лет" />
+
+            <TextView
+                android:id="@+id/text_employment_schedule"
+                style="@style/baseText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                tools:text="Полная занятость, Удаленная работа" />
+
+            <TextView
+                style="@style/titleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/vacancy_description" />
+
+            <TextView
+                android:id="@+id/text_description"
+                style="@style/baseText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                tools:text="@string/mock_description" />
+
+            <TextView
+                style="@style/titleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                android:text="@string/key_skills" />
+
+            <TextView
+                android:id="@+id/text_key_skills"
+                style="@style/baseText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                tools:text="@string/mock_key_skills" />
+
+            <TextView
+                style="@style/titleText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/contacts" />
+
+            <TextView
+                style="@style/baseLineMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/contact_person" />
+
+            <TextView
+                android:id="@+id/text_contact_person_name"
+                style="@style/baseText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                tools:text="Ирина" />
+
+            <TextView
+                style="@style/baseLineMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/e_mail" />
+
+            <TextView
+                android:id="@+id/text_email"
+                style="@style/baseText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                tools:text="i.lozgkina@yandex.ru" />
+
+            <TextView
+                style="@style/baseLineMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/phone" />
+
+            <TextView
+                android:id="@+id/text_phone_first"
+                style="@style/baseText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                tools:text="+7 (904) 329-27-71" />
+
+            <TextView
+                style="@style/baseLineMedium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/phone" />
+
+            <TextView
+                android:id="@+id/text_phone_second"
+                style="@style/baseText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                tools:text="Заполнить анкету по форме можно на нашем сайте" />
+
+            <Button
+                style="@style/button"
+                android:layout_width="match_parent"
+                android:layout_height="59dp"
+                android:layout_marginVertical="@dimen/margin_vertical_16"
+                android:text="@string/similar_vacancies" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

@@ -7,40 +7,53 @@
     tools:context=".presentation.developers.ui.DevelopersFragment">
 
     <TextView
-        style="@style/Toolbar"
+        style="@style/titleText"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/margin_horizontal"
+        android:layout_marginStart="@dimen/margin_horizontal"
+        android:gravity="center_vertical"
         android:text="@string/team" />
 
     <TextView
-        style="@style/MainHeadline"
+        style="@style/mainHeadline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="8dp"
         android:text="@string/worked_on_app" />
 
     <TextView
-        style="@style/DeveloperTextview"
+        style="@style/baseLineMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginTop="16dp"
         android:text="@string/first_developer" />
 
     <TextView
-        style="@style/DeveloperTextview"
+        style="@style/baseLineMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginTop="16dp"
         android:text="@string/second_developer" />
 
     <TextView
-        style="@style/DeveloperTextview"
+        style="@style/baseLineMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginTop="16dp"
         android:text="@string/third_developer" />
 
     <TextView
-        style="@style/DeveloperTextview"
+        style="@style/baseLineMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginTop="16dp"
         android:text="@string/fourth_developer" />
 
 </LinearLayout>

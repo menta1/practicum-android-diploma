@@ -1,47 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Toolbar">
-        <item name="android:layout_height">@dimen/toolbar_height</item>
-        <item name="android:gravity">center_vertical</item>
-        <item name="android:paddingStart">@dimen/horizontal_margin</item>
-        <item name="fontFamily">@font/ys_display_medium</item>
-        <item name="android:textSize">@dimen/headline_size</item>
-        <item name="android:textColor">@color/black</item>
-    </style>
-
-    <style name="MainHeadline">
+    <style name="mainHeadline">
         <item name="android:textSize">@dimen/main_headline_size</item>
-        <item name="android:textStyle">bold</item>
         <item name="fontFamily">@font/ys_display_bold</item>
-        <item name="android:layout_marginHorizontal">@dimen/horizontal_margin</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/text_color_light</item>
     </style>
 
-    <style name="DeveloperTextview">
-        <item name="android:layout_marginHorizontal">@dimen/horizontal_margin</item>
-        <item name="android:layout_marginTop">16dp</item>
+    <style name="baseLineMedium">
         <item name="android:textSize">@dimen/text_size</item>
         <item name="fontFamily">@font/ys_display_medium</item>
-        <item name="android:textColor">@color/black</item>
+        <item name="android:textColor">@color/text_color_light</item>
     </style>
 
-
-    <style name="title_text" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="titleText" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:textSize">@dimen/title_text_size</item>
         <item name="android:textColor">@color/text_color_light</item>
         <item name="android:fontFamily">@font/ys_display_medium</item>
     </style>
 
-    <style name="base_text" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="baseText" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:textSize">@dimen/text_size</item>
         <item name="android:textColor">@color/text_color_light</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
 
-    <style name="search_message_text" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="searchMessageText" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:textSize">@dimen/text_size</item>
         <item name="android:textColor">@color/text_color_night</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+
+    <style name="button" parent="baseLineMedium">
+        <item name="android:backgroundTint">?attr/colorButtonNormal</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/text_color_night</item>
+        <item name="cornerRadius">12dp</item>
+        <item name="android:letterSpacing">0</item>
     </style>
 </resources>
