@@ -38,4 +38,15 @@
         <item name="cornerRadius">12dp</item>
         <item name="android:letterSpacing">0</item>
     </style>
+
+    <style name="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="enforceTextAppearance">true</item>
+        <item name="enforceMaterialTheme">true</item>
+        <item name="android:background">@color/white</item>
+        <item name="itemIconTint">@color/bottom_nav_day</item>
+        <item name="itemRippleColor">@color/white</item>
+        <item name="itemTextAppearanceInactive">?attr/textAppearanceCaption</item>
+        <item name="itemTextAppearanceActive">?attr/textAppearanceCaption</item>
+        <item name="itemTextColor">@color/bottom_nav_day</item>
+    </style>
 </resources>
