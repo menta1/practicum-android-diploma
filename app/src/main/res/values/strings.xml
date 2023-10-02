@@ -53,4 +53,5 @@ CI по модели Trunk Based Development
     <string name="required_experience">Требуемый опыт</string>
     <string name="share">Поделиться</string>
     <string name="back">Назад</string>
+    <string name="logo_company">Логотип компании</string>
 </resources>

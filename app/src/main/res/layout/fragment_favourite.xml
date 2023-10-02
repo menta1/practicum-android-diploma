@@ -7,11 +7,11 @@
     tools:context=".presentation.favourite.ui.FavouriteFragment">
 
     <TextView
-        style="@style/title_text"
+        style="@style/titleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_horizontal"
-        android:layout_marginVertical="@dimen/margin_vertical"
+        android:layout_marginVertical="@dimen/margin_vertical_19"
         android:text="@string/favourite" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -36,7 +36,7 @@
             android:src="@drawable/favourite_list_empty" />
 
         <TextView
-            style="@style/title_text"
+            style="@style/titleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
