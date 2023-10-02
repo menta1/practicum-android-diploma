@@ -10,6 +10,7 @@
 /.idea/gradle.xml
 /.idea/compiler.xml
 /.idea/misc.xml
+/.idea/shelf
 
 # Gradle files
 .gradle/
@@ -47,3 +48,4 @@ google-services.json
 # OS specific
 .DS_Store
 *.log
+/.idea/shelf/Uncommitted_changes_before_Checkout_at_01_10_2023_1_32_[Changes]/shelved.patch

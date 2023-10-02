@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_horizontal"
-        android:layout_marginVertical="@dimen/title_margin_vertical"
+        android:layout_marginVertical="@dimen/margin_vertical"
         android:text="@string/favourite" />
 
     <androidx.recyclerview.widget.RecyclerView
