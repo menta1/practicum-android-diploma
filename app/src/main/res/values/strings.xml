@@ -23,4 +23,14 @@
     <string name="favourite">Избранное</string>
     <string name="list_empty">Список пуст</string>
     <string name="image_description_favourite">Изображение - список избранного пуст</string>
+
+    <!-- Filters screen -->
+    <string name="settings_filter_title">Настройки фильтрации</string>
+    <string name="arrow_back_description">Изображение - возврат на предыдущую страницу</string>
+    <string name="place_work">Место работы</string>
+    <string name="industry">Отрасль</string>
+    <string name="salary_hint">Введите сумму</string>
+    <string name="not_show_without_salary">Не показывать без ЗП</string>
+    <string name="expected_salary">Ожидаемая ЗП</string>
+    <string name="select_button">Выбрать</string>
 </resources>

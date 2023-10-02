@@ -1,14 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.filter.ui.FilterSettingsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:id="@+id/filter_title_block"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="@dimen/title_margin_vertical"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/search_icon_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="@string/arrow_back_description"
+            android:layout_marginEnd="@dimen/horizontal_margin"
+            android:clickable="true"/>
+
+        <TextView
+            style="@style/title_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"
+            android:gravity="center_vertical"
+            android:layout_marginHorizontal="@dimen/small_margin_horizontal"
+            android:text="@string/settings_filter_title" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/filter_place_work"
+        style="@style/filter_item_not_select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="@dimen/margin_vertical"
+        android:text="@string/place_work"
+        app:drawableEndCompat="@drawable/ic_arrow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filter_title_block" />
+    <TextView
+        android:id="@+id/filter_industry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/industry"
+        android:paddingHorizontal="16dp"
+        android:layout_marginBottom="@dimen/margin_top"
+        android:paddingVertical="@dimen/margin_vertical"
+        app:drawableEndCompat="@drawable/ic_arrow"
+        app:layout_constraintTop_toBottomOf="@id/filter_place_work"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/filter_item_not_select"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/filter_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginVertical="24dp"
+        android:background="@drawable/search_edit_background"
+        android:hint="@string/expected_salary"
+        android:paddingTop="@dimen/edit_text_margin_vertical"
+        android:textColorHint="@color/text_hint"
+        app:expandedHintEnabled="false"
+        app:layout_constraintTop_toBottomOf="@id/filter_industry"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/base_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/search_edit_background"
+            android:gravity="bottom"
+            android:hint="@string/salary_hint"
+            android:paddingStart="@dimen/margin_horizontal"
+            android:paddingTop="8dp"
+            android:paddingEnd="@dimen/margin_horizontal"
+            android:paddingBottom="8dp"
+            android:textColorHint="@color/text_hint" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <CheckBox
+        android:id="@+id/filter_salary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/not_show_without_salary"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="@dimen/margin_vertical"
+        android:layoutDirection="rtl"
+        app:buttonTint="@color/base_blue"
+        app:layout_constraintTop_toBottomOf="@id/filter_input_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/base_text" />
+
+    <Button
+        android:id="@+id/filter_setting_select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/edit_background"
+        android:backgroundTint="@color/base_blue"
+        android:text="@string/select_button"
+        android:visibility="gone"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
