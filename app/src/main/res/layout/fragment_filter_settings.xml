@@ -40,7 +40,7 @@
 
     <TextView
         android:id="@+id/filter_place_work"
-        style="@style/filter_item_not_select"
+        style="@style/filterItemNotSelect"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top"
@@ -63,7 +63,7 @@
         app:layout_constraintTop_toBottomOf="@id/filter_place_work"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        style="@style/filter_item_not_select"/>
+        style="@style/filterItemNotSelect"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/filter_input_layout"
@@ -71,10 +71,11 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:layout_marginVertical="24dp"
-        android:background="@drawable/search_edit_background"
+        android:background="@drawable/rounder_background"
         android:hint="@string/expected_salary"
         android:paddingTop="@dimen/edit_text_margin_vertical"
         android:textColorHint="@color/text_hint"
+        app:boxBackgroundMode="none"
         app:expandedHintEnabled="false"
         app:layout_constraintTop_toBottomOf="@id/filter_industry"
         app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +85,7 @@
             style="@style/base_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/search_edit_background"
+            android:background="@drawable/rounder_background"
             android:gravity="bottom"
             android:hint="@string/salary_hint"
             android:paddingStart="@dimen/margin_horizontal"
@@ -114,7 +115,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:layout_marginBottom="24dp"
-        android:background="@drawable/edit_background"
+        android:background="@drawable/rounder_background"
         android:backgroundTint="@color/base_blue"
         android:text="@string/select_button"
         android:visibility="gone"
