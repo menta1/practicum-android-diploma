@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF1A1B22</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="text_color_light">#1A1B22</color>
-    <color name="text_color_night">#FDFDFD</color>
-    <color name="background_edittext">#E6E8EB</color>
-    <color name="text_hint">#AEAFB4</color>
-    <color name="base_blue">#3772E7</color>
+    <color name="normal_black">#000000</color>
+    <color name="normal_white">#FFFFFF</color>
+
+    <color name="black">#1A1B22</color>
+    <color name="white">#FDFDFD</color>
+
+    <color name="light_grey">#E6E8EB</color>
+    <color name="grey">#AEAFB4</color>
+    <color name="dark_grey">#801A1B22</color>
+
+    <color name="blue">#3772E7</color>
+    <color name="red">#F56B6C</color>
 </resources>

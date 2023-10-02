@@ -6,7 +6,7 @@
     </style>
 
     <style name="Theme.PracticumAndroidDiploma" parent="Base.Theme.PracticumAndroidDiploma">
-        <item name="colorOnPrimary">@color/text_color_night</item>
-        <item name="colorButtonNormal">@color/base_blue</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorButtonNormal">@color/blue</item>
     </style>
 </resources>
