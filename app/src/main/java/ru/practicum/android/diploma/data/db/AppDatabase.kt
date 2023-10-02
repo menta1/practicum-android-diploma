@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.db
+package ru.practicum.android.diploma.data.db
 
 import androidx.room.Database
 import androidx.room.RoomDatabase

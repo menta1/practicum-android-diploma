@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.db
+package ru.practicum.android.diploma.data.db
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -16,7 +16,7 @@ interface VacancyDao {
     suspend fun deleteVacancy(vacancy: VacancyEntity)
 
     @Query("SELECT * FROM vacancy_table")
-    suspend fun getAllVacancy(): List<VacancyEntity>
+    suspend fun getAllVacancies(): List<VacancyEntity>
 
     @Query("SELECT * FROM vacancy_table WHERE id = :vacancyId")
     suspend fun getVacancyById(vacancyId: Int): VacancyEntity

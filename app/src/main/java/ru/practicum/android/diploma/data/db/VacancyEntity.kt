@@ -1,4 +1,4 @@
-package ru.practicum.android.diploma.db
+package ru.practicum.android.diploma.data.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "vacancy_table")
 data class VacancyEntity(
     @PrimaryKey
-    val id: String,
+    val id: Int,
     val name: String,
     val city: String,
     val employer: String,
