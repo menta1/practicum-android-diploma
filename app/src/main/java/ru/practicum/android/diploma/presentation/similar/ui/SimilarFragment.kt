@@ -5,10 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import ru.practicum.android.diploma.App
 import ru.practicum.android.diploma.databinding.FragmentSimilarBinding
+import ru.practicum.android.diploma.presentation.similar.view_model.SimilarViewModel
+import javax.inject.Inject
 
 
 class SimilarFragment : Fragment() {
+
+    @Inject
+    lateinit var viewModel: SimilarViewModel
 
     private var _binding: FragmentSimilarBinding? = null
     private val binding get() = _binding!!
@@ -18,6 +24,7 @@ class SimilarFragment : Fragment() {
         arguments?.let {
 
         }
+        (activity?.application as App).appComponent.activityComponent().create().inject(this)
     }
 
     override fun onCreateView(
