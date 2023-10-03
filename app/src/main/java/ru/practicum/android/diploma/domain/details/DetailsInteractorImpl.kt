@@ -1,4 +1,8 @@
 package ru.practicum.android.diploma.domain.details
 
-class DetailsInteractorImpl(private val repository: DetailsRepository) : DetailsInteractor {
+import javax.inject.Inject
+
+class DetailsInteractorImpl @Inject constructor(
+    private val repository: DetailsRepository
+) : DetailsInteractor {
 }

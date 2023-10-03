@@ -1,4 +1,8 @@
 package ru.practicum.android.diploma.domain.favourite
 
-class FavouriteInteractorImpl(private val repository: FavouriteRepository) : FavouriteInteractor {
+import javax.inject.Inject
+
+class FavouriteInteractorImpl @Inject constructor(
+    private val repository: FavouriteRepository
+) : FavouriteInteractor {
 }

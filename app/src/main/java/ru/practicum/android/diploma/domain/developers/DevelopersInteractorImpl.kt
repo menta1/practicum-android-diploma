@@ -1,5 +1,8 @@
 package ru.practicum.android.diploma.domain.developers
 
-class DevelopersInteractorImpl(private val repository: DevelopersRepository) :
-    DevelopersInteractor {
+import javax.inject.Inject
+
+class DevelopersInteractorImpl @Inject constructor(
+    private val repository: DevelopersRepository
+): DevelopersInteractor {
 }
