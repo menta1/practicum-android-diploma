@@ -34,6 +34,7 @@
         <item name="itemTextAppearanceInactive">?attr/textAppearanceCaption</item>
         <item name="itemTextAppearanceActive">?attr/textAppearanceCaption</item>
         <item name="itemTextColor">@color/bottom_nav_day</item>
+    </style>
 
     <style name="editText" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:textColorHint">@color/white</item>
