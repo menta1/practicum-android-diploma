@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="16dp"
     tools:context=".presentation.filter.ui.FilterSettingsFragment">
 
     <LinearLayout
@@ -47,6 +48,8 @@
         android:paddingHorizontal="16dp"
         android:paddingVertical="@dimen/margin_vertical"
         android:text="@string/place_work"
+        android:clickable="true"
+        android:focusable="true"
         app:drawableEndCompat="@drawable/ic_arrow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,6 +62,8 @@
         android:paddingHorizontal="16dp"
         android:layout_marginBottom="@dimen/margin_top"
         android:paddingVertical="@dimen/margin_vertical"
+        android:clickable="true"
+        android:focusable="true"
         app:drawableEndCompat="@drawable/ic_arrow"
         app:layout_constraintTop_toBottomOf="@id/filter_place_work"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,15 +79,15 @@
         android:background="@drawable/rounder_background"
         android:hint="@string/expected_salary"
         android:paddingTop="@dimen/edit_text_margin_vertical"
-        android:textColorHint="@color/grey"
         app:boxBackgroundMode="none"
         app:expandedHintEnabled="false"
         app:layout_constraintTop_toBottomOf="@id/filter_industry"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/editText">
 
         <com.google.android.material.textfield.TextInputEditText
-            style="@style/baseText"
+            style="@style/editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounder_background"
@@ -91,8 +96,7 @@
             android:paddingStart="@dimen/margin_horizontal"
             android:paddingTop="8dp"
             android:paddingEnd="@dimen/margin_horizontal"
-            android:paddingBottom="8dp"
-            android:textColorHint="@color/grey" />
+            android:paddingBottom="8dp" />
     </com.google.android.material.textfield.TextInputLayout>
     <CheckBox
         android:id="@+id/filter_salary"
@@ -114,13 +118,31 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/rounder_background"
         android:backgroundTint="@color/blue"
         android:text="@string/select_button"
+        android:textColor="@color/white"
         android:visibility="gone"
+        app:backgroundTint="@null"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@id/filter_setting_clear"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <Button
+        android:id="@+id/filter_setting_clear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounder_background"
+        android:text="@string/clear_button"
+        android:visibility="gone"
+        android:stateListAnimator="@null"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/button_clear"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -44,4 +44,19 @@
         <item name="android:textColor">@color/grey</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
+
+    <style name="editText" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:textColorHint">@color/grey</item>
+        <item name="android:backgroundTint">@color/light_grey</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+
+    <style name="button_clear" parent="baseLineMedium">
+        <item name="android:backgroundTint">@color/transparent</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/red</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
 </resources>

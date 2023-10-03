@@ -4,7 +4,6 @@
     <!--Bottom menu-->
     <string name="main_page">Главная</string>
 
-
     <!-- Developers screen -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="worked_on_app">Над приложением работали</string>
@@ -68,4 +67,5 @@ CI по модели Trunk Based Development
     <string name="not_show_without_salary">Не показывать без ЗП</string>
     <string name="expected_salary">Ожидаемая ЗП</string>
     <string name="select_button">Выбрать</string>
+    <string name="clear_button">Сбросить</string>
 </resources>
