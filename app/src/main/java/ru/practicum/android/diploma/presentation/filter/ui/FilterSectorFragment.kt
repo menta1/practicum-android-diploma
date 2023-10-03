@@ -5,10 +5,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import ru.practicum.android.diploma.App
 import ru.practicum.android.diploma.databinding.FragmentFilterSectorBinding
+import ru.practicum.android.diploma.presentation.filter.view_model.FilterViewModel
+import javax.inject.Inject
 
 
 class FilterSectorFragment : Fragment() {
+
+    @Inject
+    lateinit var viewModel: FilterViewModel
 
     private var _binding: FragmentFilterSectorBinding? = null
     private val binding get() = _binding!!
@@ -18,6 +24,7 @@ class FilterSectorFragment : Fragment() {
         arguments?.let {
 
         }
+        (activity?.application as App).appComponent.activityComponent().create().inject(this)
     }
 
     override fun onCreateView(

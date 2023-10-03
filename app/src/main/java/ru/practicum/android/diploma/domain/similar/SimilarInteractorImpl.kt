@@ -1,4 +1,8 @@
 package ru.practicum.android.diploma.domain.similar
 
-class SimilarInteractorImpl(private val repository: SimilarRepository) : SimilarInteractor {
+import javax.inject.Inject
+
+class SimilarInteractorImpl @Inject constructor(
+    private val repository: SimilarRepository
+) : SimilarInteractor {
 }
