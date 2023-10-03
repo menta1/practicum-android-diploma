@@ -4,7 +4,6 @@
     <!--Bottom menu-->
     <string name="main_page">Главная</string>
 
-    
     <!-- Developers screen -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="worked_on_app">Над приложением работали</string>
@@ -58,4 +57,15 @@ CI по модели Trunk Based Development
     <string name="share">Поделиться</string>
     <string name="back">Назад</string>
     <string name="logo_company">Логотип компании</string>
+
+    <!-- Filters screen -->
+    <string name="settings_filter_title">Настройки фильтрации</string>
+    <string name="arrow_back_description">Изображение - возврат на предыдущую страницу</string>
+    <string name="place_work">Место работы</string>
+    <string name="industry">Отрасль</string>
+    <string name="salary_hint">Введите сумму</string>
+    <string name="not_show_without_salary">Не показывать без ЗП</string>
+    <string name="expected_salary">Ожидаемая ЗП</string>
+    <string name="select_button">Выбрать</string>
+    <string name="clear_button">Сбросить</string>
 </resources>
