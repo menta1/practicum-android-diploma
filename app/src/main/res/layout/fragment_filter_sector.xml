@@ -1,14 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".presentation.filter.ui.FilterSectorFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_margin="8dp"
+            android:clickable="true"
+            android:contentDescription="@string/back"
+            android:src="@drawable/ic_back_arrow" />
+
+        <TextView
+            style="@style/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_vertical_19"
+            android:gravity="center_vertical"
+            android:text="@string/industry_choice" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <EditText
+            android:id="@+id/edit_search"
+            style="@style/baseText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_horizontal"
+            android:layout_marginVertical="@dimen/edit_text_margin_vertical"
+            android:autofillHints=""
+            android:background="@drawable/rounder_background"
+            android:drawableEnd="@drawable/ic_search"
+            android:hint="@string/industry_search_hint"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:lines="1"
+            android:paddingVertical="@dimen/margin_horizontal"
+            android:paddingStart="@dimen/margin_horizontal"
+            android:paddingEnd="@dimen/margin_horizontal"
+            android:singleLine="true"
+            android:textColorHint="@color/grey" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_industry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_vertical_8"
+        tools:listitem="@layout/industry_item" />
+
+</LinearLayout>
