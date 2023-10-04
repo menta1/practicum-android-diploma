@@ -57,6 +57,7 @@ CI по модели Trunk Based Development
     <string name="share">Поделиться</string>
     <string name="back">Назад</string>
     <string name="logo_company">Логотип компании</string>
+    <string name="share_message">Смотрите какую вакансию нашел на hh.ru</string>
 
     <!-- Filters screen -->
     <string name="settings_filter_title">Настройки фильтрации</string>
