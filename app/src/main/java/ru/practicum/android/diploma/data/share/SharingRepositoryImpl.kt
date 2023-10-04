@@ -27,7 +27,7 @@ class SharingRepositoryImpl(
     }
 
     override fun callPhone(phoneData: PhoneData) {
-        val intent = Intent(Intent.ACTION_DIAL).apply {
+        val intent = Intent(Intent.ACTION_VIEW).apply {
             data = Uri.parse("tel:" + phoneData.phone)
         }
 
@@ -40,7 +40,7 @@ class SharingRepositoryImpl(
 
     override fun sharingVacancy(sharingData: SharingData) {
         val intent = Intent(Intent.ACTION_SEND).apply {
-            putExtra(Intent.EXTRA_TEXT, getSharingText(sharingData.data))
+            putExtra(Intent.EXTRA_TEXT, getSharingText(sharingData.link))
             type = "text/plain"
         }
 
@@ -50,12 +50,12 @@ class SharingRepositoryImpl(
             e.printStackTrace()
         }
     }
-    private fun getSharingText(message: String): String {
-        return context.getString(R.string.share_message) + "\n" + message
+    private fun getSharingText(linkVacancy: String): String {
+        return context.getString(R.string.share_message) + "\n" + linkVacancy
     }
 
     override fun openLink(sharingData: SharingData) {
-        val address = Uri.parse(sharingData.data)
+        val address = Uri.parse(sharingData.link)
         val intent = Intent(Intent.ACTION_VIEW, address)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
 
