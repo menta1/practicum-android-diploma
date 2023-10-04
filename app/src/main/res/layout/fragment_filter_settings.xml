@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    style="@style/ScreensBackground"
     android:layout_marginBottom="16dp"
     tools:context=".presentation.filter.ui.FilterSettingsFragment">
 
