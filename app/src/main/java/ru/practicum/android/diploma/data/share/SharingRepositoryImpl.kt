@@ -53,4 +53,16 @@ class SharingRepositoryImpl(
     private fun getSharingText(message: String): String {
         return context.getString(R.string.share_message) + "\n" + message
     }
+
+    override fun openLink(sharingData: SharingData) {
+        val address = Uri.parse(sharingData.data)
+        val intent = Intent(Intent.ACTION_VIEW, address)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+
+        try {
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
 }

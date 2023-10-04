@@ -20,4 +20,8 @@ class SharingInteractorImpl(
     override fun sharingVacancy(sharingData: SharingData) {
         sharingRepository.sharingVacancy(sharingData)
     }
+
+    override fun openLink(sharingData: SharingData) {
+        sharingRepository.openLink(sharingData)
+    }
 }

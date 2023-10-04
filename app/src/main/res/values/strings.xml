@@ -12,6 +12,10 @@
     <string name="second_developer">Абрамочкина Владислава</string>
     <string name="third_developer">Мамонов Александр</string>
     <string name="fourth_developer">Тарасенко Агния</string>
+    <string name="first_developer_link">https://github.com/menta1</string>
+    <string name="second_developer_link">https://github.com/vlodo-o</string>
+    <string name="third_developer_link">https://github.com/alexxk2</string>
+    <string name="fourth_developer_link">https://github.com/ImNia</string>
 
     <!-- Search screen -->
     <string name="search_title">Поиск вакансий</string>

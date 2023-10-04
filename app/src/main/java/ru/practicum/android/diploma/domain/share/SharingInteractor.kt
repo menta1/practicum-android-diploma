@@ -8,4 +8,5 @@ interface SharingInteractor {
     fun sendEmail(emailData: EmailData)
     fun callPhone(phoneData: PhoneData)
     fun sharingVacancy(sharingData: SharingData)
+    fun openLink(sharingData: SharingData)
 }
