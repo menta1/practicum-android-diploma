@@ -49,6 +49,7 @@
         <item name="itemTextAppearanceInactive">?attr/textAppearanceCaption</item>
         <item name="itemTextAppearanceActive">?attr/textAppearanceCaption</item>
         <item name="itemTextColor">@color/bottom_nav_day</item>
+    </style>
 
     <style name="filterItemNotSelect" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:textSize">@dimen/text_size</item>
