@@ -68,4 +68,10 @@ CI по модели Trunk Based Development
     <string name="expected_salary">Ожидаемая ЗП</string>
     <string name="select_button">Выбрать</string>
     <string name="clear_button">Сбросить</string>
+    <string name="work_place_selection">Выбор места работы</string>
+    <string name="country">Страна</string>
+    <string name="region">Регион</string>
+    <string name="mock_country_name">Россия</string>
+    <string name="arrow_description">Кнопка вперед</string>
+    <string name="mock_city_name">Москва</string>
 </resources>
