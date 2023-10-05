@@ -34,33 +34,36 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/search_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginVertical="@dimen/edit_text_margin_vertical"
+        android:textColorHint="@color/grey"
+        android:textSize="@dimen/text_size"
+        app:boxStrokeWidth="0dp"
+        app:boxStrokeWidthFocused="0dp"
+        app:endIconDrawable="@drawable/ic_search"
+        app:endIconMode="custom"
+        app:endIconTint="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_layout">
-        <EditText
-            android:id="@+id/edit_search"
-            style="@style/baseText"
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/search_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_horizontal"
-            android:layout_marginVertical="@dimen/edit_text_margin_vertical"
             android:autofillHints=""
             android:background="@drawable/rounder_background"
-            android:drawableEnd="@drawable/ic_search"
+            android:fontFamily="@font/ys_display_regular"
             android:hint="@string/industry_search_hint"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:lines="1"
-            android:paddingVertical="@dimen/margin_horizontal"
-            android:paddingStart="@dimen/margin_horizontal"
-            android:paddingEnd="@dimen/margin_horizontal"
-            android:singleLine="true"
-            android:textColorHint="@color/grey" />
-    </LinearLayout>
+            android:singleLine="true" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_industry"
