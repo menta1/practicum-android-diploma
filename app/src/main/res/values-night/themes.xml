@@ -11,7 +11,4 @@
         <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
     </style>
 
-    <style name="ScreensBackground">
-        <item name="android:background">@color/black</item>
-    </style>
 </resources>

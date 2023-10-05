@@ -51,4 +51,8 @@
         <item name="android:stateListAnimator">@null</item>
 
     </style>
+
+    <style name="ScreensBackground">
+        <item name="android:background">@color/black</item>
+    </style>
 </resources>
