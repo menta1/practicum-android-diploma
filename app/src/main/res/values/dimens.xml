@@ -24,4 +24,6 @@
     <dimen name="text_size_small">12sp</dimen>
     <dimen name="filter_icon_end_margin">24dp</dimen>
     <dimen name="filter_second_item_margin_from_navigation">100dp</dimen>
+    <dimen name="filter_item_vertical_padding">20dp</dimen>
+    <dimen name="filter_item_vertical_padding_small">12dp</dimen>
 </resources>
