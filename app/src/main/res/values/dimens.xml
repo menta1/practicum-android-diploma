@@ -9,6 +9,7 @@
     <dimen name="margin_vertical_19">19dp</dimen>
     <dimen name="margin_vertical_16">16dp</dimen>
     <dimen name="margin_vertical_8">8dp</dimen>
+    <dimen name="margin_vertical_6">6dp</dimen>
     <dimen name="margin_vertical">16dp</dimen>
     <dimen name="small_margin_horizontal">4dp</dimen>
     <dimen name="title_margin_vertical">19dp</dimen>
