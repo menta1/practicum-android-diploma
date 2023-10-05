@@ -34,36 +34,37 @@
 
     </LinearLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
+    <FrameLayout
         android:id="@+id/search_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:layout_marginVertical="@dimen/edit_text_margin_vertical"
-        android:textColorHint="@color/grey"
-        android:textSize="@dimen/text_size"
-        app:boxStrokeWidth="0dp"
-        app:boxStrokeWidthFocused="0dp"
-        app:endIconDrawable="@drawable/ic_search"
-        app:endIconMode="custom"
-        app:endIconTint="@color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar_layout">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/search_text"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/search_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints=""
-            android:background="@drawable/rounder_background"
-            android:fontFamily="@font/ys_display_regular"
-            android:hint="@string/industry_search_hint"
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:lines="1"
-            android:singleLine="true" />
+            android:layout_marginHorizontal="@dimen/margin_horizontal"
+            android:layout_marginVertical="@dimen/edit_text_margin_vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar_layout">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/search_text"
+                style="@style/search_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/industry_search_hint" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_search"
+            android:layout_marginEnd="32dp"
+            android:layout_gravity="center|end"/>
+    </FrameLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_industry"
