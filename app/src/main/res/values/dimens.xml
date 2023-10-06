@@ -9,6 +9,7 @@
     <dimen name="margin_vertical_19">19dp</dimen>
     <dimen name="margin_vertical_16">16dp</dimen>
     <dimen name="margin_vertical_8">8dp</dimen>
+    <dimen name="margin_vertical_6">6dp</dimen>
     <dimen name="margin_vertical">16dp</dimen>
     <dimen name="small_margin_horizontal">4dp</dimen>
     <dimen name="title_margin_vertical">19dp</dimen>
@@ -18,4 +19,12 @@
     <dimen name="message_margin_vertical">4dp</dimen>
     <dimen name="message_margin_horizontal">12dp</dimen>
     <dimen name="round_radius_search">12dp</dimen>
+    <dimen name="navigation_back_start_margin">20dp</dimen>
+    <dimen name="navigation_back_top_margin">24dp</dimen>
+    <dimen name="filter_item_margin_from_navigation">40dp</dimen>
+    <dimen name="text_size_small">12sp</dimen>
+    <dimen name="filter_icon_end_margin">24dp</dimen>
+    <dimen name="filter_second_item_margin_from_navigation">100dp</dimen>
+    <dimen name="filter_item_vertical_padding">20dp</dimen>
+    <dimen name="filter_item_vertical_padding_small">12dp</dimen>
 </resources>

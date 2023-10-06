@@ -12,6 +12,10 @@
     <string name="second_developer">Абрамочкина Владислава</string>
     <string name="third_developer">Мамонов Александр</string>
     <string name="fourth_developer">Тарасенко Агния</string>
+    <string name="first_developer_link">https://github.com/menta1</string>
+    <string name="second_developer_link">https://github.com/vlodo-o</string>
+    <string name="third_developer_link">https://github.com/alexxk2</string>
+    <string name="fourth_developer_link">https://github.com/ImNia</string>
 
     <!-- Search screen -->
     <string name="search_title">Поиск вакансий</string>
@@ -57,6 +61,7 @@ CI по модели Trunk Based Development
     <string name="share">Поделиться</string>
     <string name="back">Назад</string>
     <string name="logo_company">Логотип компании</string>
+    <string name="share_message">Смотрите какую вакансию нашел на hh.ru</string>
 
     <!-- Filters screen -->
     <string name="settings_filter_title">Настройки фильтрации</string>
@@ -68,4 +73,16 @@ CI по модели Trunk Based Development
     <string name="expected_salary">Ожидаемая ЗП</string>
     <string name="select_button">Выбрать</string>
     <string name="clear_button">Сбросить</string>
+    <string name="work_place_selection">Выбор места работы</string>
+    <string name="country">Страна</string>
+    <string name="region">Регион</string>
+    <string name="mock_country_name">Россия</string>
+    <string name="arrow_description">Кнопка вперед</string>
+    <string name="mock_city_name">Москва</string>
+    <string name="industry_choice">Выбор отрасли</string>
+    <string name="industry_search_hint">Введите отрасль</string>
+    <string name="industry_not_found">Такой отрасли нет</string>
+    <string name="failed_get_list">Не удалось получить список</string>
+    <string name="select_country_title">Выбор страны</string>
+
 </resources>
