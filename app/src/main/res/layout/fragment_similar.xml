@@ -39,7 +39,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/screen_title_text"
         tools:itemCount="5"
-        tools:listitem="@layout/vacancy_item" />
+        tools:listitem="@layout/vacancy_item"
+        tools:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
@@ -54,60 +55,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/screen_title_text" />
 
-    <LinearLayout
-        android:id="@+id/no_internet_layout"
+    <include
+        android:id="@+id/no_internet_layout_host"
+        layout="@layout/no_internet_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/filter_item_vertical_padding"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/screen_title_text">
+        app:layout_constraintTop_toBottomOf="@id/screen_title_text" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/no_internet_description"
-            android:scaleType="centerCrop"
-            android:src="@drawable/image_no_internet" />
-
-        <TextView
-            style="@style/titleText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_top"
-            android:text="@string/no_internet" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/server_error_layout"
+    <include
+        android:id="@+id/server_error_layout_host"
+        layout="@layout/server_error_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/filter_item_vertical_padding"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/screen_title_text">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:contentDescription="@string/server_error_description"
-            android:scaleType="centerCrop"
-            android:src="@drawable/image_server_error" />
-
-        <TextView
-            style="@style/titleText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_top"
-            android:text="@string/server_error" />
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@id/screen_title_text" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
