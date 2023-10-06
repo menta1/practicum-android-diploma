@@ -10,4 +10,5 @@
         <item name="colorButtonNormal">@color/blue</item>
         <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
     </style>
+
 </resources>
