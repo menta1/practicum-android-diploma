@@ -1,15 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ScreensBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/ScreensBackground"
-    tools:context=".presentation.filter.ui.FilterRegionFragment">
+    android:orientation="vertical"
+    tools:context=".presentation.filter.ui.FilterCountryFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:id="@+id/filter_title_block"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/search_icon_filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/margin_horizontal"
+            android:clickable="true"
+            android:contentDescription="@string/arrow_back_description"
+            android:src="@drawable/ic_back_arrow" />
+
+        <TextView
+            style="@style/titleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/small_margin_horizontal"
+            android:gravity="center_vertical"
+            android:paddingVertical="@dimen/title_margin_vertical"
+            android:text="@string/region_selection" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/edit_search"
+            style="@style/baseText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_horizontal"
+            android:layout_marginVertical="@dimen/edit_text_margin_vertical"
+            android:autofillHints=""
+            android:background="@drawable/rounder_background"
+            android:drawableEnd="@drawable/ic_search"
+            android:hint="@string/search_enter_region"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:lines="1"
+            android:paddingVertical="@dimen/margin_horizontal"
+            android:paddingStart="@dimen/margin_horizontal"
+            android:paddingEnd="@dimen/margin_horizontal"
+            android:singleLine="true"
+            android:textColorHint="@color/grey" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="135dp"
+        android:src="@drawable/error_cat"
+        android:visibility="gone" />
+
     <TextView
+        style="@style/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginVertical="@dimen/margin_vertical_16"
+        android:text="@string/error_no_such_region"
+        android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/recycler_region_block"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_marginTop="16dp">
 
-</FrameLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_region"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            tools:listitem="@layout/industry_item" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar_country"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/blue"
+            android:visibility="gone" />
+
+        <include
+            layout="@layout/button_item"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:visibility="gone"
+            android:layout_marginHorizontal="17dp" />
+    </FrameLayout>
+</LinearLayout>
