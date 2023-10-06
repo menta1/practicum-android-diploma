@@ -73,6 +73,18 @@
 
     </style>
 
+    <style name="filterItemSelected" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+
+    <style name="filterItemSelectedSmall" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:textSize">@dimen/text_size_small</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+    </style>
+
     <style name="search_layout">
         <item name="android:textColorHint">@color/grey</item>
         <item name="android:textSize">@dimen/text_size</item>
