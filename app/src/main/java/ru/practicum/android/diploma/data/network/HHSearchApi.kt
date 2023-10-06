@@ -13,9 +13,9 @@ interface HHSearchApi {
     )
     @GET("/vacancies")
     suspend fun search(
-        @Query("per_page") perPage: Int,
+        @Query("text") expression: String,
         @Query("page") page: Int,
-        @Query("text") expression: String
+        @Query("per_page") perPage: Int
     ): VacancyResponse
 
     companion object {

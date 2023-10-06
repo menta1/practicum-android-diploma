@@ -1,9 +1,8 @@
 package ru.practicum.android.diploma.data.search
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.dto.VacancyDto
@@ -15,7 +14,6 @@ import ru.practicum.android.diploma.util.Resource
 class VacancyPagingSource(
     private val pageSize: Int,
     private val expression: String,
-    private val ioDispatcher: CoroutineDispatcher,
     private val networkClient: NetworkClient
 ) : PagingSource<Int, Vacancy>() {
 
@@ -26,53 +24,46 @@ class VacancyPagingSource(
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Vacancy> {
-        val pageIndex = params.key ?: 0
-
-        val vacancies = getVacancy(pageSize, pageIndex, expression)
-        return try {
-            return if (vacancies is Resource.Success) {
-                LoadResult.Page(
-                    data = vacancies.data!!,
-                    prevKey = if (pageIndex == 0) null else pageIndex - 1,
-                    nextKey = if (vacancies.data.size == params.loadSize) pageIndex + (params.loadSize / pageSize) else null
-                )
-            } else {
-                LoadResult.Error(throwable = IllegalStateException(vacancies.message))
-            }
-        } catch (e: Exception) {
-            println(e.stackTrace)
-            LoadResult.Error(
-                throwable = e
-            )
+        if (expression.isBlank()) {
+            return LoadResult.Page(emptyList(), prevKey = null, nextKey = null)
         }
+        val page = params.key ?: 0
+        val maxPageSize = params.loadSize.coerceAtMost(pageSize)
 
+        val vacancies = getVacancy(
+            VacancyRequest(
+                expression = expression,
+                page = page,
+                pageSize = pageSize
+            )
+        )
+        return if (vacancies is Resource.Success) {
+            LoadResult.Page(
+                data = vacancies.data!!,
+                prevKey = if (page == 0) null else page - 1,
+                nextKey = if (vacancies.data.size < maxPageSize) null else page + 1
+            )
+        } else {
+            LoadResult.Error(throwable = IllegalStateException(vacancies.message))
+        }
     }
 
     private suspend fun getVacancy(
-        pageIndex: Int,
-        perPage: Int,
-        expression: String
-    ): Resource<List<Vacancy>> = withContext(ioDispatcher) {
-        val page = pageIndex * perPage
-        val response = networkClient.search(VacancyRequest(perPage, page, expression))
+        vacancyRequest: VacancyRequest
+    ): Resource<List<Vacancy>> = withContext(Dispatchers.IO) {
+
+        val response = networkClient.search(vacancyRequest)
         return@withContext when (response.resultCode) {
             -1 -> {
                 Resource.Error("Проверьте подключение к интернету")
             }
 
             200 -> {
-                try {
-                    Resource.Success(
-                        (response as VacancyResponse).results.map(
-                            VacancyDto::toVacancy
-                        )
+                Resource.Success(
+                    (response as VacancyResponse).results.map(
+                        VacancyDto::toVacancy
                     )
-                } catch (e: Exception){
-                    Log.d("tag", "response " + (response as VacancyResponse).results )
-                    Log.d("tag", "e.stackTrace " + e.stackTrace )
-                    Resource.Error("Ошибка сервера")
-                }
-
+                )
             }
 
             else -> {

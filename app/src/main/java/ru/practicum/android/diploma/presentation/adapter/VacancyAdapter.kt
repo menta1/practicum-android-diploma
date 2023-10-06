@@ -21,7 +21,7 @@ class VacancyAdapter :
             vacancyItemSalary.text = vacancy.salaryFrom.toString()
             Glide.with(vacancyImage)
                 .load(vacancy.employerLogoUrls)
-                .placeholder(R.drawable.mock_logo)
+                .placeholder(R.drawable.placeholder)
                 .transform(RoundedCorners(vacancyImage.resources.getDimensionPixelSize(R.dimen.round_radius_search)))
                 .into(vacancyImage)
         }

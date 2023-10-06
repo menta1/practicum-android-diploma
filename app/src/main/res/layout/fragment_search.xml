@@ -81,12 +81,13 @@
             android:layout_height="wrap_content"
             android:contentDescription="@string/image_description"
             android:src="@drawable/search_not_started"
-            android:visibility="gone"/>
+            />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_vacancy"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="gone"
             />
 
         <ProgressBar

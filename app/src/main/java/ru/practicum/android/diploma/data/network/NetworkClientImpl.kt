@@ -4,14 +4,13 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.util.Log
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.data.network.dto.Response
 import ru.practicum.android.diploma.data.network.dto.VacancyRequest
 import javax.inject.Inject
 
-class NetworkClientImpl @Inject constructor (
+class NetworkClientImpl @Inject constructor(
     private val hhSearchApi: HHSearchApi,
     private val context: Context
 ) : NetworkClient {
@@ -25,9 +24,7 @@ class NetworkClientImpl @Inject constructor (
         }
         return withContext(Dispatchers.IO) {
             try {
-                Log.d("tag", "dto " + dto.page+ dto.perPage+ dto.expression)
-                val response = hhSearchApi.search(dto.page, dto.perPage, dto.expression)
-                Log.d("tag", "hhSearchApi.search " +  response.results)
+                val response = hhSearchApi.search(dto.expression, dto.page, dto.pageSize)
                 response.apply { resultCode = 200 }
             } catch (e: Exception) {
                 Response().apply { resultCode = 500 }

@@ -1,3 +1,5 @@
 package ru.practicum.android.diploma.data.network.dto
 
-class VacancyResponse(val results: ArrayList<VacancyDto>) : Response()
+import com.google.gson.annotations.SerializedName
+
+class VacancyResponse(@SerializedName("items") val results: ArrayList<VacancyDto>) : Response()
