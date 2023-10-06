@@ -84,4 +84,26 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:fontFamily">@font/ys_display_regular</item>
     </style>
+
+    <style name="search_layout">
+        <item name="android:textColorHint">@color/grey</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="endIconCheckable">true</item>
+        <item name="endIconMode">clear_text</item>
+        <item name="endIconTint">@color/black</item>
+        <item name="endIconDrawable">@drawable/ic_cross</item>
+    </style>
+
+    <style name="search_edit_text">
+        <item name="android:autofillHints">""</item>
+        <item name="android:background">@drawable/rounder_background</item>
+        <item name="fontFamily">@font/ys_display_regular</item>
+        <item name="android:imeOptions">actionDone</item>
+        <item name="android:inputType">text</item>
+        <item name="android:lines">1</item>
+        <item name="singleLine">true</item>
+    </style>
+
 </resources>
