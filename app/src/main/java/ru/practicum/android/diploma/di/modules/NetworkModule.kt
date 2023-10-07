@@ -9,8 +9,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.practicum.android.diploma.data.network.HHSearchApi
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.NetworkClientImpl
-import dagger.Module
-import dagger.Provides
 import ru.practicum.android.diploma.data.network.converters.FiltersNetworkConverter
 
 
@@ -34,9 +32,10 @@ class NetworkModule {
     @Provides
     fun provideNetworkClient(context: Context, apiService: HHSearchApi): NetworkClient {
         return NetworkClientImpl(apiService, context)
+    }
 
+    @Provides
     fun provideFiltersNetworkConverter(): FiltersNetworkConverter {
         return FiltersNetworkConverter()
-
     }
 }
