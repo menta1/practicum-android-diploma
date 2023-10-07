@@ -69,8 +69,8 @@ CI по модели Trunk Based Development
     <string name="place_work">Место работы</string>
     <string name="industry">Отрасль</string>
     <string name="salary_hint">Введите сумму</string>
-    <string name="not_show_without_salary">Не показывать без ЗП</string>
-    <string name="expected_salary">Ожидаемая ЗП</string>
+    <string name="not_show_without_salary">Не показывать без зарплаты</string>
+    <string name="expected_salary">Ожидаемая зарплата</string>
     <string name="select_button">Выбрать</string>
     <string name="clear_button">Сбросить</string>
     <string name="work_place_selection">Выбор места работы</string>

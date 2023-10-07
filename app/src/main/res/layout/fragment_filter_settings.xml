@@ -40,36 +40,136 @@
             android:text="@string/settings_filter_title" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/filter_place_work"
-        style="@style/filterItemNotSelect"
+    <FrameLayout
+        android:id="@+id/place_work_block"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_top"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="@dimen/margin_vertical"
-        android:text="@string/place_work"
-        android:clickable="true"
-        android:focusable="true"
-        app:drawableEndCompat="@drawable/ic_arrow"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/filter_title_block" />
-    <TextView
-        android:id="@+id/filter_industry"
+        app:layout_constraintTop_toBottomOf="@id/filter_title_block">
+
+        <TextView
+            android:id="@+id/filter_place_work"
+            style="@style/filterItemNotSelect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top"
+            android:paddingHorizontal="@dimen/margin_horizontal"
+            android:paddingVertical="@dimen/margin_vertical"
+            android:text="@string/place_work"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="visible"
+            app:drawableEndCompat="@drawable/ic_arrow" />
+
+        <LinearLayout
+            android:id="@+id/filter_place_work_selected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/filter_item_vertical_padding_small"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="@dimen/margin_horizontal"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="10">
+                <TextView
+                    style="@style/filterItemSelectedSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    tools:text="Место работы"/>
+
+                <TextView
+                    android:id="@+id/filter_place_work_name"
+                    style="@style/filterItemSelected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    tools:text="Отрасль" />
+            </LinearLayout>
+            <ImageButton
+                android:id="@+id/filter_place_work_close_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/arrow_description"
+                android:src="@drawable/ic_cross"
+                android:layout_gravity="center_vertical"
+                android:visibility="visible" />
+        </LinearLayout>
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/filter_industry_block"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/industry"
-        android:paddingHorizontal="16dp"
-        android:layout_marginBottom="@dimen/margin_top"
-        android:paddingVertical="@dimen/margin_vertical"
-        android:clickable="true"
-        android:focusable="true"
-        app:drawableEndCompat="@drawable/ic_arrow"
-        app:layout_constraintTop_toBottomOf="@id/filter_place_work"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        style="@style/filterItemNotSelect"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/place_work_block">
+
+        <TextView
+            android:id="@+id/filter_industry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/industry"
+            android:paddingHorizontal="@dimen/margin_horizontal"
+            android:layout_marginBottom="@dimen/margin_top"
+            android:paddingVertical="@dimen/margin_vertical"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="visible"
+            app:drawableEndCompat="@drawable/ic_arrow"
+            style="@style/filterItemNotSelect"/>
+
+        <LinearLayout
+            android:id="@+id/filter_industry_selected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/filter_item_vertical_padding_small"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="@dimen/margin_horizontal"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="10">
+                <TextView
+                    style="@style/filterItemSelectedSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    tools:text="Отрасль"/>
+
+                <TextView
+                    android:id="@+id/filter_industry_name"
+                    style="@style/filterItemSelected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    tools:text="IT" />
+            </LinearLayout>
+            <ImageButton
+                android:id="@+id/filter_industry_close_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/arrow_description"
+                android:src="@drawable/ic_cross"
+                android:layout_gravity="center_vertical"
+                android:visibility="visible" />
+        </LinearLayout>
+    </FrameLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/filter_input_layout"
@@ -82,7 +182,7 @@
         android:paddingTop="@dimen/edit_text_margin_vertical"
         app:boxBackgroundMode="none"
         app:expandedHintEnabled="false"
-        app:layout_constraintTop_toBottomOf="@id/filter_industry"
+        app:layout_constraintTop_toBottomOf="@id/filter_industry_block"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         style="@style/editText">
