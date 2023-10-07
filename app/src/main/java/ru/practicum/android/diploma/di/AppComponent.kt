@@ -16,6 +16,7 @@ import javax.inject.Singleton
     DomainModule::class,
     AppSubcomponents::class,
     NetworkModule::class])
+
 interface AppComponent {
     @Component.Factory
     interface Factory {

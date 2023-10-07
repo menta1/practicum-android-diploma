@@ -13,6 +13,7 @@ import ru.practicum.android.diploma.data.developers.DevelopersRepositoryImpl
 import ru.practicum.android.diploma.data.favourite.FavouriteRepositoryImpl
 import ru.practicum.android.diploma.data.filter.FilterRepositoryImpl
 import ru.practicum.android.diploma.data.network.HHSearchApi
+import ru.practicum.android.diploma.data.network.converters.FiltersNetworkConverter
 import ru.practicum.android.diploma.data.search.SearchRepositoryImpl
 import ru.practicum.android.diploma.data.similar.SimilarRepositoryImpl
 import ru.practicum.android.diploma.domain.details.DetailsRepository
@@ -36,5 +37,6 @@ abstract class DataModule {
     abstract fun provideSearchRepository(repository: SearchRepositoryImpl): SearchRepository
     @Binds
     abstract fun provideSimilarRepository(repository: SimilarRepositoryImpl): SimilarRepository
+
 
 }

@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    style="@style/ScreensBackground"
     tools:context=".presentation.details.ui.DetailsFragment">
 
     <LinearLayout
@@ -93,7 +94,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:background="@drawable/search_edit_background">
+                android:background="@drawable/rounder_background">
 
                 <ImageView
                     android:id="@+id/employer_logo"
@@ -101,7 +102,7 @@
                     android:layout_height="48dp"
                     android:layout_marginVertical="@dimen/margin_vertical_16"
                     android:layout_marginStart="@dimen/margin_horizontal"
-                    android:background="@drawable/search_edit_background"
+                    android:background="@drawable/rounder_background"
                     tools:background="@color/black"
                     android:contentDescription="@string/logo_company" />
 

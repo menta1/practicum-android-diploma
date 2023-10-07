@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    style="@style/ScreensBackground"
     tools:context=".presentation.search.ui.SearchFragment">
 
     <LinearLayout
@@ -44,7 +45,7 @@
             android:layout_marginHorizontal="@dimen/margin_horizontal"
             android:layout_marginVertical="@dimen/edit_text_margin_vertical"
             android:autofillHints=""
-            android:background="@drawable/search_edit_background"
+            android:background="@drawable/rounder_background"
             android:drawableEnd="@drawable/ic_search"
             android:hint="@string/search_hint"
             android:imeOptions="actionDone"
