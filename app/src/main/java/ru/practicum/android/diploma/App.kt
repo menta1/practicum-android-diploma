@@ -12,7 +12,7 @@ class App: Application() {
     }
 
     open fun initializeComponent(): AppComponent {
-        return DaggerAppComponent.factory().create(applicationContext)
+        return DaggerAppComponent.factory().create(this)
     }
 
 }

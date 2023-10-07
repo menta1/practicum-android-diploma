@@ -94,6 +94,14 @@ dependencies {
 
     // Room
     val roomVersion = "2.5.2"
-    implementation ("androidx.room:room-runtime:$roomVersion")
-    implementation ("androidx.room:room-ktx:$roomVersion")
+//    implementation ("androidx.room:room-runtime:$roomVersion")
+//    implementation ("androidx.room:room-ktx:$roomVersion")
+/*    implementation ("android.arch.persistence.room:runtime:1.1.1")
+
+    annotationProcessor ("android.arch.lifecycle:compiler:1.0.0")
+    annotationProcessor ("android.arch.persistence.room:compiler:1.1.1")*/
+    implementation ("androidx.room:room-runtime:2.5.2")
+    kapt ("androidx.room:room-compiler:2.5.2")
+    implementation ("androidx.room:room-ktx:2.5.2")
+//    androidTestImplementation ("androidx.room:room-testing:2.2.5")
 }
