@@ -12,14 +12,14 @@
         android:id="@+id/filter_title_block"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginHorizontal="8dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/search_icon_filter"
+            android:id="@+id/button_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -33,7 +33,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/small_margin_horizontal"
-            android:gravity="center_vertical"
             android:paddingVertical="@dimen/title_margin_vertical"
             android:text="@string/region_selection" />
     </LinearLayout>
@@ -65,22 +64,31 @@
 
     </LinearLayout>
 
-    <ImageView
+    <LinearLayout
+        android:id="@+id/layout_error_not_found"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="135dp"
-        android:src="@drawable/error_cat"
-        android:visibility="gone" />
+        android:orientation="vertical"
+        android:visibility="gone">
 
-    <TextView
-        style="@style/titleText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginVertical="@dimen/margin_vertical_16"
-        android:text="@string/error_no_such_region"
-        android:visibility="gone" />
+        <ImageView
+            android:id="@+id/image_error_not_found"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="135dp"
+            android:src="@drawable/error_cat" />
+
+        <TextView
+            android:id="@+id/text_error_not_found"
+            style="@style/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginVertical="@dimen/margin_vertical_16"
+            android:text="@string/error_no_such_region" />
+    </LinearLayout>
 
     <FrameLayout
         android:id="@+id/recycler_region_block"
@@ -108,7 +116,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:visibility="gone"
-            android:layout_marginHorizontal="17dp" />
+            android:layout_marginHorizontal="17dp"
+            android:visibility="gone" />
     </FrameLayout>
 </LinearLayout>
