@@ -22,7 +22,9 @@ class FavouriteFragment : Fragment() {
     private var _binding: FragmentFavouriteBinding? = null
     private val binding get() = _binding!!
 
-    private val adapter = FavouriteAdapter()
+    private val adapter by lazy {
+        FavouriteAdapter(requireContext())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +50,11 @@ class FavouriteFragment : Fragment() {
                 is FavouriteState.Loading -> {
                     changeContentVisibility(loading = true)
                 }
-                is FavouriteState.Empty -> {}
+                is FavouriteState.Empty -> {
+                    binding.layoutNotFound.visibility = View.VISIBLE
+                    binding.recyclerFavourite.visibility = View.GONE
+                    binding.progressBarFavourite.visibility = View.GONE
+                }
                 is FavouriteState.Error -> {}
                 is FavouriteState.Content -> {
                     changeContentVisibility(loading = false)
@@ -59,7 +65,9 @@ class FavouriteFragment : Fragment() {
     }
 
     private fun changeContentVisibility(loading: Boolean) {
+        binding.layoutNotFound.visibility = View.GONE
         binding.recyclerFavourite.isVisible = !loading
+        binding.progressBarFavourite.isVisible = loading
     }
 
     private fun updateScreen(data: List<Vacancy>) {

@@ -10,7 +10,7 @@ class FavouriteRepositoryImpl @Inject constructor(
     private val database: AppDatabase,
     private val converter: VacancyFavouriteDbConverters
 ): FavouriteRepository {
-    override suspend fun getAllVacancies(): List<Vacancy> {
+    override suspend fun getAllVacancies(): List<Vacancy>{
         return database.vacancyDao().getAllVacancies().map {
             converter.map(it)
         }

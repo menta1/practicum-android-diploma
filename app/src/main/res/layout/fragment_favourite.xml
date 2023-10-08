@@ -21,6 +21,13 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/margin_horizontal"
         android:visibility="gone" />
+    <ProgressBar
+        android:id="@+id/progress_bar_favourite"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/layout_not_found"

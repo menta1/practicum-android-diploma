@@ -85,4 +85,9 @@ CI по модели Trunk Based Development
     <string name="failed_get_list">Не удалось получить список</string>
     <string name="select_country_title">Выбор страны</string>
 
+    <!-- Favourite screen -->
+    <string name="without_salary">Зарплата не указана</string>
+    <string name="salary_from">от</string>
+    <string name="salary_to">до</string>
+
 </resources>

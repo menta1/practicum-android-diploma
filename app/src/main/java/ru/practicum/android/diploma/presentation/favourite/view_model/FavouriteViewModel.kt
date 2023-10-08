@@ -16,7 +16,12 @@ class FavouriteViewModel @Inject constructor(
     fun getFavouriteStateLiveData(): LiveData<FavouriteState> = favouriteStateLiveData
     fun initData() {
         viewModelScope.launch {
-            interactor.getAllVacancies().collect { data ->
+            val data = interactor.getAllVacancies()
+            if (data.isEmpty()) {
+                favouriteStateLiveData.postValue(
+                    FavouriteState.Empty
+                )
+            } else {
                 favouriteStateLiveData.postValue(
                     FavouriteState.Content(data)
                 )
