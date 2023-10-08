@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
     entities = [VacancyEntity::class],
     exportSchema = false
 )
-abstract class AppDatabase : RoomDatabase() {
+abstract class AppDatabase: RoomDatabase() {
 
     abstract fun vacancyDao(): VacancyDao
 }
