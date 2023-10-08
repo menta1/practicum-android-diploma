@@ -14,7 +14,7 @@ class FiltersNetworkConverter @Inject constructor() {
                 id = id,
                 parentId = parentId,
                 name = name,
-                areas = areas
+                areas = areas.map { convertRegionToDomain(it) }
             )
         }
     }
@@ -24,7 +24,7 @@ class FiltersNetworkConverter @Inject constructor() {
             return Industry(
                 id = id,
                 name = name,
-                industries = industries
+                industries = industries?.map { convertIndustryToDomain(it) }
             )
         }
     }
