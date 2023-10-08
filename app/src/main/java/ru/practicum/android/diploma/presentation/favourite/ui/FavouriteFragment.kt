@@ -4,10 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.practicum.android.diploma.App
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentFavouriteBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.favourite.models.FavouriteState
@@ -46,16 +48,19 @@ class FavouriteFragment : Fragment() {
 
         viewModel.initData()
         viewModel.getFavouriteStateLiveData().observe(viewLifecycleOwner) { state ->
-            when(state) {
+            when (state) {
                 is FavouriteState.Loading -> {
                     changeContentVisibility(loading = true)
                 }
+
                 is FavouriteState.Empty -> {
-                    binding.layoutNotFound.visibility = View.VISIBLE
-                    binding.recyclerFavourite.visibility = View.GONE
-                    binding.progressBarFavourite.visibility = View.GONE
+                    problemWithContentVisibility(isEmpty = true)
                 }
-                is FavouriteState.Error -> {}
+
+                is FavouriteState.Error -> {
+                    problemWithContentVisibility(isEmpty = false)
+                }
+
                 is FavouriteState.Content -> {
                     changeContentVisibility(loading = false)
                     updateScreen(state.data)
@@ -68,6 +73,23 @@ class FavouriteFragment : Fragment() {
         binding.layoutNotFound.visibility = View.GONE
         binding.recyclerFavourite.isVisible = !loading
         binding.progressBarFavourite.isVisible = loading
+    }
+
+    private fun problemWithContentVisibility(isEmpty: Boolean) {
+        binding.layoutNotFound.visibility = View.VISIBLE
+        binding.recyclerFavourite.visibility = View.GONE
+        binding.progressBarFavourite.visibility = View.GONE
+
+        binding.imageListEmpty.setImageDrawable(
+            if (isEmpty) ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.favourite_list_empty,
+                null
+            )
+            else ResourcesCompat.getDrawable(resources, R.drawable.not_found, null)
+        )
+        binding.favouriteText.text = if (isEmpty) getString(R.string.list_empty)
+        else getString(R.string.failed_get_list)
     }
 
     private fun updateScreen(data: List<Vacancy>) {
