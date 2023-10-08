@@ -78,7 +78,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="135dp"
-            android:src="@drawable/error_cat" />
+            android:contentDescription="@string/error"
+            android:src="@drawable/not_found" />
 
         <TextView
             android:id="@+id/text_error_not_found"
@@ -88,6 +89,33 @@
             android:layout_gravity="center"
             android:layout_marginVertical="@dimen/margin_vertical_16"
             android:text="@string/error_no_such_region" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_error_failed_get"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/image_error_failed_get"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="135dp"
+            android:contentDescription="@string/error"
+            android:src="@drawable/failed_get_list" />
+
+        <TextView
+            android:id="@+id/text_error_failed_get"
+            style="@style/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginVertical="@dimen/margin_vertical_16"
+            android:text="@string/failed_get_list" />
     </LinearLayout>
 
     <FrameLayout

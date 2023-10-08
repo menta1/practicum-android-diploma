@@ -88,5 +88,6 @@ CI по модели Trunk Based Development
     <string name="search_enter_region">Введите регион</string>
     <string name="error_no_such_region">Такого региона нет</string>
     <string name="choose">Выбрать</string>
+    <string name="error">Ошибка</string>
 
 </resources>
