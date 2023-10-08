@@ -12,13 +12,6 @@ class FavouriteRepositoryImpl @Inject constructor(
     private val database: AppDatabase,
     private val converter: VacancyFavouriteDbConverters
 ): FavouriteRepository {
-    override suspend fun saveVacancy(vacancy: Vacancy) {
-        database.vacancyDao().insertVacancy(converter.map(vacancy))
-    }
-
-    override suspend fun deleteVacancy(vacancy: Vacancy) {
-        database.vacancyDao().deleteVacancy(converter.map(vacancy))
-    }
 
     override suspend fun getAllVacancies(): Flow<List<Vacancy>> = flow {
         val vacancies = database.vacancyDao().getAllVacancies().map {
@@ -27,8 +20,4 @@ class FavouriteRepositoryImpl @Inject constructor(
         emit(vacancies)
     }
 
-    override suspend fun getVacancyById(vacancyId: Int): Flow<Vacancy> = flow {
-        val vacancy = database.vacancyDao().getVacancyById(vacancyId)
-        emit(converter.map(vacancy))
-    }
 }
