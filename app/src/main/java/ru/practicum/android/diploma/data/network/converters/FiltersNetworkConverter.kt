@@ -1,7 +1,7 @@
 package ru.practicum.android.diploma.data.network.converters
 
-import ru.practicum.android.diploma.data.dto.IndustryDto
-import ru.practicum.android.diploma.data.dto.RegionDto
+import ru.practicum.android.diploma.data.network.dto.IndustryDto
+import ru.practicum.android.diploma.data.network.dto.RegionDto
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.Region
 import javax.inject.Inject
