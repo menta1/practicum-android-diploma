@@ -12,18 +12,24 @@ import javax.inject.Inject
 class FavouriteViewModel @Inject constructor(
     private val interactor: FavouriteInteractor
 ) : ViewModel() {
-    private var favouriteStateLiveData = MutableLiveData<FavouriteState>(FavouriteState.Loading)
+    private val favouriteStateLiveData = MutableLiveData<FavouriteState>(FavouriteState.Loading)
     fun getFavouriteStateLiveData(): LiveData<FavouriteState> = favouriteStateLiveData
     fun initData() {
         viewModelScope.launch {
-            val data = interactor.getAllVacancies()
-            if (data.isEmpty()) {
+            try {
+                val data = interactor.getAllVacancies()
+                if (data.isEmpty()) {
+                    favouriteStateLiveData.postValue(
+                        FavouriteState.Empty
+                    )
+                } else {
+                    favouriteStateLiveData.postValue(
+                        FavouriteState.Content(data)
+                    )
+                }
+            } catch (ex: Exception) {
                 favouriteStateLiveData.postValue(
-                    FavouriteState.Empty
-                )
-            } else {
-                favouriteStateLiveData.postValue(
-                    FavouriteState.Content(data)
+                    FavouriteState.Error
                 )
             }
         }
