@@ -15,7 +15,6 @@ class DatabaseModule() {
     @Provides
     fun provideDatabase(context: Context): AppDatabase {
         return Room.databaseBuilder(context, AppDatabase::class.java, "database.db")
-            .allowMainThreadQueries()
             .build()
     }
 
