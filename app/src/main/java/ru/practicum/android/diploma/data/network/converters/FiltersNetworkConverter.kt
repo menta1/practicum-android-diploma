@@ -1,7 +1,7 @@
 package ru.practicum.android.diploma.data.network.converters
 
-import ru.practicum.android.diploma.data.dto.IndustryDto
-import ru.practicum.android.diploma.data.dto.RegionDto
+import ru.practicum.android.diploma.data.network.dto.IndustryDto
+import ru.practicum.android.diploma.data.network.dto.RegionDto
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.Region
 import javax.inject.Inject
@@ -14,7 +14,7 @@ class FiltersNetworkConverter @Inject constructor() {
                 id = id,
                 parentId = parentId,
                 name = name,
-                areas = areas
+                areas = areas.map { convertRegionToDomain(it) }
             )
         }
     }
@@ -24,7 +24,7 @@ class FiltersNetworkConverter @Inject constructor() {
             return Industry(
                 id = id,
                 name = name,
-                industries = industries
+                industries = industries?.map { convertIndustryToDomain(it) }
             )
         }
     }

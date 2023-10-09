@@ -11,7 +11,7 @@ import ru.practicum.android.diploma.data.db.converters.ConverterType
     exportSchema = false
 )
 @TypeConverters(ConverterType::class)
-abstract class AppDatabase : RoomDatabase() {
+abstract class AppDatabase: RoomDatabase() {
 
     abstract fun vacancyDao(): VacancyDao
 }

@@ -10,7 +10,7 @@ import ru.practicum.android.diploma.data.db.converters.VacancyFavouriteDbConvert
 import javax.inject.Singleton
 
 @Module
-class DatabaseModule() {
+class DatabaseModule {
     @Singleton
     @Provides
     fun provideDatabase(context: Context): AppDatabase {

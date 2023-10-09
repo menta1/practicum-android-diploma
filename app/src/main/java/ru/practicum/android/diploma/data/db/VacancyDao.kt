@@ -11,14 +11,14 @@ import kotlinx.coroutines.flow.Flow
 interface VacancyDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertVacancy(vacancy: VacancyEntity)
+    fun insertVacancy(vacancy: VacancyEntity)
 
     @Delete
-    suspend fun deleteVacancy(vacancy: VacancyEntity)
+    fun deleteVacancy(vacancy: VacancyEntity)
 
     @Query("SELECT * FROM vacancy_table")
-    suspend fun getAllVacancies(): List<VacancyEntity>
+    fun getAllVacancies(): List<VacancyEntity>
 
     @Query("SELECT * FROM vacancy_table WHERE id = :vacancyId")
-    suspend fun getVacancyById(vacancyId: Int): VacancyEntity
+    fun getVacancyById(vacancyId: Int): VacancyEntity
 }
