@@ -88,4 +88,10 @@ CI по модели Trunk Based Development
     <string name="no_internet">Нет интернета</string>
     <string name="server_error_description">Картинка ошибка сервера</string>
     <string name="server_error">Ошибка сервера</string>
+
+    <!-- Favourite screen -->
+    <string name="without_salary">Зарплата не указана</string>
+    <string name="salary_from">от</string>
+    <string name="salary_to">до</string>
+
 </resources>
