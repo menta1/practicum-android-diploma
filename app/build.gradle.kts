@@ -5,6 +5,8 @@ plugins {
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-parcelize")
+    //Kotlin symbol processing  for Room
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -95,6 +97,9 @@ dependencies {
     // Room
     val roomVersion = "2.5.2"
     implementation ("androidx.room:room-runtime:$roomVersion")
-    kapt ("androidx.room:room-compiler:$roomVersion")
     implementation ("androidx.room:room-ktx:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+
+    //Kotlin symbol processing for Room
+    ksp("androidx.room:room-compiler:$roomVersion")
 }

@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.data.favourite
 
-import kotlinx.coroutines.flow.first
 import ru.practicum.android.diploma.data.db.AppDatabase
 import ru.practicum.android.diploma.data.db.converters.VacancyFavouriteDbConverters
 import ru.practicum.android.diploma.domain.favourite.FavouriteRepository
@@ -13,7 +12,7 @@ class FavouriteRepositoryImpl @Inject constructor(
 ): FavouriteRepository {
     override suspend fun getAllVacancies(): List<Vacancy> {
         val vacancies = database.vacancyDao().getAllVacancies()
-        return vacancies.first().map {
+        return vacancies.map {
             converter.map(it)
         }
     }
