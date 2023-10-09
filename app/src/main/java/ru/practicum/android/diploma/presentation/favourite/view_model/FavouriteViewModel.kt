@@ -12,9 +12,10 @@ import javax.inject.Inject
 class FavouriteViewModel @Inject constructor(
     private val interactor: FavouriteInteractor
 ) : ViewModel() {
-    private val favouriteStateLiveData = MutableLiveData<FavouriteState>(FavouriteState.Loading)
+    private val favouriteStateLiveData = MutableLiveData<FavouriteState>()
     fun getFavouriteStateLiveData(): LiveData<FavouriteState> = favouriteStateLiveData
     fun initData() {
+        favouriteStateLiveData.postValue(FavouriteState.Loading)
         viewModelScope.launch {
             try {
                 val data = interactor.getAllVacancies()
