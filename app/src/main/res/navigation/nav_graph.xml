@@ -83,5 +83,9 @@
         android:id="@+id/similarFragment"
         android:name="ru.practicum.android.diploma.presentation.similar.ui.SimilarFragment"
         android:label="fragment_similar"
-        tools:layout="@layout/fragment_similar" />
+        tools:layout="@layout/fragment_similar" >
+        <action
+            android:id="@+id/action_similarFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
 </navigation>
