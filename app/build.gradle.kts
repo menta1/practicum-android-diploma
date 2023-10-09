@@ -102,4 +102,7 @@ dependencies {
 
     //Kotlin symbol processing for Room
     ksp("androidx.room:room-compiler:$roomVersion")
+
+    //Paging
+    implementation ("androidx.paging:paging-runtime-ktx:3.2.1")
 }
