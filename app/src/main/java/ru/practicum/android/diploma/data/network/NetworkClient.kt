@@ -10,4 +10,6 @@ interface NetworkClient {
     suspend fun getAllRegionsInCountry(countryId: String): Response
 
     suspend fun getAllIndustries(): Response
+
+    suspend fun getVacancyDetail(vacancyId:String): Response
 }

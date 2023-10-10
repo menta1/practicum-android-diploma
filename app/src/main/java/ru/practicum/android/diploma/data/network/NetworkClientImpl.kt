@@ -6,12 +6,10 @@ import android.net.NetworkCapabilities
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ru.practicum.android.diploma.data.network.dto.IndustryDto
 import ru.practicum.android.diploma.data.network.dto.IndustryResponse
-import ru.practicum.android.diploma.data.network.dto.RegionDto
 import ru.practicum.android.diploma.data.network.dto.RegionResponse
 import ru.practicum.android.diploma.data.network.dto.Response
-import ru.practicum.android.diploma.data.network.dto.VacancyRequest
+import ru.practicum.android.diploma.data.network.dto.VacancyDetailResponse
 import javax.inject.Inject
 
 class NetworkClientImpl @Inject constructor(
@@ -77,6 +75,19 @@ class NetworkClientImpl @Inject constructor(
         return if (response.code()==200 && response.body() != null){
             IndustryResponse(results = response.body()!! ).apply { resultCode = 200 }
         } else{
+            Response().apply { resultCode = response.code() }
+        }
+    }
+
+    override suspend fun getVacancyDetail(vacancyId: String): Response {
+        val response = hhSearchApi.getVacancyDetail(vacancyId)
+
+        if (!isConnected()) {
+            return Response().apply { resultCode = -1 }
+        }
+        return if (response.code() == 200 && response.body() != null) {
+            VacancyDetailResponse(result = response.body()!!).apply { resultCode = 200 }
+        } else {
             Response().apply { resultCode = response.code() }
         }
     }
