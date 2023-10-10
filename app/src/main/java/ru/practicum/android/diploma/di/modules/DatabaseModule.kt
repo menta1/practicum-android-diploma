@@ -6,28 +6,32 @@ import dagger.Module
 import dagger.Provides
 import ru.practicum.android.diploma.data.db.AppDatabase
 import ru.practicum.android.diploma.data.db.VacancyDao
+import ru.practicum.android.diploma.data.db.converters.VacancyDetailDbConverters
 import ru.practicum.android.diploma.data.db.converters.VacancyFavouriteDbConverters
+import javax.inject.Singleton
 
 @Module
 class DatabaseModule {
+    @Singleton
     @Provides
-    fun provideAppDatabase(context: Context): AppDatabase {
-        return Room.databaseBuilder(
-            context,
-            AppDatabase::class.java,
-            "database.db"
-        )
-            .fallbackToDestructiveMigration()
+    fun provideDatabase(context: Context): AppDatabase {
+        return Room.databaseBuilder(context, AppDatabase::class.java, "database.db")
             .build()
     }
 
+    @Singleton
     @Provides
-    fun provideVacancyDao(db: AppDatabase): VacancyDao {
-        return db.vacancyDao()
+    fun provideVacancyDao(database: AppDatabase): VacancyDao {
+        return database.vacancyDao()
     }
 
     @Provides
-    fun provideVacancyFavouriteDbConverters(): VacancyFavouriteDbConverters {
+    fun provideConverterFavourite(): VacancyFavouriteDbConverters {
         return VacancyFavouriteDbConverters()
+    }
+
+    @Provides
+    fun provideDetailConverterFavourite(): VacancyDetailDbConverters {
+        return VacancyDetailDbConverters()
     }
 }
