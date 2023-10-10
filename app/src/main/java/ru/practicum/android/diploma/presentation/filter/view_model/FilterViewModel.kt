@@ -5,4 +5,6 @@ import ru.practicum.android.diploma.domain.filter.FilterInteractor
 import javax.inject.Inject
 
 class FilterViewModel @Inject constructor(interactor: FilterInteractor): ViewModel() {
+
+
 }

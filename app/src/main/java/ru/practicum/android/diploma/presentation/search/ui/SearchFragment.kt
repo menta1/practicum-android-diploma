@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.coroutines.flow.collectLatest
@@ -67,6 +68,11 @@ class SearchFragment : Fragment() {
                 }
 
             }
+        }
+
+        binding.buttonToFilter.setOnClickListener {
+            val action = SearchFragmentDirections.actionSearchFragmentToFilterSettingsFragment()
+            findNavController().navigate(action)
         }
     }
 

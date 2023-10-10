@@ -23,7 +23,7 @@
             android:text="@string/search_title" />
 
         <ImageView
-            android:id="@+id/button_back"
+            android:id="@+id/button_to_filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
