@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.presentation.search.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.App
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
@@ -59,38 +57,64 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         stateView()
     }
 
-    private fun stateView(){
+    private fun stateView() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.viewState.collect{
-                when(it){
-                    SearchModelState.Loading -> {
-
+            viewModel.viewState.collect { state ->
+                when (state) {
+                    SearchModelState.NoSearch -> {
+                        binding.imageSearchNotStarted.visibility = View.VISIBLE
+                        binding.recyclerVacancy.visibility = View.GONE
+                        binding.searchMessage.visibility = View.GONE
                     }
+
+                    SearchModelState.Loading -> {
+//                        binding.imageSearchNotStarted.visibility = View.GONE
+//                        binding.searchMessage.visibility = View.GONE
+//                        binding.recyclerVacancy.visibility = View.GONE
+//                        binding.progressBar.visibility = View.VISIBLE
+                    }
+
+                    SearchModelState.Search -> {
+//                        binding.progressBar.visibility = View.VISIBLE
+//                        binding.imageSearchNotStarted.visibility = View.GONE
+//                        binding.recyclerVacancy.visibility = View.VISIBLE
+//                        binding.searchMessage.visibility = View.VISIBLE
+                    }
+
                     SearchModelState.Loaded -> {
+                        binding.progressBar.visibility = View.GONE
                         binding.imageSearchNotStarted.visibility = View.GONE
                         binding.recyclerVacancy.visibility = View.VISIBLE
+                        binding.searchMessage.visibility = View.VISIBLE
                     }
+
                     SearchModelState.NoInternet -> {
 
                     }
-                    SearchModelState.FailedToGetList -> {
 
+                    SearchModelState.FailedToGetList -> {
+                        binding.imageSearchNotStarted.visibility = View.GONE
+                        binding.searchMessage.visibility = View.VISIBLE
+                        binding.recyclerVacancy.visibility = View.GONE
+                        //Добавить лайоут что нет таких вакансий
                     }
+
                     else -> {}
                 }
             }
         }
     }
 
-    private fun scrolling(adapter: VacancyAdapter){
+    private fun scrolling(adapter: VacancyAdapter) {
         binding.recyclerVacancy.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
                 if (dy > 0) {
-                    val pos = (binding.recyclerVacancy.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    val pos =
+                        (binding.recyclerVacancy.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                     val itemsCount = adapter.itemCount
-                    if (pos >= itemsCount-1) {
+                    if (pos >= itemsCount - 1) {
                         viewModel.onLastItemReached()
                     }
                 }
@@ -98,20 +122,41 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         })
     }
 
+
     private fun setVacancies(adapter: VacancyAdapter) {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.usersFlow.collect { list ->
                 adapter.setData(list)
             }
         }
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.usersFound.collect {
+                if (it.isNotBlank())
+                    binding.searchMessage.text = formatVacanciesString(it.toInt())
+            }
+        }
+    }
+
+    private fun formatVacanciesString(count: Int): String {
+        val vacanciesWordForms = listOf("вакансия", "вакансии", "вакансий")
+        val lastTwoDigits = count % 100
+        val lastDigit = lastTwoDigits % 10
+
+        return when {
+            lastTwoDigits in 11..19 -> "Найдено $count ${vacanciesWordForms[2]}"
+            lastDigit == 1 -> "Найдена $count ${vacanciesWordForms[0]}"
+            lastDigit == 0 -> "Таких вакансий нет"
+            lastDigit in 2..4 -> "Найдено $count ${vacanciesWordForms[1]}"
+            else -> "Найдено $count ${vacanciesWordForms[2]}"
+        }
     }
 
     private fun setupSearchInput() {
         binding.editSearch.addTextChangedListener {
-            viewModel.search(it.toString(), false)
+            viewModel.onTextChangedInput(it)
             binding.editSearch.setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    viewModel.search(it.toString(), true)
+                    viewModel.search()
                 }
                 false
             }

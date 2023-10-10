@@ -41,6 +41,5 @@ data class VacancyDto(
         currency = salary?.currency,
         salaryFrom = salary?.from,
         salaryTo = salary?.to,
-
     )
 }

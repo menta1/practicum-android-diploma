@@ -1,12 +1,10 @@
 package ru.practicum.android.diploma.data.search
 
-import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.PagingInfo
 import ru.practicum.android.diploma.data.network.dto.VacancyDto
-import ru.practicum.android.diploma.data.network.dto.VacancyRequest
 import ru.practicum.android.diploma.data.network.dto.VacancyResponse
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.search.SearchRepository
@@ -19,9 +17,6 @@ class SearchRepositoryImpl @Inject constructor(
 ) : SearchRepository {
     private val options: HashMap<String, String> = HashMap()
 
-    //    @Query("text") expression: String,
-//    @Query("page") page: Int,
-//    @Query("per_page") perPage: Int
     override fun search(
         expression: String,
         page: Int
@@ -47,9 +42,6 @@ class SearchRepositoryImpl @Inject constructor(
                         found = response.found
                     )
                 )
-                Log.d("tag", "page " + response.page)
-                Log.d("tag", "pages " + response.pages)
-                Log.d("tag", "found " + response.found)
             }
 
             else -> {
