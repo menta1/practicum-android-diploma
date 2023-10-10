@@ -24,7 +24,7 @@ class SimilarFragment : Fragment() {
         arguments?.let {
 
         }
-        (activity?.application as App).appComponent.activityComponent().create().inject(this)
+       (activity?.application as App).appComponent.activityComponent().create().inject(this)
     }
 
     override fun onCreateView(

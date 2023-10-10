@@ -10,6 +10,7 @@ class VacancyFavouriteDbConverters {
             name = entity.name,
             city = entity.city,
             employer = entity.employer,
+            employerLogoUrls = entity.employerLogoUrls,
             currency = entity.currency,
             salaryFrom = entity.salaryFrom,
             salaryTo = entity.salaryTo

@@ -5,6 +5,8 @@ plugins {
     id("kotlin-kapt")
     id("androidx.navigation.safeargs.kotlin")
     id("kotlin-parcelize")
+    //Kotlin symbol processing  for Room
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -96,4 +98,11 @@ dependencies {
     val roomVersion = "2.5.2"
     implementation ("androidx.room:room-runtime:$roomVersion")
     implementation ("androidx.room:room-ktx:$roomVersion")
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+
+    //Kotlin symbol processing for Room
+    ksp("androidx.room:room-compiler:$roomVersion")
+
+    //Paging
+    implementation ("androidx.paging:paging-runtime-ktx:3.2.1")
 }
