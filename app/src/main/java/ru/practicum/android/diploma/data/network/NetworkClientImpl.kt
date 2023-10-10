@@ -17,21 +17,26 @@ class NetworkClientImpl @Inject constructor(
 
     override suspend fun search(dto: Any): Response {
         if (!isConnected()) {
+            Log.d("tag", "-1 ")
             return Response().apply { resultCode = -1 }
         }
-        if (dto !is VacancyRequest) {
-            return Response().apply { resultCode = 400 }
-        }
+//        if (dto !is VacancyRequest) {
+//            Log.d("tag", "-400 " + dto)
+//            return Response().apply { resultCode = 400 }
+//        }
         return withContext(Dispatchers.IO) {
             try {
-                val response = hhSearchApi.search(dto.expression, dto.page, dto.pageSize)
+                val response = hhSearchApi.search(dto as HashMap<String, String>)
                 response.apply { resultCode = 200 }
             } catch (e: Exception) {
+               e.printStackTrace()
                 Response().apply { resultCode = 500 }
             }
         }
     }
-
+//    @Query("text") expression: String,
+//    @Query("page") page: Int,
+//    @Query("per_page") perPage: Int
 
     private fun isConnected(): Boolean {
         val connectivityManager = context.getSystemService(
