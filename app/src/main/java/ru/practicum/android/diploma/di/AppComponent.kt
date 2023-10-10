@@ -8,6 +8,7 @@ import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.di.modules.DomainModule
 import ru.practicum.android.diploma.di.modules.DataModule
 import ru.practicum.android.diploma.di.modules.DatabaseModule
+import ru.practicum.android.diploma.di.modules.FilterModule
 import ru.practicum.android.diploma.di.modules.NetworkModule
 import javax.inject.Singleton
 
@@ -18,7 +19,9 @@ import javax.inject.Singleton
         DomainModule::class,
         AppSubcomponents::class,
         NetworkModule::class,
-        DatabaseModule::class]
+        DatabaseModule::class,
+        FilterModule::class,
+    ]
 )
 interface AppComponent {
     @Component.Factory
