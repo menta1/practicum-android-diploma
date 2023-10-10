@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <Button
+        style="@style/button"
+        android:layout_width="match_parent"
+        android:layout_height="59dp"
+        android:layout_marginVertical="@dimen/margin_vertical_16"
+        android:text="@string/choose" />
+</FrameLayout>

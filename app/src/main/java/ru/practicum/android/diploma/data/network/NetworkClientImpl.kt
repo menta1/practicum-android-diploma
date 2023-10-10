@@ -6,6 +6,10 @@ import android.net.NetworkCapabilities
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import ru.practicum.android.diploma.data.network.dto.IndustryDto
+import ru.practicum.android.diploma.data.network.dto.IndustryResponse
+import ru.practicum.android.diploma.data.network.dto.RegionDto
+import ru.practicum.android.diploma.data.network.dto.RegionResponse
 import ru.practicum.android.diploma.data.network.dto.Response
 import ru.practicum.android.diploma.data.network.dto.VacancyRequest
 import javax.inject.Inject
@@ -34,9 +38,49 @@ class NetworkClientImpl @Inject constructor(
             }
         }
     }
-//    @Query("text") expression: String,
-//    @Query("page") page: Int,
-//    @Query("per_page") perPage: Int
+
+    override suspend fun getAllCountries(): Response {
+
+        val response = hhSearchApi.getAllCountries()
+
+        if (!isConnected()){
+            return Response().apply { resultCode = -1 }
+        }
+        return if (response.code()==200 && response.body() != null){
+            RegionResponse(results = response.body()!!).apply { resultCode = 200 }
+        } else{
+            Response().apply { resultCode = response.code() }
+        }
+    }
+
+    override suspend fun getAllRegionsInCountry(countryId: String): Response {
+
+        val response = hhSearchApi.getAllRegionsInCountry(countryId)
+
+        if (!isConnected()){
+            return Response().apply { resultCode = -1 }
+        }
+        return if (response.code()==200 && response.body() != null){
+            RegionResponse(results = response.body()!! ).apply { resultCode = 200 }
+        } else{
+            Response().apply { resultCode = response.code() }
+        }
+    }
+
+    override suspend fun getAllIndustries(): Response {
+
+        val response = hhSearchApi.getAllIndustries()
+
+        if (!isConnected()){
+            return Response().apply { resultCode = -1 }
+        }
+        return if (response.code()==200 && response.body() != null){
+            IndustryResponse(results = response.body()!! ).apply { resultCode = 200 }
+        } else{
+            Response().apply { resultCode = response.code() }
+        }
+    }
+
 
     private fun isConnected(): Boolean {
         val connectivityManager = context.getSystemService(
