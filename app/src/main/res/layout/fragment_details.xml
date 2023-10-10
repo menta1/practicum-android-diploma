@@ -222,6 +222,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:textColor="@color/blue"
                 tools:text="i.lozgkina@yandex.ru" />
 
             <TextView
@@ -237,6 +238,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
+                android:textColor="@color/blue"
                 tools:text="+7 (904) 329-27-71" />
 
             <TextView
@@ -244,10 +246,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/phone" />
+                android:text="@string/comment" />
 
             <TextView
-                android:id="@+id/text_phone_second"
+                android:id="@+id/text_message"
                 style="@style/baseText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
