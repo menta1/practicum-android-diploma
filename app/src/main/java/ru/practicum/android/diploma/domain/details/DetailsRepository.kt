@@ -8,9 +8,9 @@ interface DetailsRepository {
 
     suspend fun deleteVacancy(vacancy: VacancyDetail)
 
-    suspend fun getFavouriteVacancy(vacancyId: Int): VacancyDetail
+    suspend fun getFavouriteVacancy(vacancyId: String): VacancyDetail
 
-    suspend fun isVacancyInFavourites(vacancyId: Int): Boolean
+    suspend fun isVacancyInFavourites(vacancyId: String): Boolean
 
-    suspend fun getVacancyDetails(vacancyId: Int): NetworkResource<VacancyDetail>
+    suspend fun getVacancyDetails(vacancyId: String): NetworkResource<VacancyDetail>
 }

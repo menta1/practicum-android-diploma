@@ -23,16 +23,16 @@ class DetailsRepositoryImpl @Inject constructor(
         vacancyDao.deleteVacancy(converter.map(vacancy))
     }
 
-    override suspend fun getFavouriteVacancy(vacancyId: Int): VacancyDetail {
+    override suspend fun getFavouriteVacancy(vacancyId: String): VacancyDetail {
         return converter.map(vacancyDao.getVacancyById(vacancyId))
     }
 
-    override suspend fun isVacancyInFavourites(vacancyId: Int): Boolean {
+    override suspend fun isVacancyInFavourites(vacancyId: String): Boolean {
         return vacancyDao.isVacancyInFavourites(vacancyId)
     }
 
-    override suspend fun getVacancyDetails(vacancyId: Int): NetworkResource<VacancyDetail> {
-        val response = networkClient.getVacancyDetail(vacancyId.toString())
+    override suspend fun getVacancyDetails(vacancyId: String): NetworkResource<VacancyDetail> {
+        val response = networkClient.getVacancyDetail(vacancyId)
         when (response.resultCode) {
             -1 -> {
                 return NetworkResource<VacancyDetail>(code = -1)
