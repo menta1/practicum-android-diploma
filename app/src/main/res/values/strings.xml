@@ -41,6 +41,7 @@
     <string name="comment">Комментарий</string>
     <string name="skill">\t\u30FB %1$s\n</string>
     <string name="employment_schedule">%1$s, %2$s</string>
+    <string name="no_title_vacancy">Без названия</string>
     <string name="key_skills">Ключевые навыки</string>
     <string name="mock_key_skills">Знание классических алгоритмов и структуры данных
 Программирование для Android больше одного года

@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.presentation.details.view_model
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,21 +8,76 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.details.DetailsInteractor
 import ru.practicum.android.diploma.domain.models.VacancyDetail
+import ru.practicum.android.diploma.domain.share.SharingInteractor
+import ru.practicum.android.diploma.domain.share.model.EmailData
+import ru.practicum.android.diploma.domain.share.model.PhoneData
+import ru.practicum.android.diploma.domain.share.model.SharingData
 import ru.practicum.android.diploma.presentation.details.models.DetailsState
 import javax.inject.Inject
 
 class DetailsViewModel @Inject constructor(
-    private val interactor: DetailsInteractor
+    private val interactor: DetailsInteractor,
+    private val sharingInteractor: SharingInteractor,
 ): ViewModel() {
     private val detailsStateLiveData = MutableLiveData<DetailsState>()
     fun getDetailsStateLiveData(): LiveData<DetailsState> = detailsStateLiveData
 
+    private val favouriteStateLiveData = MutableLiveData<Boolean>()
+    fun getFavouriteStateLiveData(): LiveData<Boolean> = favouriteStateLiveData
+
+    private var currentVacancy: VacancyDetail? = null
     fun initData() {
         detailsStateLiveData.postValue(DetailsState.Loading)
         viewModelScope.launch {
-            detailsStateLiveData.postValue(DetailsState.Content(testValue()))
+            val vacancy = testValue()
+            detailsStateLiveData.postValue(DetailsState.Content(vacancy))
+            currentVacancy = vacancy
         }
     }
+
+    fun existInFavourite() {
+        viewModelScope.launch {
+            //request in db with interactor
+            val isExist = false // interactor.isExistFavourite
+            favouriteStateLiveData.postValue(isExist)
+        }
+    }
+
+    fun setFavourite() {
+        viewModelScope.launch {
+            //request in db
+        }
+    }
+
+    fun sharingVacancy() {
+        viewModelScope.launch {
+            sharingInteractor.sharingVacancy(
+                SharingData("")
+            )
+        }
+    }
+
+    fun employerPhone() {
+        viewModelScope.launch {
+            Log.d("TEST", "${currentVacancy?.phone}")
+            currentVacancy?.phone?.let { phone ->
+                sharingInteractor.callPhone(
+                    PhoneData(phone = phone)
+                )
+            }
+        }
+    }
+
+    fun employerEmail() {
+        viewModelScope.launch {
+            currentVacancy?.email?.let { email ->
+                sharingInteractor.sendEmail(
+                    EmailData(email = email)
+                )
+            }
+        }
+    }
+
 
     private fun testValue() =
         VacancyDetail(
@@ -53,8 +109,8 @@ class DetailsViewModel @Inject constructor(
             keySkills = listOf("Знание классических алгоритмов и структуры данных",
                     "Программирование для Android больше одного года",
                     "Знание WebRTC"),
-            phone = "+7 (904) 329-27-71",
-            email = "i.lozgkina@yandex.ru",
+            phone = "111111111",
+            email = "tmpl@yandex.ru",
             contactPerson = "Ирина"
         )
 }

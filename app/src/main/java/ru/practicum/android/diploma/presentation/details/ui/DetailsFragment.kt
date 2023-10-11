@@ -5,7 +5,9 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -54,11 +56,38 @@ class DetailsFragment : Fragment() {
                 DetailsState.Error -> {}
                 is DetailsState.Content -> {
                     updateData(state.data)
+                    viewModel.existInFavourite()
                 }
             }
         }
 
+        viewModel.getFavouriteStateLiveData().observe(viewLifecycleOwner) { isFavourite ->
+            binding.favouriteButton.setImageDrawable(
+                ResourcesCompat.getDrawable(
+                    resources,
+                    getFavouriteIcon(isFavourite),
+                    null
+                )
+            )
+        }
+
+        binding.similarButton.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_detailsFragment_to_similarFragment
+            )
+        }
+
+        binding.shareButton.setOnClickListener { viewModel.sharingVacancy() }
+        binding.favouriteButton.setOnClickListener {
+            viewModel.setFavourite()
+        }
+
+        binding.textEmail.setOnClickListener { viewModel.employerEmail() }
+        binding.textPhone.setOnClickListener { viewModel.employerPhone() }
     }
+
+    private fun getFavouriteIcon(isFavourite: Boolean) =
+        if (isFavourite) R.drawable.ic_favourite_on else R.drawable.ic_favourite_off
 
     private fun updateData(data: VacancyDetail) {
         binding.textNameVacancy.text = data.name
@@ -87,14 +116,16 @@ class DetailsFragment : Fragment() {
 
         binding.textContactPersonName.text = data.contactPerson
         binding.textEmail.text = data.email
-        binding.textPhoneFirst.text = data.phone
+        binding.textPhone.text = data.phone
         binding.textMessage.text = "???"
     }
 
     private fun salaryText(salaryFrom: Int?, salaryTo: Int?, currency: String?) =
         if (salaryFrom != null && salaryTo != null) {
             getString(R.string.salary_from) + " " +
-                    salaryText(salaryFrom) + " " + getString(R.string.salary_to) + " " + salaryText(salaryTo) + " " + currency
+                    salaryText(salaryFrom) + " " + getString(R.string.salary_to) + " " + salaryText(
+                salaryTo
+            ) + " " + currency
         } else if (salaryFrom != null) {
             getString(R.string.salary_from) + " " + salaryText(salaryFrom) + " " + currency
         } else if (salaryTo != null) {

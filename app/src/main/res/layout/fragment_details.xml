@@ -42,7 +42,7 @@
             android:src="@drawable/ic_share" />
 
         <ImageView
-            android:id="@+id/favourite_button_off"
+            android:id="@+id/favourite_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -50,17 +50,6 @@
             android:clickable="true"
             android:contentDescription="@string/favourite"
             android:src="@drawable/ic_favourite_off" />
-
-        <ImageView
-            android:id="@+id/favourite_button_on"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:contentDescription="@string/favourite"
-            android:src="@drawable/ic_favourite_on"
-            android:visibility="gone" />
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -78,7 +67,7 @@
                 style="@style/mainHeadline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/hello_blank_fragment"
+                android:text="@string/no_title_vacancy"
                 tools:text="Android-разработчик" />
 
             <TextView
@@ -86,8 +75,9 @@
                 style="@style/titleText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/hello_blank_fragment"
+                android:text="@string/without_salary"
                 tools:text="от 100 000 ₽" />
 
             <LinearLayout
@@ -223,6 +213,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:textColor="@color/blue"
+                android:clickable="true"
+                android:focusable="true"
                 tools:text="i.lozgkina@yandex.ru" />
 
             <TextView
@@ -233,12 +225,14 @@
                 android:text="@string/phone" />
 
             <TextView
-                android:id="@+id/text_phone_first"
+                android:id="@+id/text_phone"
                 style="@style/baseText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:textColor="@color/blue"
+                android:clickable="true"
+                android:focusable="true"
                 tools:text="+7 (904) 329-27-71" />
 
             <TextView
@@ -258,6 +252,7 @@
 
             <Button
                 style="@style/button"
+                android:id="@+id/similar_button"
                 android:layout_width="match_parent"
                 android:layout_height="59dp"
                 android:layout_marginVertical="@dimen/margin_vertical_16"
