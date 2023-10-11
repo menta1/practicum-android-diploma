@@ -4,7 +4,5 @@ import androidx.lifecycle.ViewModel
 import ru.practicum.android.diploma.domain.filter.FilterInteractor
 import javax.inject.Inject
 
-class FilterViewModel @Inject constructor(interactor: FilterInteractor): ViewModel() {
-
-
+class FilterViewModel @Inject constructor(private val interactor: FilterInteractor) : ViewModel() {
 }

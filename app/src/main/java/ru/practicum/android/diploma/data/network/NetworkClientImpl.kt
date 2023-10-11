@@ -6,12 +6,10 @@ import android.net.NetworkCapabilities
 import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ru.practicum.android.diploma.data.network.dto.IndustryDto
 import ru.practicum.android.diploma.data.network.dto.IndustryResponse
-import ru.practicum.android.diploma.data.network.dto.RegionDto
 import ru.practicum.android.diploma.data.network.dto.RegionResponse
 import ru.practicum.android.diploma.data.network.dto.Response
-import ru.practicum.android.diploma.data.network.dto.VacancyRequest
+import ru.practicum.android.diploma.data.network.dto.VacancyDetailResponse
 import javax.inject.Inject
 
 class NetworkClientImpl @Inject constructor(
@@ -21,16 +19,19 @@ class NetworkClientImpl @Inject constructor(
 
     override suspend fun search(dto: Any): Response {
         if (!isConnected()) {
+            Log.d("tag", "-1 ")
             return Response().apply { resultCode = -1 }
         }
-        if (dto !is VacancyRequest) {
-            return Response().apply { resultCode = 400 }
-        }
+//        if (dto !is VacancyRequest) {
+//            Log.d("tag", "-400 " + dto)
+//            return Response().apply { resultCode = 400 }
+//        }
         return withContext(Dispatchers.IO) {
             try {
-                val response = hhSearchApi.search(dto.expression, dto.page, dto.pageSize)
+                val response = hhSearchApi.search(dto as HashMap<String, String>)
                 response.apply { resultCode = 200 }
             } catch (e: Exception) {
+               e.printStackTrace()
                 Response().apply { resultCode = 500 }
             }
         }
@@ -77,6 +78,20 @@ class NetworkClientImpl @Inject constructor(
             Response().apply { resultCode = response.code() }
         }
     }
+
+    override suspend fun getVacancyDetail(vacancyId: String): Response {
+        val response = hhSearchApi.getVacancyDetail(vacancyId)
+
+        if (!isConnected()) {
+            return Response().apply { resultCode = -1 }
+        }
+        return if (response.code() == 200 && response.body() != null) {
+            VacancyDetailResponse(result = response.body()!!).apply { resultCode = 200 }
+        } else {
+            Response().apply { resultCode = response.code() }
+        }
+    }
+
 
     private fun isConnected(): Boolean {
         val connectivityManager = context.getSystemService(

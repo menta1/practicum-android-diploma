@@ -2,8 +2,10 @@ package ru.practicum.android.diploma.data.db.converters
 
 import ru.practicum.android.diploma.data.db.VacancyEntity
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.domain.models.VacancyDetail
 
 class VacancyFavouriteDbConverters {
+
     fun map(entity: VacancyEntity): Vacancy {
         return Vacancy(
             id = entity.id.toString(),

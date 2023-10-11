@@ -6,7 +6,7 @@ import androidx.room.TypeConverters
 import ru.practicum.android.diploma.data.db.converters.ConverterType
 
 @Database(
-    version = 1,
+    version = 3,
     entities = [VacancyEntity::class],
     exportSchema = false
 )
