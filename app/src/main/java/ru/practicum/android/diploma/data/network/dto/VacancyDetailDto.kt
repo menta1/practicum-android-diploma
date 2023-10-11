@@ -2,8 +2,10 @@ package ru.practicum.android.diploma.data.network.dto
 
 import ru.practicum.android.diploma.domain.models.VacancyDetail
 import com.google.gson.annotations.SerializedName
+import ru.practicum.android.diploma.domain.models.Phone
 
 data class VacancyDetailDto(
+    @SerializedName("alternate_url") val url: String,
     @SerializedName("area") val area: Area,
     @SerializedName("contacts") val contacts: Contacts?,
     @SerializedName("description") val description: String,
@@ -82,15 +84,15 @@ data class VacancyDetailDto(
         keySkills = keySkills.map { keySkill -> keySkill.name },
         phone = getPhones(contacts?.phones),
         email = contacts?.email,
-        contactPerson = contacts?.name
+        contactPerson = contacts?.name,
+        url = url
     )
 
-    fun getPhones(phones: List<Contacts.Phone?>?): List<String>? {
-        if (phones == null) {
-            return null
-        }
-        else {
-            return phones.map { phone -> phone?.country + phone?.city + phone?.number }
+    fun getPhones(phones: List<Contacts.Phone?>?): List<Phone>? {
+        return if (phones == null) {
+            null
+        } else {
+            phones.map { phone -> Phone("${phone?.country}(${phone?.city})${phone?.number}", phone?.comment) }
         }
     }
 }
