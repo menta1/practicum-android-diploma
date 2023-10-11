@@ -54,59 +54,102 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         val adapter = VacancyAdapter(this)
         binding.recyclerVacancy.adapter = adapter
         binding.recyclerVacancy.layoutManager = LinearLayoutManager(requireContext())
-
-
         setVacancies(adapter)
         setupSearchInput()
         scrolling(adapter)
         stateView()
+        openFilters()
     }
 
     private fun stateView() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.viewState.collect { state ->
                 when (state) {
-                    SearchModelState.NoSearch -> {
-                        binding.imageSearchNotStarted.visibility = View.VISIBLE
-                        binding.recyclerVacancy.visibility = View.GONE
-                        binding.searchMessage.visibility = View.GONE
-                    }
+                    SearchModelState.NoSearch -> stateNoSearch()
 
-                    SearchModelState.Loading -> {
-//                        binding.imageSearchNotStarted.visibility = View.GONE
-//                        binding.searchMessage.visibility = View.GONE
-//                        binding.recyclerVacancy.visibility = View.GONE
-//                        binding.progressBar.visibility = View.VISIBLE
-                    }
+                    SearchModelState.Loading -> stateLoading()
 
-                    SearchModelState.Search -> {
-//                        binding.progressBar.visibility = View.VISIBLE
-//                        binding.imageSearchNotStarted.visibility = View.GONE
-//                        binding.recyclerVacancy.visibility = View.VISIBLE
-//                        binding.searchMessage.visibility = View.VISIBLE
-                    }
+                    SearchModelState.Search -> stateSearch()
 
-                    SearchModelState.Loaded -> {
-                        binding.progressBar.visibility = View.GONE
-                        binding.imageSearchNotStarted.visibility = View.GONE
-                        binding.recyclerVacancy.visibility = View.VISIBLE
-                        binding.searchMessage.visibility = View.VISIBLE
-                    }
+                    SearchModelState.Loaded -> stateLoaded()
 
-                    SearchModelState.NoInternet -> {
+                    SearchModelState.NoInternet -> stateNoInternet()
 
-                    }
-
-                    SearchModelState.FailedToGetList -> {
-                        binding.imageSearchNotStarted.visibility = View.GONE
-                        binding.searchMessage.visibility = View.VISIBLE
-                        binding.recyclerVacancy.visibility = View.GONE
-                        //Добавить лайоут что нет таких вакансий
-                    }
-
-                    else -> {}
+                    SearchModelState.FailedToGetList -> stateFailedToGetList()
                 }
             }
+        }
+    }
+
+    private fun stateNoSearch() {
+        with(binding) {
+            imageSearchNotStarted.visibility = View.VISIBLE
+            recyclerVacancy.visibility = View.GONE
+            progressBar.visibility = View.GONE
+            searchMessage.visibility = View.GONE
+            recyclerVacancyLayout.visibility = View.GONE
+            errorNoInternet.noInternetLayout.visibility = View.GONE
+            errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
+        }
+    }
+
+    private fun stateLoading() {
+        with(binding) {
+            progressBar.visibility = View.VISIBLE
+            imageSearchNotStarted.visibility = View.GONE
+            searchMessage.visibility = View.GONE
+            recyclerVacancy.visibility = View.GONE
+            recyclerVacancyLayout.visibility = View.GONE
+            errorNoInternet.noInternetLayout.visibility = View.GONE
+            errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
+        }
+    }
+
+    private fun stateSearch() {
+        with(binding) {
+            progressBar.visibility = View.VISIBLE
+            imageSearchNotStarted.visibility = View.GONE
+            recyclerVacancy.visibility = View.VISIBLE
+            recyclerVacancyLayout.visibility = View.VISIBLE
+            searchMessage.visibility = View.VISIBLE
+            errorNoInternet.noInternetLayout.visibility = View.GONE
+            errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
+        }
+    }
+
+    private fun stateLoaded() {
+        with(binding) {
+            progressBar.visibility = View.GONE
+            imageSearchNotStarted.visibility = View.GONE
+            recyclerVacancy.visibility = View.VISIBLE
+            recyclerVacancyLayout.visibility = View.VISIBLE
+            searchMessage.visibility = View.VISIBLE
+            errorNoInternet.noInternetLayout.visibility = View.GONE
+            errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
+        }
+    }
+
+    private fun stateNoInternet() {
+        with(binding) {
+            progressBar.visibility = View.GONE
+            imageSearchNotStarted.visibility = View.GONE
+            recyclerVacancy.visibility = View.GONE
+            recyclerVacancyLayout.visibility = View.GONE
+            searchMessage.visibility = View.GONE
+            errorNoInternet.noInternetLayout.visibility = View.VISIBLE
+            errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
+        }
+    }
+
+    private fun stateFailedToGetList() {
+        with(binding) {
+            progressBar.visibility = View.GONE
+            imageSearchNotStarted.visibility = View.GONE
+            recyclerVacancy.visibility = View.GONE
+            searchMessage.visibility = View.VISIBLE
+            recyclerVacancyLayout.visibility = View.VISIBLE
+            errorNoInternet.noInternetLayout.visibility = View.GONE
+            errorFailedGetCat.errorFailedGetCat.visibility = View.VISIBLE
         }
     }
 
@@ -126,7 +169,6 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             }
         })
     }
-
 
     private fun setVacancies(adapter: VacancyAdapter) {
         viewLifecycleOwner.lifecycleScope.launch {
@@ -174,8 +216,13 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     }
 
     override fun onClick(item: Vacancy) {
-        //viewModel.onClick(item)
         val bundle = bundleOf(DetailsFragment.VACANCY to item.id)
         findNavController().navigate(R.id.action_searchFragment_to_detailsFragment, bundle)
+    }
+
+    private fun openFilters() {
+        binding.buttonFilters.setOnClickListener {
+            findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)
+        }
     }
 }

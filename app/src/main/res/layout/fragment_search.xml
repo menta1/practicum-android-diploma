@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ScreensBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    style="@style/ScreensBackground"
     tools:context=".presentation.search.ui.SearchFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:layout_marginVertical="@dimen/margin_vertical_19"
-        android:layout_marginHorizontal="@dimen/margin_horizontal">
+        android:orientation="horizontal">
 
         <TextView
             style="@style/titleText"
@@ -23,20 +23,21 @@
             android:text="@string/search_title" />
 
         <ImageView
-            android:id="@+id/button_back"
+            android:id="@+id/button_filters"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:src="@drawable/ic_filter"
+            android:clickable="true"
             android:contentDescription="@string/filter_description"
-            android:clickable="true"/>
+            android:src="@drawable/ic_filter" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <EditText
             android:id="@+id/edit_search"
             style="@style/baseText"
@@ -57,17 +58,7 @@
             android:singleLine="true"
             android:textColorHint="@color/grey" />
 
-        <TextView
-            android:id="@+id/search_message"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/search_message_background"
-            android:layout_gravity="center"
-            android:paddingHorizontal="@dimen/message_margin_horizontal"
-            android:paddingVertical="@dimen/message_margin_vertical"
-            android:visibility="gone"
-            style="@style/searchMessageText"
-            tools:text="@string/vacancy_not_found"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -81,15 +72,46 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/image_description"
-            android:src="@drawable/search_not_started"
-            />
+            android:src="@drawable/search_not_started" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycler_vacancy"
+        <FrameLayout
+            android:id="@+id/recycler_vacancy_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
-            />
+            android:visibility="gone">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_vacancy"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/search_message"
+                style="@style/searchMessageText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|top"
+                android:background="@drawable/search_message_background"
+                android:paddingHorizontal="@dimen/message_margin_horizontal"
+                android:paddingVertical="@dimen/message_margin_vertical"
+                android:visibility="gone"
+                tools:text="@string/vacancy_not_found" />
+
+            <include
+                android:id="@+id/error_failed_get_cat"
+                layout="@layout/error_failed_get_cat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone" />
+        </FrameLayout>
+
+        <include
+            android:id="@+id/error_no_internet"
+            layout="@layout/no_internet_layout"
+            android:visibility="gone" />
+
 
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -99,4 +121,5 @@
             android:indeterminateTint="@color/blue"
             android:visibility="gone" />
     </LinearLayout>
+
 </LinearLayout>

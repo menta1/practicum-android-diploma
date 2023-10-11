@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.presentation.search.view_model
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,17 +38,17 @@ class SearchViewModel @Inject constructor(
     fun search() {
         if (searchText.isNotEmpty()) {
             viewModelScope.launch {
-                _viewState.value = SearchModelState.Loading
+                if (currentPage == 0) _viewState.value = SearchModelState.Loading
                 interactor.search(searchText, currentPage).collect { result ->
                     _viewState.value = SearchModelState.Search
-                    if (result.second.page!! < 1) {
+                    if (result.second.page?.let { it < 1 } == true) {
                         _usersFound.value = result.second.found.toString()
                     }
                     when (result.first.code) {
                         -1 -> _viewState.value = SearchModelState.NoInternet
                         200 -> {
                             _viewState.value = SearchModelState.Loaded
-                            if (result.second.page!! >= 1) {
+                            if (result.second.page?.let { it >= 1 } == true) {
                                 val tempFile = _usersFlow.value + result.first.data!!
                                 _usersFlow.value = tempFile
                             } else _usersFlow.value = result.first.data!!
@@ -58,7 +59,8 @@ class SearchViewModel @Inject constructor(
                     }
                     currentPage = result.second.page?.plus(1) ?: 0
                     maxPages = result.second.pages ?: 0
-                    if (result.second.found!! < 0){
+                    if (result.second.found?.let { it <= 0 } == true) {
+                        Log.d("tag", "FailedToGetList")
                         _viewState.value = SearchModelState.FailedToGetList
                     }
                 }
@@ -81,9 +83,5 @@ class SearchViewModel @Inject constructor(
             search()
             isNextPageLoading = false
         }
-    }
-
-    fun onClick(item: Vacancy) {
-
     }
 }
