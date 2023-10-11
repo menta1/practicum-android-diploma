@@ -32,7 +32,7 @@ class FavouriteViewHolder(
         vacancyTitle.text = data.name
         vacancyEmployer.text = data.employer
         vacancySalary.text =
-            salaryText(data.salaryFrom.toString(), data.salaryTo.toString(), data.currency)
+            salaryText(data.salaryFrom, data.salaryTo, data.currency)
 
         Glide.with(itemView)
             .load(data.employerLogoUrls)
@@ -49,7 +49,7 @@ class FavouriteViewHolder(
         }
     }
 
-    private fun salaryText(salaryFrom: String?, salaryTo: String?, currency: String?) =
+    private fun salaryText(salaryFrom: Int?, salaryTo: Int?, currency: String?) =
         if (salaryFrom != null && salaryTo != null) {
             context.getString(R.string.salary_from) + " " +
                     salaryFrom + " " + context.getString(R.string.salary_to) + " " + salaryTo + " " + currency

@@ -105,12 +105,40 @@ class DetailsFragment : Fragment() {
             getString(R.string.employment_schedule, data.employmentType, data.schedule)
 
         binding.textDescription.text = Html.fromHtml(data.description, Html.FROM_HTML_MODE_COMPACT)
-        binding.textKeySkills.text = skillText(data.keySkills)
+        if(data.keySkills.isNotEmpty()) {
+            binding.textKeySkills.visibility = View.VISIBLE
+            binding.textKeySkills.text = skillText(data.keySkills)
+        } else {
+            binding.textKeySkills.visibility = View.GONE
+        }
 
-        binding.textContactPersonName.text = data.contactPerson
-        binding.textEmail.text = data.email
-        binding.textPhone.text = data.phone?.first()
-        binding.textMessage.text = "???"
+        if(!data.contactPerson.isNullOrEmpty()) {
+            binding.textContactPersonName.visibility = View.VISIBLE
+            binding.textContactPersonNameTitle.visibility = View.VISIBLE
+            binding.textContactPersonName.text = data.contactPerson
+        } else {
+            binding.textContactPersonName.visibility = View.GONE
+            binding.textContactPersonNameTitle.visibility = View.GONE
+        }
+
+        if(!data.email.isNullOrEmpty()) {
+            binding.textEmail.visibility = View.VISIBLE
+            binding.textEmailTitle.visibility = View.VISIBLE
+            binding.textEmail.text = data.email
+        } else {
+            binding.textEmail.visibility = View.GONE
+            binding.textEmailTitle.visibility = View.GONE
+        }
+
+        if (!data.phone.isNullOrEmpty()) {
+            binding.textPhone.visibility = View.VISIBLE
+            binding.textPhoneTitle.visibility = View.VISIBLE
+            binding.textPhone.text = data.phone.first()
+        } else {
+            binding.textPhone.visibility = View.GONE
+            binding.textPhoneTitle.visibility = View.GONE
+        }
+//        binding.textMessage.text = "???"
     }
     private fun salaryText(salaryFrom: Int?, salaryTo: Int?, currency: String?) =
         if (salaryFrom != null && salaryTo != null) {

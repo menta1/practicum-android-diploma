@@ -188,6 +188,7 @@
                 android:text="@string/contacts" />
 
             <TextView
+                android:id="@+id/text_contact_person_name_title"
                 style="@style/baseLineMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -203,6 +204,7 @@
                 tools:text="Ирина" />
 
             <TextView
+                android:id="@+id/text_email_title"
                 style="@style/baseLineMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -221,6 +223,7 @@
                 tools:text="i.lozgkina@yandex.ru" />
 
             <TextView
+                android:id="@+id/text_phone_title"
                 style="@style/baseLineMedium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
