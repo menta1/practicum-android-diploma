@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 
 data class VacancyDetailDto(
     @SerializedName("area") val area: Area,
-    @SerializedName("contacts") val contacts: Contacts,
+    @SerializedName("contacts") val contacts: Contacts?,
     @SerializedName("description") val description: String,
     @SerializedName("employer") val employer: Employer,
     @SerializedName("employment") val employment: Employment,
@@ -13,7 +13,7 @@ data class VacancyDetailDto(
     @SerializedName("id") val id: String,
     @SerializedName("key_skills") val keySkills: List<KeySkill>,
     @SerializedName("name") val name: String,
-    @SerializedName("salary") val salary: Salary,
+    @SerializedName("salary") val salary: Salary?,
     @SerializedName("schedule") val schedule: Schedule
 ) {
 
@@ -72,17 +72,26 @@ data class VacancyDetailDto(
         city = area.name,
         employer = employer.name,
         employerLogoUrls = employer.logoUrls?.original,
-        currency = salary.currency,
-        salaryFrom = salary.from,
-        salaryTo = salary.to,
+        currency = salary?.currency,
+        salaryFrom = salary?.from,
+        salaryTo = salary?.to,
         experience = experience.name,
         employmentType = employment.name,
         schedule = schedule.name,
         description = description,
-        keySkills = keySkills.map { KeySkill -> KeySkill.name },
-        phone = contacts.phones?.map { Phone -> Phone.country + Phone.city + Phone.number },
-        email = contacts.email,
-        contactPerson = contacts.name
+        keySkills = keySkills.map { keySkill -> keySkill.name },
+        phone = getPhones(contacts?.phones),
+        email = contacts?.email,
+        contactPerson = contacts?.name
     )
+
+    fun getPhones(phones: List<Contacts.Phone?>?): List<String>? {
+        if (phones == null) {
+            return null
+        }
+        else {
+            return phones.map { phone -> phone?.country + phone?.city + phone?.number }
+        }
+    }
 }
 

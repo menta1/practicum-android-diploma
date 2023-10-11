@@ -5,16 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.App
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.adapter.VacancyAdapter
+import ru.practicum.android.diploma.presentation.details.ui.DetailsFragment
 import ru.practicum.android.diploma.presentation.search.SearchModelState
 import ru.practicum.android.diploma.presentation.search.view_model.SearchViewModel
 import javax.inject.Inject
@@ -46,6 +50,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val adapter = VacancyAdapter(this)
         binding.recyclerVacancy.adapter = adapter
         binding.recyclerVacancy.layoutManager = LinearLayoutManager(requireContext())
@@ -169,6 +174,8 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     }
 
     override fun onClick(item: Vacancy) {
-        viewModel.onClick(item)
+        //viewModel.onClick(item)
+        val bundle = bundleOf(DetailsFragment.VACANCY to item.id)
+        findNavController().navigate(R.id.action_searchFragment_to_detailsFragment, bundle)
     }
 }
