@@ -136,7 +136,7 @@ class FilterSettingsFragment : Fragment() {
                     filterIndustry.visibility = View.VISIBLE
                     filterIndustrySelected.visibility = View.GONE
                     filterPlaceWorkSelected.visibility = View.GONE
-                    filterSalary.isActivated = false
+                    filterSalary.isChecked = false
                     filterSalaryInputEditText.setText("")
 
                     filterSettingClearButton.visibility = View.GONE
