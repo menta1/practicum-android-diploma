@@ -5,10 +5,10 @@ import retrofit2.http.GET
 import retrofit2.http.Headers
 import retrofit2.http.QueryMap
 import retrofit2.http.Path
-import retrofit2.http.Query
 import ru.practicum.android.diploma.BuildConfig
 import ru.practicum.android.diploma.data.network.dto.IndustryDto
 import ru.practicum.android.diploma.data.network.dto.RegionDto
+import ru.practicum.android.diploma.data.network.dto.VacancyDetailDto
 import ru.practicum.android.diploma.data.network.dto.VacancyResponse
 
 interface HHSearchApi {
@@ -28,6 +28,11 @@ interface HHSearchApi {
 
     @GET("/industries")
     suspend fun getAllIndustries(): Response<List<IndustryDto>>
+
+    @GET("/vacancies/{vacancy_id}")
+    suspend fun getVacancyDetail(
+        @Path("vacancy_id") vacancyId: String
+    ): Response<VacancyDetailDto>
 
     companion object {
         const val token = BuildConfig.HH_ACCESS_TOKEN

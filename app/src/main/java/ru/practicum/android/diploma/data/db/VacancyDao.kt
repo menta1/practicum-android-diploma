@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+
 @Dao
 interface VacancyDao {
 
@@ -19,4 +20,7 @@ interface VacancyDao {
 
     @Query("SELECT * FROM vacancy_table WHERE id = :vacancyId")
     suspend fun getVacancyById(vacancyId: Int): VacancyEntity
+
+    @Query("SELECT EXISTS(SELECT 1 FROM vacancy_table WHERE id = :vacancyId)")
+    suspend fun isVacancyInFavourites(vacancyId: Int): Boolean
 }
