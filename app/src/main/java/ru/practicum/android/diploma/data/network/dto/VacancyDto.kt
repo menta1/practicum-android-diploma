@@ -8,7 +8,10 @@ data class VacancyDto(
     @SerializedName("name") val name: String,
     @SerializedName("area") val area: Area,
     @SerializedName("employer") val employer: Employer,
-    @SerializedName("salary") val salary: Salary?
+    @SerializedName("salary") val salary: Salary?,
+    @SerializedName("page") val page: Int?,
+    @SerializedName("pages") val pages: Int?,
+    @SerializedName("found") val found: Int?
 ) {
     data class Salary(
         @SerializedName("currency") val currency: String?,
@@ -37,6 +40,6 @@ data class VacancyDto(
         employerLogoUrls = employer.url?.logo,
         currency = salary?.currency,
         salaryFrom = salary?.from,
-        salaryTo = salary?.to
+        salaryTo = salary?.to,
     )
 }

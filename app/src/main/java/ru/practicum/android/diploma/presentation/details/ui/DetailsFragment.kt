@@ -47,6 +47,9 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val vacancyId = arguments?.getSerializable(VACANCY) as String
+        setVacancy(vacancyId)
+        setListeners()
 
         viewModel.initData()
         viewModel.getDetailsStateLiveData().observe(viewLifecycleOwner) { state ->
@@ -169,8 +172,25 @@ class DetailsFragment : Fragment() {
         }
     }
 
+    fun setListeners() {
+        binding.favouriteButtonOff.setOnClickListener {
+            viewModel.saveVacancy(vacancyDetail)
+            binding.favouriteButtonOff.visibility = View.GONE
+            binding.favouriteButtonOn.visibility = View.VISIBLE
+        }
+
+        binding.favouriteButtonOn.setOnClickListener {
+            viewModel.deleteVacancy(vacancyDetail)
+            binding.favouriteButtonOn.visibility = View.GONE
+            binding.favouriteButtonOff.visibility = View.VISIBLE
+        }
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+    companion object {
+        const val VACANCY = "vacancy"
     }
 }

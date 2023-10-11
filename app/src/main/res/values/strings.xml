@@ -89,6 +89,12 @@ CI по модели Trunk Based Development
     <string name="industry_not_found">Такой отрасли нет</string>
     <string name="failed_get_list">Не удалось получить список</string>
     <string name="select_country_title">Выбор страны</string>
+
+    <string name="region_selection">Выбор региона</string>
+    <string name="search_enter_region">Введите регион</string>
+    <string name="error_no_such_region">Такого региона нет</string>
+    <string name="choose">Выбрать</string>
+    <string name="error">Ошибка</string>
     <string name="no_internet_description">Картинка нет интернета</string>
     <string name="no_internet">Нет интернета</string>
     <string name="server_error_description">Картинка ошибка сервера</string>
@@ -98,5 +104,6 @@ CI по модели Trunk Based Development
     <string name="without_salary">Зарплата не указана</string>
     <string name="salary_from">от</string>
     <string name="salary_to">до</string>
+
 
 </resources>
