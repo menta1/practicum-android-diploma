@@ -90,6 +90,7 @@ class FilterSettingsFragment : Fragment() {
             val action = FilterSettingsFragmentDirections.actionFilterSettingsFragmentToSearchFragment(true)
             findNavController().navigate(action)
         }
+
     }
 
     private fun manageScreenContent(state: FilterScreenState){
