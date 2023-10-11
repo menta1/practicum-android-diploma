@@ -24,9 +24,12 @@ class ConverterType {
     fun phonesListToJson(value: List<Phone>?) = Gson().toJson(value)
 
     @TypeConverter
-    fun jsonToPhonesList(value: String) = if (value.isEmpty()) {
-        listOf()
-    } else {
-        Gson().fromJson(value, Array<Phone>::class.java).toList()
+    fun jsonToPhonesList(value: String?): List<Phone> {
+        if (value == null || value.trim() == "null"){
+            return listOf()
+        }
+
+        val typeToken = object : TypeToken<List<Phone>>() {}.type
+        return Gson().fromJson(value, typeToken)
     }
 }
