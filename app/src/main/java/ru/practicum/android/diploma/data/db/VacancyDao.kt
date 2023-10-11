@@ -10,17 +10,17 @@ import androidx.room.Query
 interface VacancyDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertVacancy(vacancy: VacancyEntity)
+    suspend fun insertVacancy(vacancy: VacancyEntity)
 
     @Delete
-    fun deleteVacancy(vacancy: VacancyEntity)
+    suspend fun deleteVacancy(vacancy: VacancyEntity)
 
     @Query("SELECT * FROM vacancy_table")
-    fun getAllVacancies(): List<VacancyEntity>
+    suspend fun getAllVacancies(): List<VacancyEntity>
 
     @Query("SELECT * FROM vacancy_table WHERE id = :vacancyId")
-    fun getVacancyById(vacancyId: String): VacancyEntity
+    suspend fun getVacancyById(vacancyId: Int): VacancyEntity
 
     @Query("SELECT EXISTS(SELECT 1 FROM vacancy_table WHERE id = :vacancyId)")
-    suspend fun isVacancyInFavourites(vacancyId: String): Boolean
+    suspend fun isVacancyInFavourites(vacancyId: Int): Boolean
 }

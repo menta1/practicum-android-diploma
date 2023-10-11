@@ -24,11 +24,11 @@ class DetailsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getFavouriteVacancy(vacancyId: String): VacancyDetail {
-        return converter.map(vacancyDao.getVacancyById(vacancyId))
+        return converter.map(vacancyDao.getVacancyById(vacancyId.toInt()))
     }
 
     override suspend fun isVacancyInFavourites(vacancyId: String): Boolean {
-        return vacancyDao.isVacancyInFavourites(vacancyId)
+        return vacancyDao.isVacancyInFavourites(vacancyId.toInt())
     }
 
     override suspend fun getVacancyDetails(vacancyId: String): NetworkResource<VacancyDetail> {
