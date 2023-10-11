@@ -21,7 +21,8 @@ class VacancyDetailDbConverters {
             keySkills = vacancy.keySkills,
             phone = vacancy.phone,
             email = vacancy.email,
-            contactPerson = vacancy.contactPerson
+            contactPerson = vacancy.contactPerson,
+            url = vacancy.url
         )
     }
 
@@ -42,7 +43,8 @@ class VacancyDetailDbConverters {
             keySkills = vacancy.keySkills,
             phone = vacancy.phone,
             email = vacancy.email,
-            contactPerson = vacancy.contactPerson
+            contactPerson = vacancy.contactPerson,
+            url = vacancy.url
         )
     }
 }
