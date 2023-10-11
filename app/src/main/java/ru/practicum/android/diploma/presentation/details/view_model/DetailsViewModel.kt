@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.presentation.details.view_model
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -37,20 +36,18 @@ class DetailsViewModel @Inject constructor(
                 try {
                     val networkResource = interactor.getVacancyDetails(vacancyId)
                     when (networkResource.code) {
-                        -1 -> { detailsStateLiveData.postValue(DetailsState.Error)
-                        Log.d("TEST", "-1")}
+                        -1 -> { detailsStateLiveData.postValue(DetailsState.Error)}
 
                         200 -> {
                             currentVacancy = networkResource.data!!
                             detailsStateLiveData.postValue(DetailsState.Content(networkResource.data))
                         }
 
-                        else -> { detailsStateLiveData.postValue(DetailsState.Error)
-                            Log.d("TEST", "else")}
+                        else -> { detailsStateLiveData.postValue(DetailsState.Error)}
                     }
                 } catch (ex: Exception) {
+                    ex.printStackTrace()
                     detailsStateLiveData.postValue(DetailsState.Error)
-                    Log.d("TEST", "catch")
                 }
             }
         }
@@ -71,15 +68,17 @@ class DetailsViewModel @Inject constructor(
     }
 
     fun sharingVacancy() {
-        sharingInteractor.sharingVacancy(
-            SharingData("")
-        )
+        currentVacancy?.let {
+            sharingInteractor.sharingVacancy(
+                SharingData(it.url)
+            )
+        }
     }
 
     fun employerPhone() {
         currentVacancy?.phone?.let { phone ->
             sharingInteractor.callPhone(
-                PhoneData(phone = phone.first())
+                PhoneData(phone = phone.first().number)
             )
         }
     }

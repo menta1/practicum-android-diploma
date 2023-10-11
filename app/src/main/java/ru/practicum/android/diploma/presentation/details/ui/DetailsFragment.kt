@@ -107,9 +107,11 @@ class DetailsFragment : Fragment() {
         binding.textDescription.text = Html.fromHtml(data.description, Html.FROM_HTML_MODE_COMPACT)
         if(data.keySkills.isNotEmpty()) {
             binding.textKeySkills.visibility = View.VISIBLE
+            binding.textKeySkillsTitle.visibility = View.VISIBLE
             binding.textKeySkills.text = skillText(data.keySkills)
         } else {
             binding.textKeySkills.visibility = View.GONE
+            binding.textKeySkillsTitle.visibility = View.GONE
         }
 
         if(!data.contactPerson.isNullOrEmpty()) {
@@ -133,19 +135,32 @@ class DetailsFragment : Fragment() {
         if (!data.phone.isNullOrEmpty()) {
             binding.textPhone.visibility = View.VISIBLE
             binding.textPhoneTitle.visibility = View.VISIBLE
-            binding.textPhone.text = data.phone.first()
+            binding.textPhone.text = data.phone.first().number
         } else {
             binding.textPhone.visibility = View.GONE
             binding.textPhoneTitle.visibility = View.GONE
         }
-//        binding.textMessage.text = "???"
+
+        if (data.contactPerson == null && data.email == null && data.phone == null) {
+            binding.textContactTitle.visibility = View.GONE
+        } else {
+            binding.textContactTitle.visibility = View.VISIBLE
+        }
+
+        if (data.phone?.first()?.comment != null) {
+            binding.textMessage.visibility = View.VISIBLE
+            binding.textMessageTitle.visibility = View.VISIBLE
+            binding.textMessage.text = data.phone.first().comment
+        } else {
+            binding.textMessage.visibility = View.GONE
+            binding.textMessageTitle.visibility = View.GONE
+        }
     }
     private fun salaryText(salaryFrom: Int?, salaryTo: Int?, currency: String?) =
         if (salaryFrom != null && salaryTo != null) {
             getString(R.string.salary_from) + " " +
-                    salaryText(salaryFrom) + " " + getString(R.string.salary_to) + " " + salaryText(
-                salaryTo
-            ) + " " + currency
+                    salaryText(salaryFrom) + " " + getString(R.string.salary_to) + " " +
+                    salaryText(salaryTo) + " " + currency
         } else if (salaryFrom != null) {
             getString(R.string.salary_from) + " " + salaryText(salaryFrom) + " " + currency
         } else if (salaryTo != null) {
@@ -178,8 +193,10 @@ class DetailsFragment : Fragment() {
     private fun changeLoadingVisibility(isLoading: Boolean) {
         if(isLoading) {
             binding.progressBarDetails.visibility = View.VISIBLE
+            binding.detailsBlock.visibility = View.GONE
         } else {
             binding.progressBarDetails.visibility = View.GONE
+            binding.detailsBlock.visibility = View.VISIBLE
         }
     }
 
