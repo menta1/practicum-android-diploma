@@ -31,9 +31,6 @@ class DetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
         (activity?.application as App).appComponent.activityComponent().create().inject(this)
     }
 
@@ -47,11 +44,13 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val vacancyId = arguments?.getSerializable(VACANCY) as String
-        setVacancy(vacancyId)
+        var vacancyId: String? = null
+        arguments?.let {
+            vacancyId = it.getSerializable(VACANCY) as String
+        }
         setListeners()
 
-        viewModel.initData()
+        viewModel.initData(vacancyId)
         viewModel.getDetailsStateLiveData().observe(viewLifecycleOwner) { state ->
             when (state) {
                 DetailsState.Loading -> {
@@ -63,7 +62,7 @@ class DetailsFragment : Fragment() {
                 is DetailsState.Content -> {
                     changeContentVisibility(true)
                     updateData(state.data)
-                    viewModel.existInFavourite()
+                    viewModel.existInFavourite(state.data.id)
                 }
             }
         }
@@ -78,22 +77,6 @@ class DetailsFragment : Fragment() {
             )
         }
 
-        binding.similarButton.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_detailsFragment_to_similarFragment
-            )
-        }
-
-        binding.shareButton.setOnClickListener { viewModel.sharingVacancy() }
-        binding.favouriteButton.setOnClickListener {
-            viewModel.setFavourite()
-        }
-        binding.backButton.setOnClickListener {
-            findNavController().popBackStack()
-        }
-
-        binding.textEmail.setOnClickListener { viewModel.employerEmail() }
-        binding.textPhone.setOnClickListener { viewModel.employerPhone() }
     }
 
     private fun getFavouriteIcon(isFavourite: Boolean) =
@@ -126,7 +109,7 @@ class DetailsFragment : Fragment() {
 
         binding.textContactPersonName.text = data.contactPerson
         binding.textEmail.text = data.email
-        binding.textPhone.text = data.phone
+        binding.textPhone.text = data.phone?.first()
         binding.textMessage.text = "???"
     }
     private fun salaryText(salaryFrom: Int?, salaryTo: Int?, currency: String?) =
@@ -172,18 +155,23 @@ class DetailsFragment : Fragment() {
         }
     }
 
-    fun setListeners() {
-        binding.favouriteButtonOff.setOnClickListener {
-            viewModel.saveVacancy(vacancyDetail)
-            binding.favouriteButtonOff.visibility = View.GONE
-            binding.favouriteButtonOn.visibility = View.VISIBLE
+    private fun setListeners() {
+        binding.similarButton.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_detailsFragment_to_similarFragment
+            )
         }
 
-        binding.favouriteButtonOn.setOnClickListener {
-            viewModel.deleteVacancy(vacancyDetail)
-            binding.favouriteButtonOn.visibility = View.GONE
-            binding.favouriteButtonOff.visibility = View.VISIBLE
+        binding.shareButton.setOnClickListener { viewModel.sharingVacancy() }
+        binding.favouriteButton.setOnClickListener {
+            viewModel.setFavourite()
         }
+        binding.backButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        binding.textEmail.setOnClickListener { viewModel.employerEmail() }
+        binding.textPhone.setOnClickListener { viewModel.employerPhone() }
     }
 
     override fun onDestroyView() {
