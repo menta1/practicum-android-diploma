@@ -133,96 +133,80 @@ class FilterRepositoryImpl @Inject constructor(
 
     override fun editCountryNameAndId(country: Region) {
         val filterFromData = getFilter()
-        if (filterFromData != null){
-            val editedFilter = filterFromData.copy(countryName = country.name, regionId = country.id)
-            filterStorage.editFilter(Gson().toJson(editedFilter))
-        }
-        else{
-            val editedFilter = Filter(countryName = country.name, regionId = country.id)
-            filterStorage.editFilter(Gson().toJson(editedFilter))
-        }
+
+        val editedFilter =
+            filterFromData?.copy(countryName = country.name, regionId = country.id)
+                ?: Filter(countryName = country.name, regionId = country.id)
+
+        filterStorage.editFilter(Gson().toJson(editedFilter))
     }
 
     override fun editRegionNameAndId(region: Region) {
         val filterFromData = getFilter()
-        if (filterFromData != null){
-            val editedFilter = filterFromData.copy(regionName = region.name, regionId = region.id)
-            filterStorage.editFilter(Gson().toJson(editedFilter))
-        }
-        else{
-            val editedFilter = Filter(regionName = region.name, regionId = region.id)
-            filterStorage.editFilter(Gson().toJson(editedFilter))
-        }
-    }
 
+        val editedFilter =
+            filterFromData?.copy(regionName = region.name, regionId = region.id)
+                ?: Filter(regionName = region.name, regionId = region.id)
+        filterStorage.editFilter(Gson().toJson(editedFilter))
+    }
 
     override fun editIndustryNameAndId(industry: Industry) {
         val filterFromData = getFilter()
-        if (filterFromData != null){
-            val editedFilter = filterFromData.copy(industryId = industry.id, industryName = industry.name)
-            filterStorage.editFilter(Gson().toJson(editedFilter))
-        }
-        else{
-            val editedFilter = Filter(industryId = industry.id, industryName = industry.name)
-            filterStorage.editFilter(Gson().toJson(editedFilter))
-        }
+
+        val editedFilter =
+            filterFromData?.copy(industryId = industry.id, industryName = industry.name)
+                ?: Filter(industryId = industry.id, industryName = industry.name)
+        filterStorage.editFilter(Gson().toJson(editedFilter))
     }
 
     override fun editExpectedSalary(expectedSalary: Int) {
         val filterFromData = getFilter()
-        if (filterFromData != null){
-            val editedFilter = filterFromData.copy(expectedSalary = expectedSalary)
-            filterStorage.editFilter(Gson().toJson(editedFilter))
-        }
-        else{
-            val editedFilter = Filter(expectedSalary = expectedSalary)
-            filterStorage.editFilter(Gson().toJson(editedFilter))
-        }
+
+        val editedFilter =
+            filterFromData?.copy(expectedSalary = expectedSalary) ?: Filter(expectedSalary = expectedSalary)
+        filterStorage.editFilter(Gson().toJson(editedFilter))
     }
 
     override fun editIsOnlyWithSalary(isOnlyWithSalary: Boolean) {
         val filterFromData = getFilter()
-        if (filterFromData != null){
-            val editedFilter = filterFromData.copy(isOnlyWithSalary = isOnlyWithSalary)
-            filterStorage.editFilter(Gson().toJson(editedFilter))
-        }
-        else{
-            val editedFilter = Filter(isOnlyWithSalary = isOnlyWithSalary)
-            filterStorage.editFilter(Gson().toJson(editedFilter))
-        }
+
+        val editedFilter =
+            filterFromData?.copy(isOnlyWithSalary = isOnlyWithSalary)
+                ?: Filter(isOnlyWithSalary = isOnlyWithSalary)
+        filterStorage.editFilter(Gson().toJson(editedFilter))
     }
 
     override fun clearCountryNameAndId() {
         val filterFromData = getFilter()
 
-        if (filterFromData != null){
-            val editedFilter = filterFromData.copy(countryName = null, regionId = null, regionName = null)
-            filterStorage.editFilter(Gson().toJson(editedFilter))
-        }
+        val editedFilter =
+            filterFromData?.copy(countryName = null, regionId = null, regionName = null)
+        filterStorage.editFilter(Gson().toJson(editedFilter))
+
     }
 
     override fun clearRegionNameAndId() {
         val filterFromData = getFilter()
-        if (filterFromData != null){
-            val editedFilter = filterFromData.copy(regionName = null, regionId = null)
-            filterStorage.editFilter(Gson().toJson(editedFilter))
-        }
+
+        val editedFilter = filterFromData?.copy(regionName = null, regionId = null)
+        filterStorage.editFilter(Gson().toJson(editedFilter))
+
     }
 
     override fun clearIndustryNameAndId() {
         val filterFromData = getFilter()
-        if (filterFromData != null){
-            val editedFilter = filterFromData.copy(industryName = null, industryId = null)
-            filterStorage.editFilter(Gson().toJson(editedFilter))
-        }
+
+        val editedFilter = filterFromData?.copy(industryName = null, industryId = null)
+        filterStorage.editFilter(Gson().toJson(editedFilter))
+
     }
 
     override fun clearExpectedSalary() {
         val filterFromData = getFilter()
-        if (filterFromData != null){
-            val editedFilter = filterFromData.copy(expectedSalary = null)
-            filterStorage.editFilter(Gson().toJson(editedFilter))
-        }
+
+        val editedFilter = filterFromData?.copy(expectedSalary = null)
+        filterStorage.editFilter(Gson().toJson(editedFilter))
+
     }
 
     override fun clearFilter() {
