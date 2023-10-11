@@ -29,6 +29,7 @@ class FavouriteViewModel @Inject constructor(
                     )
                 }
             } catch (ex: Exception) {
+                ex.printStackTrace()
                 favouriteStateLiveData.postValue(
                     FavouriteState.Error
                 )

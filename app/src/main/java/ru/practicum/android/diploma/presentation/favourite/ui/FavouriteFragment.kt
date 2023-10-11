@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.practicum.android.diploma.App
 import ru.practicum.android.diploma.R
@@ -16,7 +17,7 @@ import ru.practicum.android.diploma.presentation.favourite.models.FavouriteState
 import ru.practicum.android.diploma.presentation.favourite.view_model.FavouriteViewModel
 import javax.inject.Inject
 
-class FavouriteFragment : Fragment() {
+class FavouriteFragment : Fragment(), ClickListener {
 
     @Inject
     lateinit var viewModel: FavouriteViewModel
@@ -25,7 +26,7 @@ class FavouriteFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val adapter by lazy {
-        FavouriteAdapter(requireContext())
+        FavouriteAdapter(requireContext(), this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -99,5 +100,18 @@ class FavouriteFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun clickOnVacancy(vacancyId: String) {
+        val bundle = Bundle()
+        bundle.putString(VACANCY, vacancyId)
+        findNavController().navigate(
+            R.id.action_favouriteFragment_to_detailsFragment,
+            bundle
+        )
+    }
+
+    companion object {
+        const val VACANCY = "vacancy"
     }
 }

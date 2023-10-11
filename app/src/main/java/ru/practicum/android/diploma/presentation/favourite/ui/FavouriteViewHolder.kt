@@ -14,6 +14,7 @@ import ru.practicum.android.diploma.domain.models.Vacancy
 class FavouriteViewHolder(
     itemView: View,
     private val context: Context,
+    private val clickListener: ClickListener
 ) : RecyclerView.ViewHolder(itemView) {
     private val imageView: ImageView
     private val vacancyTitle: TextView
@@ -43,6 +44,9 @@ class FavouriteViewHolder(
                 )
             )
             .into(imageView)
+        itemView.setOnClickListener {
+            clickListener.clickOnVacancy(data.id)
+        }
     }
 
     private fun salaryText(salaryFrom: String?, salaryTo: String?, currency: String?) =
