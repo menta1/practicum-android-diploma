@@ -2,9 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ScreensBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/ScreensBackground"
     android:layout_marginBottom="16dp"
     tools:context=".presentation.filter.ui.FilterSettingsFragment">
 
@@ -12,31 +12,31 @@
         android:id="@+id/filter_title_block"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:orientation="horizontal"
         android:paddingVertical="@dimen/title_margin_vertical"
-        android:layout_marginHorizontal="@dimen/margin_horizontal"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/button_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:src="@drawable/ic_arrow_back"
-            android:contentDescription="@string/arrow_back_description"
             android:layout_marginEnd="@dimen/margin_horizontal"
-            android:clickable="true"/>
+            android:layout_weight="1"
+            android:clickable="true"
+            android:contentDescription="@string/arrow_back_description"
+            android:src="@drawable/ic_arrow_back" />
 
         <TextView
             style="@style/titleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/small_margin_horizontal"
             android:layout_weight="9"
             android:gravity="center_vertical"
-            android:layout_marginHorizontal="@dimen/small_margin_horizontal"
             android:text="@string/settings_filter_title" />
     </LinearLayout>
 
@@ -54,11 +54,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_top"
+            android:clickable="true"
+            android:focusable="true"
             android:paddingHorizontal="@dimen/margin_horizontal"
             android:paddingVertical="@dimen/margin_vertical"
             android:text="@string/place_work"
-            android:clickable="true"
-            android:focusable="true"
             android:visibility="visible"
             app:drawableEndCompat="@drawable/ic_arrow" />
 
@@ -66,24 +66,27 @@
             android:id="@+id/filter_place_work_selected"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/filter_item_vertical_padding_small"
+            android:layout_marginHorizontal="@dimen/margin_horizontal"
+            android:layout_marginTop="12dp"
             android:clickable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:layout_marginHorizontal="@dimen/margin_horizontal"
-            android:visibility="gone">
+            android:paddingVertical="@dimen/filter_item_vertical_padding_small"
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="10">
+                android:layout_weight="10"
+                android:orientation="vertical">
+
                 <TextView
                     style="@style/filterItemSelectedSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    tools:text="Место работы"/>
+                    tools:text="Место работы" />
 
                 <TextView
                     android:id="@+id/filter_place_work_name"
@@ -93,18 +96,20 @@
                     android:layout_gravity="center_vertical"
                     tools:text="Отрасль" />
             </LinearLayout>
+
             <ImageButton
                 android:id="@+id/filter_place_work_close_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/arrow_description"
                 android:src="@drawable/ic_cross"
-                android:layout_gravity="center_vertical"
                 android:visibility="visible" />
         </LinearLayout>
     </FrameLayout>
+
     <FrameLayout
         android:id="@+id/filter_industry_block"
         android:layout_width="match_parent"
@@ -115,40 +120,41 @@
 
         <TextView
             android:id="@+id/filter_industry"
+            style="@style/filterItemNotSelect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/industry"
-            android:paddingHorizontal="@dimen/margin_horizontal"
-            android:layout_marginBottom="@dimen/margin_top"
-            android:paddingVertical="@dimen/margin_vertical"
             android:clickable="true"
             android:focusable="true"
+            android:paddingHorizontal="@dimen/margin_horizontal"
+            android:paddingVertical="@dimen/margin_vertical"
+            android:text="@string/industry"
             android:visibility="visible"
-            app:drawableEndCompat="@drawable/ic_arrow"
-            style="@style/filterItemNotSelect"/>
+            app:drawableEndCompat="@drawable/ic_arrow" />
 
         <LinearLayout
             android:id="@+id/filter_industry_selected"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/filter_item_vertical_padding_small"
+            android:layout_marginHorizontal="@dimen/margin_horizontal"
             android:clickable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:layout_marginHorizontal="@dimen/margin_horizontal"
-            android:visibility="gone">
+            android:paddingVertical="8dp"
+            android:visibility="gone"
+            tools:visibility="visible">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="10">
+                android:layout_weight="10"
+                android:orientation="vertical">
+
                 <TextView
                     style="@style/filterItemSelectedSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    tools:text="Отрасль"/>
+                    tools:text="Отрасль" />
 
                 <TextView
                     android:id="@+id/filter_industry_name"
@@ -158,63 +164,82 @@
                     android:layout_gravity="center_vertical"
                     tools:text="IT" />
             </LinearLayout>
+
             <ImageButton
                 android:id="@+id/filter_industry_close_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/arrow_description"
                 android:src="@drawable/ic_cross"
-                android:layout_gravity="center_vertical"
                 android:visibility="visible" />
         </LinearLayout>
     </FrameLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/filter_input_layout"
+        android:id="@+id/filter_salary_input_layout"
+        style="@style/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:layout_marginVertical="24dp"
+        android:layout_marginVertical="@dimen/filters_margin_top"
         android:background="@drawable/rounder_background"
         android:hint="@string/expected_salary"
         android:paddingTop="@dimen/edit_text_margin_vertical"
+        app:hintTextColor="@color/blue"
         app:boxBackgroundMode="none"
         app:expandedHintEnabled="false"
-        app:layout_constraintTop_toBottomOf="@id/filter_industry_block"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        style="@style/editText">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filter_industry_block">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/filter_salary_input_edit_text"
             style="@style/editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounder_background"
             android:gravity="bottom"
+            android:inputType="number"
             android:hint="@string/salary_hint"
             android:paddingStart="@dimen/margin_horizontal"
             android:paddingTop="8dp"
             android:paddingEnd="@dimen/margin_horizontal"
             android:paddingBottom="8dp" />
     </com.google.android.material.textfield.TextInputLayout>
+
+    <ImageButton
+        android:id="@+id/salary_filter_clear_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/clear_button"
+        android:src="@drawable/ic_cross"
+        android:visibility="gone"
+        android:layout_marginEnd="@dimen/navigation_back_start_margin"
+        app:layout_constraintBottom_toBottomOf="@+id/filter_salary_input_layout"
+        app:layout_constraintEnd_toEndOf="@+id/filter_salary_input_layout"
+        app:layout_constraintTop_toTopOf="@id/filter_salary_input_layout" />
+
     <CheckBox
         android:id="@+id/filter_salary"
+        style="@style/baseText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/not_show_without_salary"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="@dimen/margin_vertical"
+        android:layout_marginVertical="@dimen/filters_margin_top"
         android:layoutDirection="rtl"
+        android:paddingVertical="@dimen/filter_item_vertical_padding"
+        android:text="@string/not_show_without_salary"
         app:buttonTint="@color/blue"
-        app:layout_constraintTop_toBottomOf="@id/filter_input_layout"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        style="@style/baseText" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filter_salary_input_layout" />
 
     <Button
-        android:id="@+id/filter_setting_select"
+        android:id="@+id/filter_setting_select_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -223,27 +248,28 @@
         android:background="@drawable/rounder_background"
         android:backgroundTint="@color/blue"
         android:text="@string/select_button"
+        android:textAllCaps="false"
         android:textColor="@color/white"
         android:visibility="gone"
         app:backgroundTint="@null"
-        android:textAllCaps="false"
-        app:layout_constraintBottom_toTopOf="@id/filter_setting_clear"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintBottom_toTopOf="@id/filter_setting_clear_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <Button
-        android:id="@+id/filter_setting_clear"
+        android:id="@+id/filter_setting_clear_button"
+        style="@style/button_clear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:layout_marginBottom="8dp"
         android:background="@drawable/rounder_background"
+        android:stateListAnimator="@null"
         android:text="@string/clear_button"
         android:visibility="gone"
-        android:stateListAnimator="@null"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        style="@style/button_clear"/>
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

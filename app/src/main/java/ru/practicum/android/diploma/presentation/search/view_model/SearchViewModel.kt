@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.domain.filter.FilterInteractor
+import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.search.SearchInteractor
 import ru.practicum.android.diploma.presentation.search.SearchModelState
@@ -14,7 +16,8 @@ import ru.practicum.android.diploma.util.debounce
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
-    val interactor: SearchInteractor
+    val interactor: SearchInteractor,
+    private val filterInteractor: FilterInteractor
 ) : ViewModel() {
     private var currentPage: Int = 0
     private var maxPages: Int = 0
@@ -34,6 +37,8 @@ class SearchViewModel @Inject constructor(
     private val searchDebounce = debounce<Boolean>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) {
         search()
     }
+
+    private var filter: Filter? = null
 
     fun search() {
         if (searchText.isNotEmpty()) {
@@ -83,5 +88,16 @@ class SearchViewModel @Inject constructor(
             search()
             isNextPageLoading = false
         }
+    }
+
+    fun getFilter(){
+        filter = filterInteractor.getFilter()
+        filter = null
+    }
+
+    fun isFilterEmpty(): Boolean = filterInteractor.isFilterEmpty()
+
+    fun onClick(item: Vacancy) {
+
     }
 }

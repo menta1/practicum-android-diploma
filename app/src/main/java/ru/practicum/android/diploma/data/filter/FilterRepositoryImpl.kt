@@ -124,11 +124,12 @@ class FilterRepositoryImpl @Inject constructor(
 
     override fun getFilter(): Filter? {
         val resultFromData = filterStorage.getFilter()
+
         return if (resultFromData == "") {
             null
-        } else {
-            Gson().fromJson(resultFromData, Filter::class.java)
-        }
+        } else if (filterHasNoValues(Gson().fromJson(resultFromData, Filter::class.java))) {
+            null
+        } else Gson().fromJson(resultFromData, Filter::class.java)
     }
 
     override fun editCountryNameAndId(country: Region) {
@@ -214,5 +215,12 @@ class FilterRepositoryImpl @Inject constructor(
     }
 
     override fun isFilterEmpty(): Boolean = getFilter() == null
+
+    private fun filterHasNoValues(filter: Filter): Boolean =
+        with(filter) {
+            !isOnlyWithSalary && countryName == null && regionName == null && regionId == null && industryName == null && industryId == null && expectedSalary == null
+        }
+
+
 
 }

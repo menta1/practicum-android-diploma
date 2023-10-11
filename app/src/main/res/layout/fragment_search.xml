@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/ScreensBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    style="@style/ScreensBackground"
     tools:context=".presentation.search.ui.SearchFragment">
 
     <LinearLayout
@@ -28,16 +28,15 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
-            android:clickable="true"
+            android:src="@drawable/ic_filter"
             android:contentDescription="@string/filter_description"
-            android:src="@drawable/ic_filter" />
+            android:clickable="true"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-
         <EditText
             android:id="@+id/edit_search"
             style="@style/baseText"
