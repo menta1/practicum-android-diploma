@@ -16,6 +16,10 @@
         <action
             android:id="@+id/action_searchFragment_to_filterSettingsFragment"
             app:destination="@id/filterSettingsFragment" />
+        <argument
+            android:name="startSearch"
+            app:argType="boolean"
+            android:defaultValue="false" />
     </fragment>
     <fragment
         android:id="@+id/developersFragment"
@@ -66,6 +70,9 @@
         <action
             android:id="@+id/action_filterSettingsFragment_to_filterSectorFragment"
             app:destination="@id/filterSectorFragment" />
+        <action
+            android:id="@+id/action_filterSettingsFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
     </fragment>
     <fragment
         android:id="@+id/filterPlaceFragment"

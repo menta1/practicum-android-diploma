@@ -31,11 +31,12 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
+    private var startSearch = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-
+            startSearch = it.getBoolean(START_SEARCH)
         }
         (activity?.application as App).appComponent.activityComponent().create().inject(this)
     }
@@ -54,7 +55,10 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         val adapter = VacancyAdapter(this)
         binding.recyclerVacancy.adapter = adapter
         binding.recyclerVacancy.layoutManager = LinearLayoutManager(requireContext())
-
+        binding.buttonToFilter.setOnClickListener {
+            val action = SearchFragmentDirections.actionSearchFragmentToFilterSettingsFragment()
+            findNavController().navigate(action)
+        }
 
         setVacancies(adapter)
         setupSearchInput()
@@ -177,5 +181,9 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         //viewModel.onClick(item)
         val bundle = bundleOf(DetailsFragment.VACANCY to item.id)
         findNavController().navigate(R.id.action_searchFragment_to_detailsFragment, bundle)
+    }
+
+    companion object{
+        const val START_SEARCH = "startSearch"
     }
 }
