@@ -35,8 +35,8 @@ class ViewModelModule {
         return FilterViewModel(interactor)
     }
     @Provides
-    fun provideSearchViewModel(interactor: SearchInteractor): SearchViewModel {
-        return SearchViewModel(interactor)
+    fun provideSearchViewModel(interactor: SearchInteractor, filterInteractor: FilterInteractor): SearchViewModel {
+        return SearchViewModel(interactor, filterInteractor)
     }
     @Provides
     fun provideSimilarViewModel(interactor: SimilarInteractor): SimilarViewModel {
