@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.presentation.search.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,7 +18,6 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.adapter.VacancyAdapter
-import ru.practicum.android.diploma.presentation.details.ui.DetailsFragment
 import ru.practicum.android.diploma.presentation.search.SearchModelState
 import ru.practicum.android.diploma.presentation.search.view_model.SearchViewModel
 import javax.inject.Inject
@@ -181,11 +179,12 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
 
     override fun onClick(item: Vacancy) {
         //viewModel.onClick(item)
-        val bundle = bundleOf(DetailsFragment.VACANCY to item.id)
+        val bundle = bundleOf(VACANCY to item.id)
         findNavController().navigate(R.id.action_searchFragment_to_detailsFragment, bundle)
     }
 
     companion object{
         const val START_SEARCH = "startSearch"
+        const val VACANCY = "vacancy"
     }
 }

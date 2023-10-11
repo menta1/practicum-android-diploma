@@ -107,7 +107,7 @@ class FilterSettingsFragment : Fragment() {
                        filterPlaceWorkName.text = it
                    }
 
-                    state.industryName?.let{
+                    state.regionName?.let{
                         filterPlaceWork.visibility = View.GONE
                         filterPlaceWorkSelected.visibility = View.VISIBLE
                         filterPlaceWorkCloseButton.visibility = View.VISIBLE
