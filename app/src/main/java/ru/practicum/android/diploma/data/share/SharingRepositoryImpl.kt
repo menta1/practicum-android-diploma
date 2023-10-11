@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class SharingRepositoryImpl @Inject constructor(
     private val context: Context
-): SharingRepository{
+) : SharingRepository {
     override fun sendEmail(emailData: EmailData) {
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:")
@@ -30,6 +30,7 @@ class SharingRepositoryImpl @Inject constructor(
     override fun callPhone(phoneData: PhoneData) {
         val intent = Intent(Intent.ACTION_VIEW).apply {
             data = Uri.parse("tel:" + phoneData.phone)
+            this.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
 
         try {
@@ -43,6 +44,7 @@ class SharingRepositoryImpl @Inject constructor(
         val intent = Intent(Intent.ACTION_SEND).apply {
             putExtra(Intent.EXTRA_TEXT, getSharingText(sharingData.link))
             type = "text/plain"
+            this.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
 
         try {
@@ -51,6 +53,7 @@ class SharingRepositoryImpl @Inject constructor(
             e.printStackTrace()
         }
     }
+
     private fun getSharingText(linkVacancy: String): String {
         return context.getString(R.string.share_message) + "\n" + linkVacancy
     }

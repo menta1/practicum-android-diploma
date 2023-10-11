@@ -20,7 +20,6 @@ import ru.practicum.android.diploma.presentation.details.view_model.DetailsViewM
 import java.text.NumberFormat
 import javax.inject.Inject
 
-
 class DetailsFragment : Fragment() {
 
     @Inject
@@ -80,6 +79,9 @@ class DetailsFragment : Fragment() {
         binding.shareButton.setOnClickListener { viewModel.sharingVacancy() }
         binding.favouriteButton.setOnClickListener {
             viewModel.setFavourite()
+        }
+        binding.backButton.setOnClickListener {
+            findNavController().popBackStack()
         }
 
         binding.textEmail.setOnClickListener { viewModel.employerEmail() }

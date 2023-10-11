@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.presentation.details.view_model
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,7 +17,7 @@ import javax.inject.Inject
 class DetailsViewModel @Inject constructor(
     private val interactor: DetailsInteractor,
     private val sharingInteractor: SharingInteractor,
-): ViewModel() {
+) : ViewModel() {
     private val detailsStateLiveData = MutableLiveData<DetailsState>()
     fun getDetailsStateLiveData(): LiveData<DetailsState> = detailsStateLiveData
 
@@ -50,31 +49,24 @@ class DetailsViewModel @Inject constructor(
     }
 
     fun sharingVacancy() {
-        viewModelScope.launch {
-            sharingInteractor.sharingVacancy(
-                SharingData("")
+        sharingInteractor.sharingVacancy(
+            SharingData("")
+        )
+    }
+
+    fun employerPhone() {
+        currentVacancy?.phone?.let { phone ->
+            sharingInteractor.callPhone(
+                PhoneData(phone = phone)
             )
         }
     }
 
-    fun employerPhone() {
-        viewModelScope.launch {
-            Log.d("TEST", "${currentVacancy?.phone}")
-            currentVacancy?.phone?.let { phone ->
-                sharingInteractor.callPhone(
-                    PhoneData(phone = phone)
-                )
-            }
-        }
-    }
-
     fun employerEmail() {
-        viewModelScope.launch {
-            currentVacancy?.email?.let { email ->
-                sharingInteractor.sendEmail(
-                    EmailData(email = email)
-                )
-            }
+        currentVacancy?.email?.let { email ->
+            sharingInteractor.sendEmail(
+                EmailData(email = email)
+            )
         }
     }
 
@@ -106,9 +98,11 @@ class DetailsViewModel @Inject constructor(
                     "сильная команда, с которой можно расти\n" +
                     "возможность влиять на процесс и результат\n" +
                     "расширенная программа ДМС: стоматология, обследования, вызов врача на дом и многое другое",
-            keySkills = listOf("Знание классических алгоритмов и структуры данных",
-                    "Программирование для Android больше одного года",
-                    "Знание WebRTC"),
+            keySkills = listOf(
+                "Знание классических алгоритмов и структуры данных",
+                "Программирование для Android больше одного года",
+                "Знание WebRTC"
+            ),
             phone = "111111111",
             email = "tmpl@yandex.ru",
             contactPerson = "Ирина"
