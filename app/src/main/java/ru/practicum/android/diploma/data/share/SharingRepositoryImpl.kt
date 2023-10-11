@@ -8,10 +8,11 @@ import ru.practicum.android.diploma.domain.share.SharingRepository
 import ru.practicum.android.diploma.domain.share.model.EmailData
 import ru.practicum.android.diploma.domain.share.model.PhoneData
 import ru.practicum.android.diploma.domain.share.model.SharingData
+import javax.inject.Inject
 
-class SharingRepositoryImpl(
+class SharingRepositoryImpl @Inject constructor(
     private val context: Context
-): SharingRepository{
+) : SharingRepository {
     override fun sendEmail(emailData: EmailData) {
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:")
@@ -29,6 +30,7 @@ class SharingRepositoryImpl(
     override fun callPhone(phoneData: PhoneData) {
         val intent = Intent(Intent.ACTION_VIEW).apply {
             data = Uri.parse("tel:" + phoneData.phone)
+            this.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
 
         try {
@@ -42,6 +44,7 @@ class SharingRepositoryImpl(
         val intent = Intent(Intent.ACTION_SEND).apply {
             putExtra(Intent.EXTRA_TEXT, getSharingText(sharingData.link))
             type = "text/plain"
+            this.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
 
         try {
@@ -50,6 +53,7 @@ class SharingRepositoryImpl(
             e.printStackTrace()
         }
     }
+
     private fun getSharingText(linkVacancy: String): String {
         return context.getString(R.string.share_message) + "\n" + linkVacancy
     }

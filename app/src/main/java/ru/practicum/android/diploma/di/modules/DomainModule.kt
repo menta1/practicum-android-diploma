@@ -12,6 +12,8 @@ import ru.practicum.android.diploma.domain.filter.FilterInteractor
 import ru.practicum.android.diploma.domain.filter.FilterInteractorImpl
 import ru.practicum.android.diploma.domain.search.SearchInteractor
 import ru.practicum.android.diploma.domain.search.SearchInteractorImpl
+import ru.practicum.android.diploma.domain.share.SharingInteractor
+import ru.practicum.android.diploma.domain.share.impl.SharingInteractorImpl
 import ru.practicum.android.diploma.domain.similar.SimilarInteractor
 import ru.practicum.android.diploma.domain.similar.SimilarInteractorImpl
 
@@ -29,5 +31,6 @@ abstract class DomainModule {
     abstract fun provideSearchInteractor(interactor: SearchInteractorImpl): SearchInteractor
     @Binds
     abstract fun provideSimilarInteractor(interactor: SimilarInteractorImpl): SimilarInteractor
-
+    @Binds
+    abstract fun provideSharingInteractor(interactor: SharingInteractorImpl): SharingInteractor
 }

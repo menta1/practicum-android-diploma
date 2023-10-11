@@ -6,6 +6,8 @@
     style="@style/ScreensBackground"
     android:layout_marginHorizontal="@dimen/margin_horizontal"
     android:layout_marginVertical="@dimen/vacancy_item_margin_vertical"
+    android:clickable="true"
+    android:focusable="true"
     android:orientation="horizontal">
 
     <ImageView

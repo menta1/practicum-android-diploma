@@ -14,6 +14,7 @@ import ru.practicum.android.diploma.domain.models.Vacancy
 class FavouriteViewHolder(
     itemView: View,
     private val context: Context,
+    private val clickListener: ClickListener
 ) : RecyclerView.ViewHolder(itemView) {
     private val imageView: ImageView
     private val vacancyTitle: TextView
@@ -31,7 +32,7 @@ class FavouriteViewHolder(
         vacancyTitle.text = data.name
         vacancyEmployer.text = data.employer
         vacancySalary.text =
-            salaryText(data.salaryFrom.toString(), data.salaryTo.toString(), data.currency)
+            salaryText(data.salaryFrom, data.salaryTo, data.currency)
 
         Glide.with(itemView)
             .load(data.employerLogoUrls)
@@ -43,9 +44,12 @@ class FavouriteViewHolder(
                 )
             )
             .into(imageView)
+        itemView.setOnClickListener {
+            clickListener.clickOnVacancy(data.id)
+        }
     }
 
-    private fun salaryText(salaryFrom: String?, salaryTo: String?, currency: String?) =
+    private fun salaryText(salaryFrom: Int?, salaryTo: Int?, currency: String?) =
         if (salaryFrom != null && salaryTo != null) {
             context.getString(R.string.salary_from) + " " +
                     salaryFrom + " " + context.getString(R.string.salary_to) + " " + salaryTo + " " + currency
