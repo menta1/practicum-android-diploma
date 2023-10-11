@@ -51,9 +51,14 @@ class DetailsFragment : Fragment() {
         viewModel.initData()
         viewModel.getDetailsStateLiveData().observe(viewLifecycleOwner) { state ->
             when (state) {
-                DetailsState.Loading -> {}
-                DetailsState.Error -> {}
+                DetailsState.Loading -> {
+                    changeLoadingVisibility(true)
+                }
+                DetailsState.Error -> {
+                    changeContentVisibility(false)
+                }
                 is DetailsState.Content -> {
+                    changeContentVisibility(true)
                     updateData(state.data)
                     viewModel.existInFavourite()
                 }
@@ -121,7 +126,6 @@ class DetailsFragment : Fragment() {
         binding.textPhone.text = data.phone
         binding.textMessage.text = "???"
     }
-
     private fun salaryText(salaryFrom: Int?, salaryTo: Int?, currency: String?) =
         if (salaryFrom != null && salaryTo != null) {
             getString(R.string.salary_from) + " " +
@@ -144,6 +148,25 @@ class DetailsFragment : Fragment() {
         var refactorSkill = ""
         skills.map { refactorSkill += getString(R.string.skill, it) }
         return refactorSkill
+    }
+
+    private fun changeContentVisibility(isContent: Boolean) {
+        changeLoadingVisibility(false)
+        if(isContent) {
+            binding.detailsBlock.visibility = View.VISIBLE
+            binding.detailsErrorBlock.visibility = View.GONE
+        } else {
+            binding.detailsBlock.visibility = View.GONE
+            binding.detailsErrorBlock.visibility = View.VISIBLE
+        }
+    }
+
+    private fun changeLoadingVisibility(isLoading: Boolean) {
+        if(isLoading) {
+            binding.progressBarDetails.visibility = View.VISIBLE
+        } else {
+            binding.progressBarDetails.visibility = View.GONE
+        }
     }
 
     override fun onDestroyView() {

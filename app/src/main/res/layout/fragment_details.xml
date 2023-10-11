@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ScreensBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    style="@style/ScreensBackground"
     tools:context=".presentation.details.ui.DetailsFragment">
 
     <LinearLayout
@@ -53,6 +54,7 @@
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/details_block"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginHorizontal="@dimen/margin_horizontal">
@@ -60,7 +62,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/text_name_vacancy"
@@ -93,8 +96,8 @@
                     android:layout_marginVertical="@dimen/margin_vertical_16"
                     android:layout_marginStart="@dimen/margin_horizontal"
                     android:background="@drawable/rounder_background"
-                    tools:background="@color/black"
-                    android:contentDescription="@string/logo_company" />
+                    android:contentDescription="@string/logo_company"
+                    tools:background="@color/black" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -212,9 +215,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:textColor="@color/blue"
                 android:clickable="true"
                 android:focusable="true"
+                android:textColor="@color/blue"
                 tools:text="i.lozgkina@yandex.ru" />
 
             <TextView
@@ -230,9 +233,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:textColor="@color/blue"
                 android:clickable="true"
                 android:focusable="true"
+                android:textColor="@color/blue"
                 tools:text="+7 (904) 329-27-71" />
 
             <TextView
@@ -251,8 +254,8 @@
                 tools:text="Заполнить анкету по форме можно на нашем сайте" />
 
             <Button
-                style="@style/button"
                 android:id="@+id/similar_button"
+                style="@style/button"
                 android:layout_width="match_parent"
                 android:layout_height="59dp"
                 android:layout_marginVertical="@dimen/margin_vertical_16"
@@ -261,5 +264,46 @@
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/progress_bar_details"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/details_error_block"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/details_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/image_description_details"
+            android:src="@drawable/image_server_error_cat"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/details_error"
+            style="@style/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/margin_top"
+            android:text="@string/server_error"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/details_image" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

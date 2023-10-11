@@ -32,6 +32,7 @@
     <string name="favourite">Избранное</string>
     <string name="list_empty">Список пуст</string>
     <string name="image_description_favourite">Изображение - список избранного пуст</string>
+    <string name="image_description_details">Изображение - произошла ошибка на стороне сервера</string>
     <string name="vacancy">Вакансия</string>
     <string name="phone">Телефон</string>
     <string name="similar_vacancies">Похожие вакансии</string>
