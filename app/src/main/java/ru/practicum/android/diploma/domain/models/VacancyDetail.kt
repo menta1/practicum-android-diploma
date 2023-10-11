@@ -14,7 +14,8 @@ data class VacancyDetail(
     val schedule: String,
     val description: String,
     val keySkills: List<String>,
-    val phone: List<String>?,
+    val phone: List<Phone>?,
     val email: String?,
-    val contactPerson: String?
+    val contactPerson: String?,
+    val url: String
 )

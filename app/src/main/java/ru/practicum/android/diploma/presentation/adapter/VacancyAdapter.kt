@@ -27,6 +27,7 @@ class VacancyAdapter(private val listener: Listener) :
         holder.bind(itemList[position], listener)
     }
 
+
     override fun getItemCount(): Int = itemList.size
 
     fun setData(newList: List<Vacancy>) {
@@ -36,7 +37,7 @@ class VacancyAdapter(private val listener: Listener) :
     }
 
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val binding = VacancyItemBinding.bind(itemView)
+        val binding = VacancyItemBinding.bind(itemView)
         fun bind(item: Vacancy, listener: Listener) = with(binding) {
             vacancyItemTitle.text = item.name
             vacancyItemEmployer.text = item.employer
@@ -48,7 +49,9 @@ class VacancyAdapter(private val listener: Listener) :
             itemView.setOnClickListener {
                 listener.onClick(item)
             }
-            Glide.with(vacancyImage).load(item.employerLogoUrls).placeholder(R.drawable.placeholder)
+            Glide.with(vacancyImage)
+                .load(item.employerLogoUrls)
+                .placeholder(R.drawable.logo_not_load)
                 .transform(RoundedCorners(vacancyImage.resources.getDimensionPixelSize(R.dimen.round_radius_search)))
                 .into(vacancyImage)
         }
@@ -61,7 +64,7 @@ class VacancyAdapter(private val listener: Listener) :
             val formattedFrom = formatNumber(salaryFrom)
             val formattedTo = formatNumber(salaryTo)
             val currencySign: String =
-                when(currency){
+                when (currency) {
                     "AZN" -> "₼"
                     "BYR" -> "Br"
                     "EUR" -> "€"
@@ -72,7 +75,9 @@ class VacancyAdapter(private val listener: Listener) :
                     "UAH" -> "₴"
                     "USD" -> "$"
                     "UZS" -> "Soʻm"
-                    else -> {""}
+                    else -> {
+                        ""
+                    }
                 }
 
             return when {

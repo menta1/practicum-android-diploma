@@ -5,8 +5,9 @@ import ru.practicum.android.diploma.domain.share.SharingRepository
 import ru.practicum.android.diploma.domain.share.model.EmailData
 import ru.practicum.android.diploma.domain.share.model.PhoneData
 import ru.practicum.android.diploma.domain.share.model.SharingData
+import javax.inject.Inject
 
-class SharingInteractorImpl(
+class SharingInteractorImpl @Inject constructor(
     private val sharingRepository: SharingRepository
 ): SharingInteractor {
     override fun sendEmail(emailData: EmailData) {
