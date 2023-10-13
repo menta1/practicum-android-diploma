@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/ScreensBackground"
+    tools:context=".presentation.filter.ui.FilterPlaceFragment">
+
+    <ImageButton
+        android:id="@+id/navigation_back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/navigation_back_start_margin"
+        android:layout_marginTop="@dimen/navigation_back_top_margin"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/arrow_back_description"
+        android:src="@drawable/ic_arrow_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/screen_title_text"
+        style="@style/titleText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/navigation_back_start_margin"
+        android:text="@string/work_place_selection"
+        app:layout_constraintBottom_toBottomOf="@+id/navigation_back_button"
+        app:layout_constraintStart_toEndOf="@id/navigation_back_button"
+        app:layout_constraintTop_toTopOf="@+id/navigation_back_button" />
+
+    <TextView
+        android:id="@+id/filter_country"
+        style="@style/filterItemNotSelect"
+        android:layout_width="0dp"
+        android:paddingVertical="@dimen/filter_item_vertical_padding"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/filter_item_margin_from_navigation"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/margin_horizontal"
+        android:paddingEnd="@dimen/filter_icon_end_margin"
+        android:text="@string/country"
+        app:drawableEndCompat="@drawable/ic_arrow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/navigation_back_button" />
+
+    <TextView
+        android:id="@+id/filter_region"
+        style="@style/filterItemNotSelect"
+        android:layout_width="0dp"
+        android:paddingVertical="@dimen/filter_item_vertical_padding"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/filter_second_item_margin_from_navigation"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/margin_horizontal"
+        android:paddingEnd="@dimen/filter_icon_end_margin"
+        android:text="@string/region"
+        app:drawableEndCompat="@drawable/ic_arrow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/navigation_back_button" />
+
+
+    <LinearLayout
+        android:id="@+id/filter_county_selected"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/filter_item_margin_from_navigation"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingVertical="@dimen/filter_item_vertical_padding_small"
+        android:paddingStart="@dimen/margin_horizontal"
+        android:paddingEnd="@dimen/navigation_back_top_margin"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/navigation_back_button">
+
+        <TextView
+            style="@style/filterItemSelectedSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/country" />
+
+        <TextView
+            android:id="@+id/filter_country_name"
+            style="@style/filterItemSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            tools:text="@string/mock_country_name" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/country_close_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/filter_icon_end_margin"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/arrow_description"
+        android:src="@drawable/ic_cross"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/filter_county_selected"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/filter_county_selected" />
+
+
+    <LinearLayout
+        android:id="@+id/filter_region_selected"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/filter_item_vertical_padding_small"
+        android:layout_marginTop="@dimen/filter_second_item_margin_from_navigation"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:paddingStart="@dimen/margin_horizontal"
+        android:paddingEnd="@dimen/navigation_back_top_margin"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/navigation_back_button">
+
+        <TextView
+            style="@style/filterItemSelectedSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="@string/region" />
+
+        <TextView
+            android:id="@+id/filter_region_name"
+            style="@style/filterItemSelected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            tools:text="@string/mock_city_name" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/city_close_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/filter_icon_end_margin"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/arrow_description"
+        android:src="@drawable/ic_cross"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/filter_region_selected"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/filter_region_selected" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

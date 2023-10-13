@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/ScreensBackground"
+    android:layout_marginBottom="16dp"
+    tools:context=".presentation.filter.ui.FilterSettingsFragment">
+
+    <LinearLayout
+        android:id="@+id/filter_title_block"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingVertical="@dimen/title_margin_vertical"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/button_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="@string/arrow_back_description"
+            android:layout_marginEnd="@dimen/margin_horizontal"
+            android:clickable="true"/>
+
+        <TextView
+            style="@style/titleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="9"
+            android:gravity="center_vertical"
+            android:layout_marginHorizontal="@dimen/small_margin_horizontal"
+            android:text="@string/settings_filter_title" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/place_work_block"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filter_title_block">
+
+        <TextView
+            android:id="@+id/filter_place_work"
+            style="@style/filterItemNotSelect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_top"
+            android:paddingHorizontal="@dimen/margin_horizontal"
+            android:paddingVertical="@dimen/margin_vertical"
+            android:text="@string/place_work"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="visible"
+            app:drawableEndCompat="@drawable/ic_arrow" />
+
+        <LinearLayout
+            android:id="@+id/filter_place_work_selected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/filter_item_vertical_padding_small"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="@dimen/margin_horizontal"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="10">
+                <TextView
+                    style="@style/filterItemSelectedSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    tools:text="Место работы"/>
+
+                <TextView
+                    android:id="@+id/filter_place_work_name"
+                    style="@style/filterItemSelected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    tools:text="Отрасль" />
+            </LinearLayout>
+            <ImageButton
+                android:id="@+id/filter_place_work_close_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/arrow_description"
+                android:src="@drawable/ic_cross"
+                android:layout_gravity="center_vertical"
+                android:visibility="visible" />
+        </LinearLayout>
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/filter_industry_block"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/place_work_block">
+
+        <TextView
+            android:id="@+id/filter_industry"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/industry"
+            android:paddingHorizontal="@dimen/margin_horizontal"
+            android:layout_marginBottom="@dimen/margin_top"
+            android:paddingVertical="@dimen/margin_vertical"
+            android:clickable="true"
+            android:focusable="true"
+            android:visibility="visible"
+            app:drawableEndCompat="@drawable/ic_arrow"
+            style="@style/filterItemNotSelect"/>
+
+        <LinearLayout
+            android:id="@+id/filter_industry_selected"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="@dimen/filter_item_vertical_padding_small"
+            android:clickable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:layout_marginHorizontal="@dimen/margin_horizontal"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="10">
+                <TextView
+                    style="@style/filterItemSelectedSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    tools:text="Отрасль"/>
+
+                <TextView
+                    android:id="@+id/filter_industry_name"
+                    style="@style/filterItemSelected"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    tools:text="IT" />
+            </LinearLayout>
+            <ImageButton
+                android:id="@+id/filter_industry_close_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/arrow_description"
+                android:src="@drawable/ic_cross"
+                android:layout_gravity="center_vertical"
+                android:visibility="visible" />
+        </LinearLayout>
+    </FrameLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/filter_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginVertical="24dp"
+        android:background="@drawable/rounder_background"
+        android:hint="@string/expected_salary"
+        android:paddingTop="@dimen/edit_text_margin_vertical"
+        app:boxBackgroundMode="none"
+        app:expandedHintEnabled="false"
+        app:layout_constraintTop_toBottomOf="@id/filter_industry_block"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/editText">
+
+        <com.google.android.material.textfield.TextInputEditText
+            style="@style/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rounder_background"
+            android:gravity="bottom"
+            android:hint="@string/salary_hint"
+            android:paddingStart="@dimen/margin_horizontal"
+            android:paddingTop="8dp"
+            android:paddingEnd="@dimen/margin_horizontal"
+            android:paddingBottom="8dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+    <CheckBox
+        android:id="@+id/filter_salary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/not_show_without_salary"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="@dimen/margin_vertical"
+        android:layoutDirection="rtl"
+        app:buttonTint="@color/blue"
+        app:layout_constraintTop_toBottomOf="@id/filter_input_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/baseText" />
+
+    <Button
+        android:id="@+id/filter_setting_select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounder_background"
+        android:backgroundTint="@color/blue"
+        android:text="@string/select_button"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        app:backgroundTint="@null"
+        android:textAllCaps="false"
+        app:layout_constraintBottom_toTopOf="@id/filter_setting_clear"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+    <Button
+        android:id="@+id/filter_setting_clear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/rounder_background"
+        android:text="@string/clear_button"
+        android:visibility="gone"
+        android:stateListAnimator="@null"
+        app:backgroundTint="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/button_clear"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

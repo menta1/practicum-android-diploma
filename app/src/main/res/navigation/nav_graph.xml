@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph.xml"
+    app:startDestination="@id/searchFragment">
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="ru.practicum.android.diploma.presentation.search.ui.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+        <action
+            android:id="@+id/action_searchFragment_to_filterSettingsFragment"
+            app:destination="@id/filterSettingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/developersFragment"
+        android:name="ru.practicum.android.diploma.presentation.developers.ui.DevelopersFragment"
+        android:label="fragment_developers"
+        tools:layout="@layout/fragment_developers" />
+    <fragment
+        android:id="@+id/favouriteFragment"
+        android:name="ru.practicum.android.diploma.presentation.favourite.ui.FavouriteFragment"
+        android:label="fragment_favourite"
+        tools:layout="@layout/fragment_favourite" >
+        <action
+            android:id="@+id/action_favouriteFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="ru.practicum.android.diploma.presentation.details.ui.DetailsFragment"
+        android:label="fragment_details"
+        tools:layout="@layout/fragment_details" >
+        <action
+            android:id="@+id/action_detailsFragment_to_similarFragment"
+            app:destination="@id/similarFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/filterCountryFragment"
+        android:name="ru.practicum.android.diploma.presentation.filter.ui.FilterCountryFragment"
+        android:label="fragment_filter_country"
+        tools:layout="@layout/fragment_filter_country" />
+    <fragment
+        android:id="@+id/filterRegionFragment"
+        android:name="ru.practicum.android.diploma.presentation.filter.ui.FilterRegionFragment"
+        android:label="fragment_filter_region"
+        tools:layout="@layout/fragment_filter_region" />
+    <fragment
+        android:id="@+id/filterSectorFragment"
+        android:name="ru.practicum.android.diploma.presentation.filter.ui.FilterSectorFragment"
+        android:label="fragment_filter_sector"
+        tools:layout="@layout/fragment_filter_sector" />
+    <fragment
+        android:id="@+id/filterSettingsFragment"
+        android:name="ru.practicum.android.diploma.presentation.filter.ui.FilterSettingsFragment"
+        android:label="fragment_filter_settings"
+        tools:layout="@layout/fragment_filter_settings" >
+        <action
+            android:id="@+id/action_filterSettingsFragment_to_filterPlaceFragment"
+            app:destination="@id/filterPlaceFragment" />
+        <action
+            android:id="@+id/action_filterSettingsFragment_to_filterSectorFragment"
+            app:destination="@id/filterSectorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/filterPlaceFragment"
+        android:name="ru.practicum.android.diploma.presentation.filter.ui.FilterPlaceFragment"
+        android:label="fragment_filter_place"
+        tools:layout="@layout/fragment_filter_place" >
+        <action
+            android:id="@+id/action_filterPlaceFragment_to_filterCountryFragment"
+            app:destination="@id/filterCountryFragment" />
+        <action
+            android:id="@+id/action_filterPlaceFragment_to_filterRegionFragment"
+            app:destination="@id/filterRegionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/similarFragment"
+        android:name="ru.practicum.android.diploma.presentation.similar.ui.SimilarFragment"
+        android:label="fragment_similar"
+        tools:layout="@layout/fragment_similar" >
+        <action
+            android:id="@+id/action_similarFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+</navigation>

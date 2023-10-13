@@ -1,9 +1,37 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
-    <style name="Base.Theme.PracticumAndroidDiploma" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.PracticumAndroidDiploma" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
     </style>
 
-    <style name="Theme.PracticumAndroidDiploma" parent="Base.Theme.PracticumAndroidDiploma" />
+    <style name="Theme.PracticumAndroidDiploma" parent="Base.Theme.PracticumAndroidDiploma">
+        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorButtonNormal">@color/blue</item>
+        <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
+    </style>
 </resources>
+
+    <!--
+1. `colorPrimary`: Определяет основной цвет приложения.
+2. `colorPrimaryVariant`: Определяет вариант основного цвета приложения.
+3. `colorOnPrimary`: Определяет цвет текста и значков, используемых на основном цвете.
+4. `colorSecondary`: Определяет вторичный цвет приложения.
+5. `colorSecondaryVariant`: Определяет вариант вторичного цвета приложения.
+6. `colorOnSecondary`: Определяет цвет текста и значков, используемых на вторичном цвете.
+7. `colorBackground`: Определяет цвет фона приложения.
+8. `colorSurface`: Определяет цвет поверхностей, таких как карточки и фоны элементов управления.
+9. `colorOnSurface`: Определяет цвет текста и значков, используемых на поверхностях.
+10. `colorError`: Определяет цвет, используемый для отображения ошибок.
+11. `colorToolbar`: Определяет цвет панели инструментов.
+12. `colorStatusBar`: Определяет цвет статус-бара.
+13. `colorNavigationBar`: Определяет цвет навигационной панели.
+14. `colorControlNormal`: Определяет цвет элементов управления, когда они находятся в нормальном состоянии.
+15. `colorControlActivated`: Определяет цвет элементов управления, когда они активированы или выбраны.
+16. `colorControlHighlight`: Определяет цвет подсветки элементов управления.
+17. `colorButtonNormal`: Определяет цвет кнопок в нормальном состоянии.
+18. `colorSwitchThumbNormal`: Определяет цвет бегунка переключателя в нормальном состоянии.
+19. `colorSwitchThumbActivated`: Определяет цвет бегунка переключателя, когда он активирован или выбран.
+20. `colorSwitchTrackNormal`: Определяет цвет трека переключателя в нормальном состоянии.
+21. `colorSwitchTrackActivated`: Определяет цвет трека переключателя, когда он активирован или выбран. -->

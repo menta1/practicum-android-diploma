@@ -1,3 +1,110 @@
 <resources>
     <string name="app_name">Practicum-Android-Diploma</string>
+
+    <!--Bottom menu-->
+    <string name="main_page">Главная</string>
+
+    <!-- Developers screen -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="worked_on_app">Над приложением работали</string>
+    <string name="team">Команда</string>
+    <string name="first_developer">Булатов Айнур</string>
+    <string name="second_developer">Абрамочкина Владислава</string>
+    <string name="third_developer">Мамонов Александр</string>
+    <string name="fourth_developer">Тарасенко Агния</string>
+    <string name="first_developer_link">https://github.com/menta1</string>
+    <string name="second_developer_link">https://github.com/vlodo-o</string>
+    <string name="third_developer_link">https://github.com/alexxk2</string>
+    <string name="fourth_developer_link">https://github.com/ImNia</string>
+
+    <!-- Search screen -->
+    <string name="search_title">Поиск вакансий</string>
+    <string name="search_hint">Введите запрос</string>
+    <string name="image_description">Изображение что поиск еще не был осуществлен</string>
+    <string name="filter_description">Фильтр поиска</string>
+    <string name="vacancy_not_found">Таких вакансий нет</string>
+    <string name="vacancy_found">Найдено %1$s вакансий</string>
+
+    <!-- Vacancy item -->
+    <string name="image_vacancy_description">Логотип компании</string>
+
+    <!-- Details screen -->
+    <string name="favourite">Избранное</string>
+    <string name="list_empty">Список пуст</string>
+    <string name="image_description_favourite">Изображение - список избранного пуст</string>
+    <string name="image_description_details">Изображение - произошла ошибка на стороне сервера</string>
+    <string name="vacancy">Вакансия</string>
+    <string name="phone">Телефон</string>
+    <string name="similar_vacancies">Похожие вакансии</string>
+    <string name="e_mail">E-mail</string>
+    <string name="contact_person">Контактное лицо</string>
+    <string name="contacts">Контакты</string>
+    <string name="comment">Комментарий</string>
+    <string name="skill">\t\u30FB %1$s\n</string>
+    <string name="employment_schedule">%1$s, %2$s</string>
+    <string name="no_title_vacancy">Без названия</string>
+    <string name="key_skills">Ключевые навыки</string>
+    <string name="mock_key_skills">Знание классических алгоритмов и структуры данных
+Программирование для Android больше одного года
+Знание WebRTC</string>
+    <string name="mock_description">Обязанности
+Разрабатывать новую функциональность приложения
+Помогать с интеграцией нашего SDK в другие приложения
+Проектировать большие новые модули
+Писать UI- и unit-тесты
+Следить за работоспособностью сервиса и устранять технический долг
+Требования
+100% Kotlin
+WebRTC
+CI по модели Trunk Based Development
+Условия
+сильная команда, с которой можно расти
+возможность влиять на процесс и результат
+расширенная программа ДМС: стоматология, обследования, вызов врача на дом и многое другое</string>
+    <string name="vacancy_description">Описание вакансии</string>
+    <string name="required_experience">Требуемый опыт</string>
+    <string name="share">Поделиться</string>
+    <string name="back">Назад</string>
+    <string name="logo_company">Логотип компании</string>
+    <string name="share_message">Смотрите какую вакансию нашел на hh.ru</string>
+
+    <!-- Filters screen -->
+    <string name="settings_filter_title">Настройки фильтрации</string>
+    <string name="arrow_back_description">Изображение - возврат на предыдущую страницу</string>
+    <string name="place_work">Место работы</string>
+    <string name="industry">Отрасль</string>
+    <string name="salary_hint">Введите сумму</string>
+    <string name="not_show_without_salary">Не показывать без зарплаты</string>
+    <string name="expected_salary">Ожидаемая зарплата</string>
+    <string name="select_button">Выбрать</string>
+    <string name="clear_button">Сбросить</string>
+    <string name="work_place_selection">Выбор места работы</string>
+    <string name="country">Страна</string>
+    <string name="region">Регион</string>
+    <string name="mock_country_name">Россия</string>
+    <string name="arrow_description">Кнопка вперед</string>
+    <string name="mock_city_name">Москва</string>
+    <string name="industry_choice">Выбор отрасли</string>
+    <string name="industry_search_hint">Введите отрасль</string>
+    <string name="industry_not_found">Такой отрасли нет</string>
+    <string name="failed_get_list">Не удалось получить список</string>
+    <string name="select_country_title">Выбор страны</string>
+
+    <string name="region_selection">Выбор региона</string>
+    <string name="search_enter_region">Введите регион</string>
+    <string name="error_no_such_region">Такого региона нет</string>
+    <string name="choose">Выбрать</string>
+    <string name="error">Ошибка</string>
+    <string name="no_internet_description">Картинка нет интернета</string>
+    <string name="no_internet">Нет интернета</string>
+    <string name="server_error_description">Картинка ошибка сервера</string>
+    <string name="server_error">Ошибка сервера</string>
+
+    <!-- Favourite screen -->
+    <string name="without_salary">Зарплата не указана</string>
+    <string name="salary_from">от</string>
+    <string name="salary_to">до</string>
+    <string name="failed_get_list_vacancies">Не удалось получить\n список вакансий</string>
+
+
 </resources>
