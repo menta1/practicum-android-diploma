@@ -75,6 +75,7 @@
         android:paddingStart="@dimen/margin_horizontal"
         android:paddingEnd="@dimen/navigation_back_top_margin"
         android:visibility="gone"
+        tools:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/navigation_back_button">
 

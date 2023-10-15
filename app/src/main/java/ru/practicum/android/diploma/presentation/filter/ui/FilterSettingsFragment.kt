@@ -45,7 +45,7 @@ class FilterSettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        editDebounce = debounce(500L,lifecycleScope,false){input->
+        editDebounce = debounce(SHARED_PREFS_EDITING_DELAY,lifecycleScope,false){ input->
             viewModel.editExpectedSalary(input.toString().toInt())
         }
 
@@ -91,6 +91,16 @@ class FilterSettingsFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        binding.filterPlaceWork.setOnClickListener {
+            val action = FilterSettingsFragmentDirections.actionFilterSettingsFragmentToFilterPlaceFragment()
+            findNavController().navigate(action)
+        }
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun manageScreenContent(state: FilterScreenState){
@@ -155,9 +165,9 @@ class FilterSettingsFragment : Fragment() {
             if (s.isNullOrBlank()) View.GONE else View.VISIBLE
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    companion object{
+        const val SHARED_PREFS_EDITING_DELAY = 500L
     }
+
 
 }

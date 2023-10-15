@@ -48,12 +48,20 @@
         android:id="@+id/filterCountryFragment"
         android:name="ru.practicum.android.diploma.presentation.filter.ui.FilterCountryFragment"
         android:label="fragment_filter_country"
-        tools:layout="@layout/fragment_filter_country" />
+        tools:layout="@layout/fragment_filter_country" >
+        <action
+            android:id="@+id/action_filterCountryFragment_to_filterRegionFragment"
+            app:destination="@id/filterRegionFragment" />
+    </fragment>
     <fragment
         android:id="@+id/filterRegionFragment"
         android:name="ru.practicum.android.diploma.presentation.filter.ui.FilterRegionFragment"
         android:label="fragment_filter_region"
-        tools:layout="@layout/fragment_filter_region" />
+        tools:layout="@layout/fragment_filter_region" >
+        <argument
+            android:name="countryId"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/filterSectorFragment"
         android:name="ru.practicum.android.diploma.presentation.filter.ui.FilterSectorFragment"
