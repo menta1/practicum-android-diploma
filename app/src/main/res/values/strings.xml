@@ -71,7 +71,7 @@ CI по модели Trunk Based Development
     <!-- Filters screen -->
     <string name="settings_filter_title">Настройки фильтрации</string>
     <string name="arrow_back_description">Изображение - возврат на предыдущую страницу</string>
-    <string name="place_work">Место работы</string>
+    <string name="work_place">Место работы</string>
     <string name="industry">Отрасль</string>
     <string name="salary_hint">Введите сумму</string>
     <string name="not_show_without_salary">Не показывать без зарплаты</string>
@@ -105,6 +105,7 @@ CI по модели Trunk Based Development
     <string name="salary_from">от</string>
     <string name="salary_to">до</string>
     <string name="failed_get_list_vacancies">Не удалось получить\n список вакансий</string>
+    <string name="button_close_description">кнопка удалить</string>
 
 
 </resources>

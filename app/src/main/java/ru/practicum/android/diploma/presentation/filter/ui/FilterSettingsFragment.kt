@@ -100,6 +100,11 @@ class FilterSettingsFragment : Fragment() {
             viewModel.clearCountry()
         }
 
+        binding.filterPlaceWorkSelected.setOnClickListener {
+            val action = FilterSettingsFragmentDirections.actionFilterSettingsFragmentToFilterPlaceFragment()
+            findNavController().navigate(action)
+        }
+
     }
 
     override fun onDestroyView() {
