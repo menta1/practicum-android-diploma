@@ -83,16 +83,19 @@ class FilterPlaceFragment : Fragment() {
             when (state) {
                 is FilterScreenState.Content -> {
 
-                    filterCountry.visibility = View.GONE
-                    filterRegion.visibility = View.GONE
+                    state.countryName?.let {countryName->
+                        filterCountry.visibility = View.GONE
+                        filterCountySelected.visibility = View.VISIBLE
+                        countryCloseButton.visibility = View.VISIBLE
+                        filterCountryName.text = countryName
+                    }
 
-                    filterCountySelected.visibility = View.VISIBLE
-                    filterRegionSelected.visibility = View.VISIBLE
-                    countryCloseButton.visibility = View.VISIBLE
-                    cityCloseButton.visibility = View.VISIBLE
-
-                    filterCountryName.text = state.countryName
-                    filterRegionName.text = state.regionName
+                    state.regionName?.let {regionName->
+                        filterRegion.visibility = View.GONE
+                        filterRegionSelected.visibility = View.VISIBLE
+                        cityCloseButton.visibility = View.VISIBLE
+                        filterRegionName.text = regionName
+                    }
                 }
 
                 FilterScreenState.Default -> {

@@ -96,6 +96,10 @@ class FilterSettingsFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        binding.filterPlaceWorkCloseButton.setOnClickListener {
+            viewModel.clearCountry()
+        }
+
     }
 
     override fun onDestroyView() {

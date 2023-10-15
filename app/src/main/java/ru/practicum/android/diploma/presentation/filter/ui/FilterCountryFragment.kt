@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import ru.practicum.android.diploma.App
 import ru.practicum.android.diploma.databinding.FragmentFilterCountryBinding
 import ru.practicum.android.diploma.presentation.filter.adapters.RegionsAdapter
@@ -35,23 +36,23 @@ class FilterCountryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentFilterCountryBinding.inflate(layoutInflater,container,false)
+        _binding = FragmentFilterCountryBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getAllCountries()
-        viewModel.countries.observe(viewLifecycleOwner){countries->
+        setRecyclerView()
 
+        viewModel.getAllCountries()
+        viewModel.countries.observe(viewLifecycleOwner) { countries ->
+            regionsAdapter.submitList(countries)
         }
 
         binding.buttonBack.setOnClickListener {
             findNavController().navigateUp()
         }
-
-
 
     }
 
@@ -60,10 +61,17 @@ class FilterCountryFragment : Fragment() {
         _binding = null
     }
 
-    private fun setRecyclerView(){
-
+    private fun setRecyclerView() {
         regionsAdapter = RegionsAdapter { region ->
-            val action = FilterCountryFragmentDirections.actionFilterCountryFragmentToFilterRegionFragment(region.id.toInt())
+            viewModel.editCountry(region)
+
+            val action =
+                FilterCountryFragmentDirections.actionFilterCountryFragmentToFilterPlaceFragment()
+            findNavController().navigate(action)
         }
+
+        binding.recyclerViewCountry.adapter = regionsAdapter
+        binding.recyclerViewCountry.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewCountry.setHasFixedSize(true)
     }
 }

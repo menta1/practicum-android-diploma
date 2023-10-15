@@ -29,7 +29,7 @@ class RegionsAdapter(
 
             with(binding) {
                 filterCountryName.text = region.name
-                root.setOnClickListener { onCountryClickListener(region) }
+                filterCountryName.setOnClickListener { onCountryClickListener(region) }
             }
         }
     }

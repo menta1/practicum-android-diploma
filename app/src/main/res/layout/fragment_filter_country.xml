@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ScreensBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/ScreensBackground"
     android:orientation="vertical"
     tools:context=".presentation.filter.ui.FilterCountryFragment">
 
@@ -12,28 +12,28 @@
         android:id="@+id/filter_title_block"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
-        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/button_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/ic_back_arrow"
-            android:contentDescription="@string/arrow_back_description"
             android:layout_marginEnd="@dimen/margin_horizontal"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:contentDescription="@string/arrow_back_description"
+            android:src="@drawable/ic_back_arrow" />
 
         <TextView
             style="@style/titleText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:layout_marginHorizontal="@dimen/small_margin_horizontal"
+            android:gravity="center_vertical"
             android:paddingVertical="@dimen/title_margin_vertical"
             android:text="@string/select_country_title" />
     </LinearLayout>
@@ -43,12 +43,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="16dp">
+
         <androidx.recyclerview.widget.RecyclerView
-            tools:listitem="@layout/country_item"
-            android:id="@+id/recycler_country"
+            android:id="@+id/recycler_view_country"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="visible"/>
+            android:visibility="visible"
+            tools:listitem="@layout/country_item" />
+
         <ProgressBar
             android:id="@+id/progress_bar_country"
             android:layout_width="36dp"
