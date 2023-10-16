@@ -33,16 +33,30 @@
         tools:layout="@layout/fragment_favourite" >
         <action
             android:id="@+id/action_favouriteFragment_to_detailsFragment"
-            app:destination="@id/detailsFragment" />
+            app:destination="@id/detailsFragment" >
+            <argument
+                android:name="vacancyId"
+                app:argType="string"
+                app:nullable="false" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
         android:name="ru.practicum.android.diploma.presentation.details.ui.DetailsFragment"
         android:label="fragment_details"
         tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="vacancyId"
+            app:argType="string"
+            app:nullable="false" />
         <action
             android:id="@+id/action_detailsFragment_to_similarFragment"
-            app:destination="@id/similarFragment" />
+            app:destination="@id/similarFragment">
+            <argument
+                android:name="vacancyId"
+                app:argType="string"
+                app:nullable="false" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/filterCountryFragment"
@@ -93,8 +107,17 @@
         android:name="ru.practicum.android.diploma.presentation.similar.ui.SimilarFragment"
         android:label="fragment_similar"
         tools:layout="@layout/fragment_similar" >
+        <argument
+            android:name="vacancyId"
+            app:argType="string"
+            app:nullable="false" />
         <action
             android:id="@+id/action_similarFragment_to_detailsFragment"
-            app:destination="@id/detailsFragment" />
+            app:destination="@id/detailsFragment">
+            <argument
+                android:name="vacancyId"
+                app:argType="string"
+                app:nullable="false" />
+        </action>
     </fragment>
 </navigation>

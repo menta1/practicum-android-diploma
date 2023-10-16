@@ -25,5 +25,5 @@ class SimilarAdapter(
 }
 
 interface SimilarClickListener {
-    fun clickOnVacancy(vacancyId: String)
+    fun clickOnVacancy(vacancyIdFind: String)
 }

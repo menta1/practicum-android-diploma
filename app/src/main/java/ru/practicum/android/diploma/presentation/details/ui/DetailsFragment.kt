@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -28,7 +29,8 @@ class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
 
-    var vacancyId: String? = null
+    private val args by navArgs<DetailsFragmentArgs>()
+    private val vacancyId by lazy { args.vacancyId }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,9 +47,6 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        arguments?.let {
-            vacancyId = it.getSerializable(VACANCY) as String
-        }
         setListeners()
 
         viewModel.initData(vacancyId)
@@ -56,9 +55,11 @@ class DetailsFragment : Fragment() {
                 DetailsState.Loading -> {
                     changeLoadingVisibility(true)
                 }
+
                 DetailsState.Error -> {
                     changeContentVisibility(false)
                 }
+
                 is DetailsState.Content -> {
                     changeContentVisibility(true)
                     updateData(state.data)
@@ -105,7 +106,7 @@ class DetailsFragment : Fragment() {
             getString(R.string.employment_schedule, data.employmentType, data.schedule)
 
         binding.textDescription.text = Html.fromHtml(data.description, Html.FROM_HTML_MODE_COMPACT)
-        if(data.keySkills.isNotEmpty()) {
+        if (data.keySkills.isNotEmpty()) {
             binding.textKeySkills.visibility = View.VISIBLE
             binding.textKeySkillsTitle.visibility = View.VISIBLE
             binding.textKeySkills.text = skillText(data.keySkills)
@@ -114,7 +115,7 @@ class DetailsFragment : Fragment() {
             binding.textKeySkillsTitle.visibility = View.GONE
         }
 
-        if(!data.contactPerson.isNullOrEmpty()) {
+        if (!data.contactPerson.isNullOrEmpty()) {
             binding.textContactPersonName.visibility = View.VISIBLE
             binding.textContactPersonNameTitle.visibility = View.VISIBLE
             binding.textContactPersonName.text = data.contactPerson
@@ -123,7 +124,7 @@ class DetailsFragment : Fragment() {
             binding.textContactPersonNameTitle.visibility = View.GONE
         }
 
-        if(!data.email.isNullOrEmpty()) {
+        if (!data.email.isNullOrEmpty()) {
             binding.textEmail.visibility = View.VISIBLE
             binding.textEmailTitle.visibility = View.VISIBLE
             binding.textEmail.text = data.email
@@ -156,6 +157,7 @@ class DetailsFragment : Fragment() {
             binding.textMessageTitle.visibility = View.GONE
         }
     }
+
     private fun salaryText(salaryFrom: Int?, salaryTo: Int?, currency: String?) =
         if (salaryFrom != null && salaryTo != null) {
             getString(R.string.salary_from) + " " +
@@ -181,7 +183,7 @@ class DetailsFragment : Fragment() {
 
     private fun changeContentVisibility(isContent: Boolean) {
         changeLoadingVisibility(false)
-        if(isContent) {
+        if (isContent) {
             binding.detailsBlock.visibility = View.VISIBLE
             binding.detailsErrorBlock.visibility = View.GONE
         } else {
@@ -191,7 +193,7 @@ class DetailsFragment : Fragment() {
     }
 
     private fun changeLoadingVisibility(isLoading: Boolean) {
-        if(isLoading) {
+        if (isLoading) {
             binding.progressBarDetails.visibility = View.VISIBLE
             binding.detailsBlock.visibility = View.GONE
         } else {
@@ -202,11 +204,8 @@ class DetailsFragment : Fragment() {
 
     private fun setListeners() {
         binding.similarButton.setOnClickListener {
-            val bundle = Bundle()
-            bundle.putString(VACANCY, vacancyId)
             findNavController().navigate(
-                R.id.action_detailsFragment_to_similarFragment,
-                bundle
+                DetailsFragmentDirections.actionDetailsFragmentToSimilarFragment(vacancyId)
             )
         }
 
@@ -225,8 +224,5 @@ class DetailsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-    companion object {
-        const val VACANCY = "vacancy"
     }
 }

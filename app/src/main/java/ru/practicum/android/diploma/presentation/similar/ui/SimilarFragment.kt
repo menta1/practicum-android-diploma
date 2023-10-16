@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.App
-import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSimilarBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.similar.models.SimilarState
@@ -23,17 +23,16 @@ class SimilarFragment : Fragment(), SimilarClickListener {
 
     private var _binding: FragmentSimilarBinding? = null
     private val binding get() = _binding!!
-    private var idVacancy: String? = null
 
     private val adapter by lazy {
         SimilarAdapter(requireContext(), this)
     }
 
+    private val args by navArgs<SimilarFragmentArgs>()
+    private val vacancyId by lazy { args.vacancyId }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            idVacancy = it.getSerializable(VACANCY) as String
-        }
         (activity?.application as App).appComponent.activityComponent().create().inject(this)
     }
 
@@ -49,7 +48,7 @@ class SimilarFragment : Fragment(), SimilarClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.init(idVacancy)
+        viewModel.init(vacancyId)
         scrolling(adapter)
 
         viewModel.getSimilarStateLiveData().observe(viewLifecycleOwner) { state ->
@@ -117,16 +116,9 @@ class SimilarFragment : Fragment(), SimilarClickListener {
         _binding = null
     }
 
-    override fun clickOnVacancy(vacancyId: String) {
-        val bundle = Bundle()
-        bundle.putString(VACANCY, vacancyId)
+    override fun clickOnVacancy(vacancyIdFind: String) {
         findNavController().navigate(
-            R.id.action_similarFragment_to_detailsFragment,
-            bundle
+            SimilarFragmentDirections.actionSimilarFragmentToDetailsFragment(vacancyIdFind)
         )
-    }
-
-    companion object {
-        const val VACANCY = "vacancy"
     }
 }
