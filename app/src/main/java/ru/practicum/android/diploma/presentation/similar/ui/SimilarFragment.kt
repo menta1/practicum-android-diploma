@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.App
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSimilarBinding
@@ -14,7 +15,6 @@ import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.similar.models.SimilarState
 import ru.practicum.android.diploma.presentation.similar.view_model.SimilarViewModel
 import javax.inject.Inject
-
 
 class SimilarFragment : Fragment(), SimilarClickListener {
 
@@ -50,6 +50,7 @@ class SimilarFragment : Fragment(), SimilarClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.init(idVacancy)
+        scrolling(adapter)
 
         viewModel.getSimilarStateLiveData().observe(viewLifecycleOwner) { state ->
             when (state) {
@@ -91,7 +92,24 @@ class SimilarFragment : Fragment(), SimilarClickListener {
     }
 
     private fun updateData(data: List<Vacancy>) {
-        adapter.data = data
+        adapter.data.addAll(data)
+        adapter.notifyDataSetChanged()
+    }
+
+    private fun scrolling(adapter: SimilarAdapter) {
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    val pos =
+                        (binding.recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+                    val itemsCount = adapter.itemCount
+                    if (pos >= itemsCount - 1) {
+                        viewModel.onLastItemReached()
+                    }
+                }
+            }
+        })
     }
 
     override fun onDestroyView() {

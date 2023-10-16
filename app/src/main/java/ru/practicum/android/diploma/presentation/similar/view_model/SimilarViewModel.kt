@@ -15,29 +15,44 @@ class SimilarViewModel @Inject constructor(
     private val similarStateLiveData = MutableLiveData<SimilarState>()
     fun getSimilarStateLiveData(): LiveData<SimilarState> = similarStateLiveData
     private var currentPage = 0
+    private var maxPages = 0
+    private var currentVacancyId: String? = null
 
     fun init(idVacancy: String?) {
         similarStateLiveData.postValue(SimilarState.Loading)
-        idVacancy?.let {
-            viewModelScope.launch {
-                interactor.getSimilarVacancy(idVacancy, currentPage).collect { result ->
-                    when(result.first.code) {
-                        -1 -> {
-                            similarStateLiveData.postValue(SimilarState.NoInternet)
+        currentVacancyId = idVacancy
+        currentVacancyId?.let {
+            searchSimilarVacancy(it)
+        } ?: similarStateLiveData.postValue(SimilarState.Error)
+    }
+
+    private fun searchSimilarVacancy(idVacancy: String) {
+        viewModelScope.launch {
+            interactor.getSimilarVacancy(idVacancy, currentPage).collect { result ->
+                when(result.first.code) {
+                    -1 -> {
+                        similarStateLiveData.postValue(SimilarState.NoInternet)
+                    }
+                    200 -> {
+                        result.first.data?.let { data ->
+                            similarStateLiveData.postValue(
+                                SimilarState.Content(data)
+                            )
                         }
-                        200 -> {
-                            result.first.data?.let { data ->
-                                similarStateLiveData.postValue(
-                                    SimilarState.Content(data)
-                                )
-                            }
-                        }
-                        else -> {
-                            similarStateLiveData.postValue(SimilarState.Error)
-                        }
+                        currentPage = result.second.page?.plus(1) ?: 0
+                        maxPages = result.second.pages ?: 0
+                    }
+                    else -> {
+                        similarStateLiveData.postValue(SimilarState.Error)
                     }
                 }
             }
-        } ?: similarStateLiveData.postValue(SimilarState.Error)
+        }
+    }
+
+    fun onLastItemReached() {
+        if (maxPages != currentPage) {
+            searchSimilarVacancy(currentVacancyId!!)
+        }
     }
 }

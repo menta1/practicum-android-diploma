@@ -11,7 +11,7 @@ class SimilarAdapter(
     private val context: Context,
     private val clickListener: SimilarClickListener
 ): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    var data: List<Vacancy> = listOf()
+    var data: MutableList<Vacancy> = mutableListOf()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.vacancy_item, parent, false)
         return SimilarViewHolder(view, context, clickListener)
