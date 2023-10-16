@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -218,13 +217,13 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     }
 
     override fun onClick(item: Vacancy) {
-        val bundle = bundleOf(VACANCY to item.id)
-        findNavController().navigate(R.id.action_searchFragment_to_detailsFragment, bundle)
+        findNavController().navigate(
+            SearchFragmentDirections.actionSearchFragmentToDetailsFragment(item.id)
+        )
     }
 
     companion object{
         const val START_SEARCH = "startSearch"
-        const val VACANCY = "vacancy"
     }
 
     private fun openFilters() {
