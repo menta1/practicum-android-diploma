@@ -28,6 +28,7 @@ class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
 
+    var vacancyId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +45,6 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var vacancyId: String? = null
         arguments?.let {
             vacancyId = it.getSerializable(VACANCY) as String
         }
@@ -202,8 +202,11 @@ class DetailsFragment : Fragment() {
 
     private fun setListeners() {
         binding.similarButton.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString(VACANCY, vacancyId)
             findNavController().navigate(
-                R.id.action_detailsFragment_to_similarFragment
+                R.id.action_detailsFragment_to_similarFragment,
+                bundle
             )
         }
 

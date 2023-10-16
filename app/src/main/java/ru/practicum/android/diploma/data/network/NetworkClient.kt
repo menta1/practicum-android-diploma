@@ -12,4 +12,6 @@ interface NetworkClient {
     suspend fun getAllIndustries(): Response
 
     suspend fun getVacancyDetail(vacancyId:String): Response
+
+    suspend fun getSimilarVacancy(vacancyId: String, dto: Any): Response
 }
