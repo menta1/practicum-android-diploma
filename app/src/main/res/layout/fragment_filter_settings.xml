@@ -44,6 +44,7 @@
         android:id="@+id/place_work_block"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/filter_title_block">
@@ -53,12 +54,13 @@
             style="@style/filterItemNotSelect"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_top"
+
             android:clickable="true"
             android:focusable="true"
-            android:paddingHorizontal="@dimen/margin_horizontal"
-            android:paddingVertical="@dimen/margin_vertical"
-            android:text="@string/place_work"
+            android:paddingVertical="@dimen/filter_item_vertical_padding"
+            android:paddingStart="@dimen/margin_horizontal"
+            android:paddingEnd="@dimen/filter_icon_end_margin"
+            android:text="@string/work_place"
             android:visibility="visible"
             app:drawableEndCompat="@drawable/ic_arrow" />
 
@@ -66,11 +68,10 @@
             android:id="@+id/filter_place_work_selected"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_horizontal"
-            android:layout_marginTop="12dp"
             android:clickable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/margin_horizontal"
             android:paddingVertical="@dimen/filter_item_vertical_padding_small"
             android:visibility="gone"
             tools:visibility="visible">
@@ -78,7 +79,6 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="10"
                 android:orientation="vertical">
 
                 <TextView
@@ -86,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    tools:text="Место работы" />
+                    android:text="@string/work_place" />
 
                 <TextView
                     android:id="@+id/filter_place_work_name"
@@ -94,19 +94,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    tools:text="Отрасль" />
+                    tools:text="Страна" />
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/filter_place_work_close_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/arrow_description"
-                android:src="@drawable/ic_cross"
-                android:visibility="visible" />
+
         </LinearLayout>
     </FrameLayout>
 
@@ -125,8 +116,9 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
-            android:paddingHorizontal="@dimen/margin_horizontal"
-            android:paddingVertical="@dimen/margin_vertical"
+            android:paddingVertical="@dimen/filter_item_vertical_padding"
+            android:paddingStart="@dimen/margin_horizontal"
+            android:paddingEnd="@dimen/filter_icon_end_margin"
             android:text="@string/industry"
             android:visibility="visible"
             app:drawableEndCompat="@drawable/ic_arrow" />
@@ -135,18 +127,18 @@
             android:id="@+id/filter_industry_selected"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_horizontal"
             android:clickable="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingVertical="8dp"
+            android:paddingHorizontal="@dimen/margin_horizontal"
+            android:paddingVertical="@dimen/filter_item_vertical_padding_small"
             android:visibility="gone"
             tools:visibility="visible">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="10"
+
                 android:orientation="vertical">
 
                 <TextView
@@ -165,16 +157,6 @@
                     tools:text="IT" />
             </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/filter_industry_close_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:background="?android:attr/selectableItemBackgroundBorderless"
-                android:contentDescription="@string/arrow_description"
-                android:src="@drawable/ic_cross"
-                android:visibility="visible" />
         </LinearLayout>
     </FrameLayout>
 
@@ -188,9 +170,9 @@
         android:background="@drawable/rounder_background"
         android:hint="@string/expected_salary"
         android:paddingTop="@dimen/edit_text_margin_vertical"
-        app:hintTextColor="@color/blue"
         app:boxBackgroundMode="none"
         app:expandedHintEnabled="false"
+        app:hintTextColor="@color/blue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/filter_industry_block">
@@ -202,8 +184,8 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounder_background"
             android:gravity="bottom"
-            android:inputType="number"
             android:hint="@string/salary_hint"
+            android:inputType="number"
             android:paddingStart="@dimen/margin_horizontal"
             android:paddingTop="8dp"
             android:paddingEnd="@dimen/margin_horizontal"
@@ -214,11 +196,11 @@
         android:id="@+id/salary_filter_clear_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/navigation_back_start_margin"
         android:background="?android:attr/selectableItemBackgroundBorderless"
         android:contentDescription="@string/clear_button"
         android:src="@drawable/ic_cross"
         android:visibility="gone"
-        android:layout_marginEnd="@dimen/navigation_back_start_margin"
         app:layout_constraintBottom_toBottomOf="@+id/filter_salary_input_layout"
         app:layout_constraintEnd_toEndOf="@+id/filter_salary_input_layout"
         app:layout_constraintTop_toTopOf="@id/filter_salary_input_layout" />
@@ -272,4 +254,33 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/filter_place_work_close_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="@dimen/navigation_back_start_margin"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/button_close_description"
+        android:src="@drawable/ic_cross"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/place_work_block"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/place_work_block" />
+
+    <ImageButton
+        android:id="@+id/filter_industry_close_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginEnd="@dimen/navigation_back_start_margin"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="@string/arrow_description"
+        android:src="@drawable/ic_cross"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/filter_industry_block"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/filter_industry_block" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

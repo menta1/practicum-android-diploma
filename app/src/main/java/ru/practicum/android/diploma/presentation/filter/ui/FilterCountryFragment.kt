@@ -5,8 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import ru.practicum.android.diploma.App
 import ru.practicum.android.diploma.databinding.FragmentFilterCountryBinding
+import ru.practicum.android.diploma.presentation.filter.adapters.RegionsAdapter
 import ru.practicum.android.diploma.presentation.filter.view_model.FilterViewModel
 import javax.inject.Inject
 
@@ -18,6 +21,8 @@ class FilterCountryFragment : Fragment() {
 
     private var _binding: FragmentFilterCountryBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var regionsAdapter: RegionsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,18 +36,42 @@ class FilterCountryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentFilterCountryBinding.inflate(layoutInflater,container,false)
+        _binding = FragmentFilterCountryBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setRecyclerView()
+
+        viewModel.getAllCountries()
+        viewModel.countries.observe(viewLifecycleOwner) { countries ->
+            regionsAdapter.submitList(countries)
+        }
+
+        binding.buttonBack.setOnClickListener {
+            findNavController().navigateUp()
+        }
 
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun setRecyclerView() {
+        regionsAdapter = RegionsAdapter { region ->
+            viewModel.editCountry(region)
+
+            val action =
+                FilterCountryFragmentDirections.actionFilterCountryFragmentToFilterPlaceFragment()
+            findNavController().navigate(action)
+        }
+
+        binding.recyclerViewCountry.adapter = regionsAdapter
+        binding.recyclerViewCountry.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerViewCountry.setHasFixedSize(true)
     }
 }

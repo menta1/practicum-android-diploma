@@ -67,7 +67,13 @@
         android:id="@+id/filterCountryFragment"
         android:name="ru.practicum.android.diploma.presentation.filter.ui.FilterCountryFragment"
         android:label="fragment_filter_country"
-        tools:layout="@layout/fragment_filter_country" />
+        tools:layout="@layout/fragment_filter_country" >
+        <action
+            android:id="@+id/action_filterCountryFragment_to_filterPlaceFragment"
+            app:destination="@id/filterPlaceFragment"
+            app:popUpTo="@id/filterPlaceFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/filterRegionFragment"
         android:name="ru.practicum.android.diploma.presentation.filter.ui.FilterRegionFragment"

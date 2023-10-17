@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:id="@+id/filter_place_work"
+        android:id="@+id/filter_country_name"
         style="@style/baseText"
         app:drawableEndCompat="@drawable/ic_arrow"
         app:layout_constraintEnd_toEndOf="parent"
@@ -17,6 +17,6 @@
         android:clickable="true"
         android:focusable="true"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="@dimen/margin_vertical"
+        android:paddingVertical="@dimen/filter_item_vertical_padding"
         tools:text="country" />
 </FrameLayout>
