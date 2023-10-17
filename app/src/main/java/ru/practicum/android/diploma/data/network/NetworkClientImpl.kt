@@ -92,6 +92,21 @@ class NetworkClientImpl @Inject constructor(
         }
     }
 
+    override suspend fun getSimilarVacancy(vacancyId: String, dto: Any): Response {
+        if (!isConnected()) {
+            return Response().apply { resultCode = -1 }
+        }
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = hhSearchApi.getSimilarVacancy(vacancyId, dto as HashMap<String, String>)
+                response.apply { resultCode = 200 }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Response().apply { resultCode = 500 }
+            }
+        }
+    }
+
 
     private fun isConnected(): Boolean {
         val connectivityManager = context.getSystemService(
