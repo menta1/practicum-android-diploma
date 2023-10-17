@@ -57,6 +57,23 @@
             android:layout_height="36dp"
             android:layout_gravity="center"
             android:indeterminateTint="@color/blue"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <include
+            android:id="@+id/layout_no_internet"
+            layout="@layout/no_internet_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+
+        <include
+            android:id="@+id/layout_unable_to_get_result"
+            layout="@layout/item_unable_to_get_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:visibility="gone" />
     </FrameLayout>
 </LinearLayout>

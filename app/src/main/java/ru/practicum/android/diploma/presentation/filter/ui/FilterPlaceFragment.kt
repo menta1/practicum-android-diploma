@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.presentation.filter.ui
 
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -46,12 +45,17 @@ class FilterPlaceFragment : Fragment() {
             manageScreenContent(state)
         }
 
-
         binding.navigationBackButton.setOnClickListener {
             findNavController().navigateUp()
         }
 
         binding.filterCountry.setOnClickListener {
+            val action =
+                FilterPlaceFragmentDirections.actionFilterPlaceFragmentToFilterCountryFragment()
+            findNavController().navigate(action)
+        }
+
+        binding.filterCountySelected.setOnClickListener {
             val action =
                 FilterPlaceFragmentDirections.actionFilterPlaceFragmentToFilterCountryFragment()
             findNavController().navigate(action)
@@ -70,6 +74,7 @@ class FilterPlaceFragment : Fragment() {
         binding.cityCloseButton.setOnClickListener {
             viewModel.clearRegion()
         }
+
 
     }
 
