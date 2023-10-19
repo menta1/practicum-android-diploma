@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ru.practicum.android.diploma.App
 import ru.practicum.android.diploma.databinding.FragmentFilterCountryBinding
 import ru.practicum.android.diploma.presentation.filter.adapters.RegionsAdapter
+import ru.practicum.android.diploma.presentation.filter.models.FilterCountryScreenState
 import ru.practicum.android.diploma.presentation.filter.view_model.FilterViewModel
 import javax.inject.Inject
 
@@ -49,6 +50,9 @@ class FilterCountryFragment : Fragment() {
         viewModel.countries.observe(viewLifecycleOwner) { countries ->
             regionsAdapter.submitList(countries)
         }
+        viewModel.filterCountryScreenState.observe(viewLifecycleOwner){state->
+            manageScreenContent(state)
+        }
 
         binding.buttonBack.setOnClickListener {
             findNavController().navigateUp()
@@ -73,5 +77,39 @@ class FilterCountryFragment : Fragment() {
         binding.recyclerViewCountry.adapter = regionsAdapter
         binding.recyclerViewCountry.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewCountry.setHasFixedSize(true)
+    }
+
+    private fun manageScreenContent(state: FilterCountryScreenState) {
+        with(binding) {
+            when (state) {
+                FilterCountryScreenState.Content -> {
+                    recyclerViewCountry.visibility = View.VISIBLE
+                    progressBarCountry.visibility = View.GONE
+                    layoutNoInternet.noInternetLayout.visibility = View.GONE
+                    layoutUnableToGetResult.unableToGetResultLayout.visibility = View.GONE
+                }
+
+                FilterCountryScreenState.Loading -> {
+                    recyclerViewCountry.visibility = View.GONE
+                    progressBarCountry.visibility = View.VISIBLE
+                    layoutNoInternet.noInternetLayout.visibility = View.GONE
+                    layoutUnableToGetResult.unableToGetResultLayout.visibility = View.GONE
+                }
+
+                FilterCountryScreenState.NoInternet -> {
+                    recyclerViewCountry.visibility = View.GONE
+                    progressBarCountry.visibility = View.GONE
+                    layoutNoInternet.noInternetLayout.visibility = View.VISIBLE
+                    layoutUnableToGetResult.unableToGetResultLayout.visibility = View.GONE
+                }
+
+                FilterCountryScreenState.UnableToGetResult -> {
+                    recyclerViewCountry.visibility = View.GONE
+                    progressBarCountry.visibility = View.GONE
+                    layoutNoInternet.noInternetLayout.visibility = View.GONE
+                    layoutUnableToGetResult.unableToGetResultLayout.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 }

@@ -39,11 +39,11 @@ class NetworkClientImpl @Inject constructor(
 
     override suspend fun getAllCountries(): Response {
 
-        val response = hhSearchApi.getAllCountries()
-
         if (!isConnected()){
             return Response().apply { resultCode = -1 }
         }
+        val response = hhSearchApi.getAllCountries()
+
         return if (response.code()==200 && response.body() != null){
             RegionResponse(results = response.body()!!).apply { resultCode = 200 }
         } else{
@@ -53,11 +53,11 @@ class NetworkClientImpl @Inject constructor(
 
     override suspend fun getAllRegionsInCountry(countryId: String): Response {
 
-        val response = hhSearchApi.getAllRegionsInCountry(countryId)
-
         if (!isConnected()){
             return Response().apply { resultCode = -1 }
         }
+        val response = hhSearchApi.getAllRegionsInCountry(countryId)
+
         return if (response.code()==200 && response.body() != null){
             RegionResponse(results = response.body()!! ).apply { resultCode = 200 }
         } else{
