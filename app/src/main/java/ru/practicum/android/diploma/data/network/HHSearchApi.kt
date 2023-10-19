@@ -24,7 +24,7 @@ interface HHSearchApi {
     @GET("/areas/{countryId}")
     suspend fun getAllRegionsInCountry(
         @Path("countryId") countryId: String
-    ): Response<List<RegionDto>>
+    ): Response<RegionDto>
 
     @GET("/industries")
     suspend fun getAllIndustries(): Response<List<IndustryDto>>

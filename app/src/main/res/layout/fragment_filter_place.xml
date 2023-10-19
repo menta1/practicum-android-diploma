@@ -2,9 +2,9 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ScreensBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/ScreensBackground"
     tools:context=".presentation.filter.ui.FilterPlaceFragment">
 
     <ImageButton
@@ -34,10 +34,10 @@
         android:id="@+id/filter_country"
         style="@style/filterItemNotSelect"
         android:layout_width="0dp"
-        android:paddingVertical="@dimen/filter_item_vertical_padding"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/filter_item_margin_from_navigation"
         android:gravity="center_vertical"
+        android:paddingVertical="@dimen/filter_item_vertical_padding"
         android:paddingStart="@dimen/margin_horizontal"
         android:paddingEnd="@dimen/filter_icon_end_margin"
         android:text="@string/country"
@@ -50,10 +50,10 @@
         android:id="@+id/filter_region"
         style="@style/filterItemNotSelect"
         android:layout_width="0dp"
-        android:paddingVertical="@dimen/filter_item_vertical_padding"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/filter_second_item_margin_from_navigation"
         android:gravity="center_vertical"
+        android:paddingVertical="@dimen/filter_item_vertical_padding"
         android:paddingStart="@dimen/margin_horizontal"
         android:paddingEnd="@dimen/filter_icon_end_margin"
         android:text="@string/region"
@@ -75,9 +75,9 @@
         android:paddingStart="@dimen/margin_horizontal"
         android:paddingEnd="@dimen/navigation_back_top_margin"
         android:visibility="gone"
-        tools:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/navigation_back_button">
+        app:layout_constraintTop_toBottomOf="@id/navigation_back_button"
+        tools:visibility="visible">
 
         <TextView
             style="@style/filterItemSelectedSmall"
@@ -113,11 +113,11 @@
         android:id="@+id/filter_region_selected"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingVertical="@dimen/filter_item_vertical_padding_small"
         android:layout_marginTop="@dimen/filter_second_item_margin_from_navigation"
         android:clickable="true"
         android:gravity="center_vertical"
         android:orientation="vertical"
+        android:paddingVertical="@dimen/filter_item_vertical_padding_small"
         android:paddingStart="@dimen/margin_horizontal"
         android:paddingEnd="@dimen/navigation_back_top_margin"
         android:visibility="gone"
@@ -152,5 +152,18 @@
         app:layout_constraintBottom_toBottomOf="@+id/filter_region_selected"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/filter_region_selected" />
+
+    <Button
+        android:id="@+id/selection_button"
+        style="@style/SelectionButton"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/selection_button_height"
+        android:visibility="gone"
+        android:layout_marginHorizontal="@dimen/margin_horizontal"
+        android:layout_marginBottom="24dp"
+        android:text="@string/choose"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

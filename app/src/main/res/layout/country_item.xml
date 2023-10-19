@@ -16,7 +16,8 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
-        android:paddingHorizontal="16dp"
+        android:paddingStart="@dimen/margin_horizontal"
+        android:paddingEnd="@dimen/filter_icon_end_margin"
         android:paddingVertical="@dimen/filter_item_vertical_padding"
         tools:text="country" />
 </FrameLayout>

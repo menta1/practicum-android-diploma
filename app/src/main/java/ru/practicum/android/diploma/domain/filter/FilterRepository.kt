@@ -11,6 +11,8 @@ interface FilterRepository {
     fun getAllCountries(): Flow<NetworkResource<List<Region>>>
     fun getAllRegionsInCountry(countryId: String): Flow<NetworkResource<List<Region>>>
     fun getAllIndustries(): Flow<NetworkResource<List<Industry>>>
+    fun getAllPossibleRegions(): Flow<NetworkResource<List<Region>>>
+    fun getCountyByRegionId(regionId: String): Flow<NetworkResource<Region>>
 
     fun getFilter(): Filter?
 

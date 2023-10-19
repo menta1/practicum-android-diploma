@@ -9,6 +9,7 @@ import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.data.network.dto.IndustryResponse
 import ru.practicum.android.diploma.data.network.dto.RegionResponse
 import ru.practicum.android.diploma.data.network.dto.Response
+import ru.practicum.android.diploma.data.network.dto.SingleRegionResponse
 import ru.practicum.android.diploma.data.network.dto.VacancyDetailResponse
 import javax.inject.Inject
 
@@ -59,7 +60,7 @@ class NetworkClientImpl @Inject constructor(
         val response = hhSearchApi.getAllRegionsInCountry(countryId)
 
         return if (response.code()==200 && response.body() != null){
-            RegionResponse(results = response.body()!! ).apply { resultCode = 200 }
+            SingleRegionResponse(results = response.body()!! ).apply { resultCode = 200 }
         } else{
             Response().apply { resultCode = response.code() }
         }
