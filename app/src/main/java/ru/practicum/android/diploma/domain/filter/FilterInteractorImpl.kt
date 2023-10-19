@@ -68,4 +68,8 @@ class FilterInteractorImpl @Inject constructor(
     override fun isFilterEmpty(): Boolean {
         return repository.isFilterEmpty()
     }
+
+    override fun clearPlace() {
+        return repository.clearPlace()
+    }
 }

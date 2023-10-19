@@ -97,7 +97,7 @@ class FilterSettingsFragment : Fragment() {
         }
 
         binding.filterPlaceWorkCloseButton.setOnClickListener {
-            viewModel.clearCountry()
+            viewModel.clearPlace()
         }
 
         binding.filterPlaceWorkSelected.setOnClickListener {

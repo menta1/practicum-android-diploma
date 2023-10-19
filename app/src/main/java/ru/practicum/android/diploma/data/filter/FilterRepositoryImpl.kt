@@ -255,12 +255,20 @@ class FilterRepositoryImpl @Inject constructor(
         filterStorage.editFilter(Gson().toJson(editedFilter))
     }
 
+    override fun clearPlace() {
+        val filterFromData = getFilter()
+
+        val editedFilter =
+            filterFromData?.copy(countryName = null, countryId = null, regionName = null, regionId = null)
+        filterStorage.editFilter(Gson().toJson(editedFilter))
+    }
+
+
     override fun clearRegionNameAndId() {
         val filterFromData = getFilter()
 
         val editedFilter = filterFromData?.copy(regionName = null, regionId = null)
         filterStorage.editFilter(Gson().toJson(editedFilter))
-
     }
 
     override fun clearIndustryNameAndId() {

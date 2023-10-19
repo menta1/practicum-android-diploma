@@ -228,6 +228,11 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
         }
     }
 
+    fun clearPlace(){
+        interactor.clearPlace()
+        getFilter()
+    }
+
     fun clearCountry() {
         interactor.clearCountryNameAndId()
         getFilter()

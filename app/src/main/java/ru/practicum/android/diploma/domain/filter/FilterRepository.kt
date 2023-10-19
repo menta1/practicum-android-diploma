@@ -22,6 +22,7 @@ interface FilterRepository {
     fun editExpectedSalary(expectedSalary: Int)
     fun editIsOnlyWithSalary(isOnlyWithSalary: Boolean)
 
+    fun clearPlace()
     fun clearCountryNameAndId()
     fun clearRegionNameAndId()
     fun clearIndustryNameAndId()
