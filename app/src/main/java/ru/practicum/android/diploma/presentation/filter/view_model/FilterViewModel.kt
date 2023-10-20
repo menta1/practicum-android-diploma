@@ -9,6 +9,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.filter.FilterInteractor
 import ru.practicum.android.diploma.domain.models.Filter
+import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.Region
 import ru.practicum.android.diploma.presentation.filter.models.FilterCountryScreenState
 import ru.practicum.android.diploma.presentation.filter.models.FilterRegionScreenState
@@ -29,28 +30,42 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
     private val _countries = MutableLiveData<List<Region>>()
     val countries: LiveData<List<Region>> = _countries
 
-    private var filter: Filter? = null
-
     private val _isAllowedToNavigate = MutableLiveData<Boolean>(false)
     val isAllowedToNavigate: LiveData<Boolean> = _isAllowedToNavigate
 
-    private lateinit var defaultList: List<Region>
+    private val _isSelectionButtonVisible = MutableLiveData<Boolean>(false)
+    val isSelectionButtonVisible: LiveData<Boolean> = _isSelectionButtonVisible
+
+    private val _isTimeToHideKeyboard = MutableLiveData<Boolean>(false)
+    val isTimeToHideKeyboard: LiveData<Boolean> = _isTimeToHideKeyboard
+
+    private val _industries = MutableLiveData<List<Industry>>()
+    val industries: LiveData<List<Industry>> = _industries
+
+    private  var defaultList: List<Region> = emptyList()
+    private  var industriesDefaultList: List<Industry> = emptyList()
+
+    private var filter: Filter? = null
+
+    private var previousCheckedPosition = -1
 
 
     fun getFilter() {
 
         val resultFromData = interactor.getFilter()
 
-        _filterScreenState.postValue(if (resultFromData != null) {
-            FilterScreenState.Content(
-                countryName = resultFromData.countryName,
-                regionName = resultFromData.regionName,
-                industryName = resultFromData.industryName,
-                expectedSalary = resultFromData.expectedSalary,
-                isOnlyWithSalary = resultFromData.isOnlyWithSalary
-            )
+        _filterScreenState.postValue(
+            if (resultFromData != null) {
+                FilterScreenState.Content(
+                    countryName = resultFromData.countryName,
+                    regionName = resultFromData.regionName,
+                    industryName = resultFromData.industryName,
+                    expectedSalary = resultFromData.expectedSalary,
+                    isOnlyWithSalary = resultFromData.isOnlyWithSalary
+                )
 
-        } else FilterScreenState.Default)
+            } else FilterScreenState.Default
+        )
 
         filter = resultFromData
     }
@@ -134,6 +149,37 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
 
     }
 
+    fun getAllIndustries() {
+        _filterRegionScreenState.value = FilterRegionScreenState.Loading
+
+        viewModelScope.launch(Dispatchers.IO) {
+            interactor.getAllIndustries().collect { apiResult ->
+                when (apiResult.code) {
+                    -1 -> {
+                        _filterRegionScreenState.postValue(FilterRegionScreenState.NoInternet)
+                        _isSelectionButtonVisible.postValue(false)
+                    }
+
+                    200 -> {
+                        _filterRegionScreenState.postValue(
+                            FilterRegionScreenState.Content(
+                                isListEmpty = false
+                            )
+                        )
+                        _industries.postValue(apiResult.data ?: emptyList())
+                        industriesDefaultList = apiResult.data ?: emptyList()
+                    }
+
+                    else -> {
+                        _filterRegionScreenState.postValue(FilterRegionScreenState.UnableToGetResult)
+                        _isSelectionButtonVisible.postValue(false)
+                    }
+                }
+            }
+        }
+
+    }
+
     private fun addCountryWhenItIsNotSelected(regionId: String) {
 
         viewModelScope.launch(Dispatchers.IO) {
@@ -162,7 +208,7 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
     fun addCountryWhenItIsNotSelected() {
 
         viewModelScope.launch(Dispatchers.IO) {
-            interactor.getCountyByRegionId(filter?.regionId?:"").collect { apiResult ->
+            interactor.getCountyByRegionId(filter?.regionId ?: "").collect { apiResult ->
 
                 when (apiResult.code) {
                     -1 -> {
@@ -228,7 +274,11 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
         }
     }
 
-    fun clearPlace(){
+    fun editIndustry(industry: Industry) {
+        interactor.editIndustryNameAndId(industry)
+    }
+
+    fun clearPlace() {
         interactor.clearPlace()
         getFilter()
     }
@@ -244,6 +294,10 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
     }
 
     fun filterList(searchInput: String) {
+        if (_filterRegionScreenState.value == FilterRegionScreenState.NoInternet || _filterRegionScreenState.value == FilterRegionScreenState.UnableToGetResult) {
+            hideKeyboard()
+            return
+        }
         viewModelScope.launch(Dispatchers.IO) {
 
             var filteredList = mutableListOf<Region>()
@@ -265,6 +319,52 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
         return if (filter?.countryId == null && filter?.regionId == null) true
         else if (filter?.countryId != null && filter?.regionId != null) true
         else filter?.countryId != null
+    }
+
+    fun handleRadioButtonsChecks(adapterPosition: Int) {
+        _isSelectionButtonVisible.value = true
+        if (previousCheckedPosition >= 0) {
+            _industries.value?.get(previousCheckedPosition)?.isChecked = false
+        }
+        _industries.value?.get(adapterPosition)?.isChecked = true
+        previousCheckedPosition = adapterPosition
+        hideKeyboard()
+    }
+
+    fun filterIndustryList(searchInput: String) {
+        if (_filterRegionScreenState.value == FilterRegionScreenState.NoInternet || _filterRegionScreenState.value == FilterRegionScreenState.UnableToGetResult){
+            hideKeyboard()
+            return
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+
+            var filteredList = mutableListOf<Industry>()
+            filteredList = industriesDefaultList.filter {
+                it.name.contains(searchInput, true)
+            }.sortedBy { it.name }.toMutableList()
+
+            if (filteredList.isEmpty()) {
+                _filterRegionScreenState.postValue(FilterRegionScreenState.Content(true))
+                _industries.postValue(filteredList)
+                _isSelectionButtonVisible.postValue(false)
+            } else {
+                if (previousCheckedPosition >= 0) {
+                    _isSelectionButtonVisible.postValue(true)
+                } else {
+                    _isSelectionButtonVisible.postValue(false)
+                }
+                _filterRegionScreenState.postValue(FilterRegionScreenState.Content(false))
+                _industries.postValue(filteredList)
+            }
+        }
+    }
+
+    private fun hideKeyboard(){
+        viewModelScope.launch {
+            _isTimeToHideKeyboard.postValue(true)
+            delay(BACK_TO_DEFAULT)
+            _isTimeToHideKeyboard.postValue(false)
+        }
     }
 
     companion object {

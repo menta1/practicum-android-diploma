@@ -10,8 +10,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:layout_marginVertical="@dimen/margin_vertical_19"
+        android:paddingHorizontal="@dimen/margin_horizontal"
+        android:paddingVertical="@dimen/margin_vertical_19"
+
         android:orientation="horizontal">
 
         <TextView
@@ -23,14 +24,30 @@
             android:text="@string/search_title" />
 
         <ImageView
-            android:id="@+id/button_filters"
+            android:paddingVertical="@dimen/margin_vertical_6"
+            android:id="@+id/button_filters_empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
+            android:visibility="gone"
+            tools:visibility="visible"
             android:src="@drawable/ic_filter"
             android:contentDescription="@string/filter_description"
             android:clickable="true"/>
+
+        <ImageView
+            android:id="@+id/button_filters_not_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:visibility="gone"
+            tools:visibility="visible"
+            android:src="@drawable/ic_filter_on"
+            android:contentDescription="@string/filter_description"
+            android:clickable="true"/>
+
     </LinearLayout>
 
     <LinearLayout
