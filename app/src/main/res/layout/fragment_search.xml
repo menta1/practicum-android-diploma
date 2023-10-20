@@ -56,8 +56,6 @@
             android:paddingEnd="@dimen/margin_horizontal"
             android:singleLine="true"
             android:textColorHint="@color/grey" />
-
-
     </LinearLayout>
 
     <LinearLayout
@@ -71,19 +69,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:contentDescription="@string/image_description"
-            android:src="@drawable/search_not_started" />
+            android:src="@drawable/search_not_started"/>
 
         <FrameLayout
             android:id="@+id/recycler_vacancy_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone">
+            android:visibility="gone"
+            >
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_vacancy"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone" />
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/search_message"
@@ -94,8 +93,8 @@
                 android:background="@drawable/search_message_background"
                 android:paddingHorizontal="@dimen/message_margin_horizontal"
                 android:paddingVertical="@dimen/message_margin_vertical"
-                android:visibility="gone"
-                tools:text="@string/vacancy_not_found" />
+                tools:text="@string/vacancy_not_found"
+                android:visibility="gone"/>
 
             <include
                 android:id="@+id/error_failed_get_cat"
@@ -104,12 +103,21 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:visibility="gone" />
+
+            <ProgressBar
+                android:id="@+id/progress_bar_item"
+                android:layout_width="match_parent"
+                android:layout_height="36dp"
+                android:layout_gravity="center|bottom"
+                android:backgroundTint="@color/black"
+                android:indeterminateTint="@color/blue"
+                android:visibility="gone"/>
         </FrameLayout>
 
         <include
             android:id="@+id/error_no_internet"
             layout="@layout/no_internet_layout"
-            android:visibility="gone" />
+            android:visibility="gone"/>
 
 
         <ProgressBar

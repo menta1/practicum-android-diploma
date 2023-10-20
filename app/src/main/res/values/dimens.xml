@@ -29,4 +29,5 @@
     <dimen name="filter_item_vertical_padding_small">12dp</dimen>
     <dimen name="similar_recycler_view_top_margin">36dp</dimen>
     <dimen name="filters_margin_top">24dp</dimen>
+    <dimen name="item_margin_top">38dp</dimen>
 </resources>

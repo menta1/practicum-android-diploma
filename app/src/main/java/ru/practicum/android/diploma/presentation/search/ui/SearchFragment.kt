@@ -53,8 +53,11 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
 
         viewModel.getFilter()
         val adapter = VacancyAdapter(this)
+        val itemDecorator =
+            VacancyAdapter.MarginItemDecorator(resources.getDimensionPixelSize(R.dimen.item_margin_top))
         binding.recyclerVacancy.adapter = adapter
         binding.recyclerVacancy.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerVacancy.addItemDecoration(itemDecorator)
         setVacancies(adapter)
         setupSearchInput()
         scrolling(adapter)
@@ -108,7 +111,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
 
     private fun stateSearch() {
         with(binding) {
-            progressBar.visibility = View.VISIBLE
+            progressBarItem.visibility = View.VISIBLE
             imageSearchNotStarted.visibility = View.GONE
             recyclerVacancy.visibility = View.VISIBLE
             recyclerVacancyLayout.visibility = View.VISIBLE
@@ -121,6 +124,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     private fun stateLoaded() {
         with(binding) {
             progressBar.visibility = View.GONE
+            progressBarItem.visibility = View.GONE
             imageSearchNotStarted.visibility = View.GONE
             recyclerVacancy.visibility = View.VISIBLE
             recyclerVacancyLayout.visibility = View.VISIBLE
@@ -222,7 +226,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         findNavController().navigate(R.id.action_searchFragment_to_detailsFragment, bundle)
     }
 
-    companion object{
+    companion object {
         const val START_SEARCH = "startSearch"
         const val VACANCY = "vacancy"
     }
