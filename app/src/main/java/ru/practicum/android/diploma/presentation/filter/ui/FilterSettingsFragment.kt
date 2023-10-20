@@ -107,6 +107,19 @@ class FilterSettingsFragment : Fragment() {
                 FilterSettingsFragmentDirections.actionFilterSettingsFragmentToFilterPlaceFragment()
             findNavController().navigate(action)
         }
+
+        binding.filterIndustry.setOnClickListener {
+            val action =
+                FilterSettingsFragmentDirections.actionFilterSettingsFragmentToFilterSectorFragment()
+            findNavController().navigate(action)
+        }
+
+        binding.filterIndustrySelected.setOnClickListener {
+            val action =
+                FilterSettingsFragmentDirections.actionFilterSettingsFragmentToFilterSectorFragment()
+            findNavController().navigate(action)
+        }
+        
     }
 
     override fun onDestroyView() {

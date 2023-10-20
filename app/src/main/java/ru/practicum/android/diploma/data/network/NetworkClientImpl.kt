@@ -68,11 +68,11 @@ class NetworkClientImpl @Inject constructor(
 
     override suspend fun getAllIndustries(): Response {
 
-        val response = hhSearchApi.getAllIndustries()
-
         if (!isConnected()){
             return Response().apply { resultCode = -1 }
         }
+        val response = hhSearchApi.getAllIndustries()
+
         return if (response.code()==200 && response.body() != null){
             IndustryResponse(results = response.body()!! ).apply { resultCode = 200 }
         } else{
@@ -107,7 +107,6 @@ class NetworkClientImpl @Inject constructor(
             }
         }
     }
-
 
     private fun isConnected(): Boolean {
         val connectivityManager = context.getSystemService(

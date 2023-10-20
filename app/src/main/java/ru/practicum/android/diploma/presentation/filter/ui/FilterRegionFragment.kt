@@ -1,11 +1,13 @@
 package ru.practicum.android.diploma.presentation.filter.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -27,7 +29,7 @@ class FilterRegionFragment : Fragment() {
     private var _binding: FragmentFilterRegionBinding? = null
     private val binding get() = _binding!!
     private lateinit var regionsAdapter: RegionsAdapter
-    private lateinit var filterDebounce: (CharSequence?)-> Unit
+    private lateinit var filterDebounce: (CharSequence?) -> Unit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,7 +50,7 @@ class FilterRegionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        filterDebounce = debounce(BEFORE_FILTERING_DELAY,lifecycleScope,false){ input->
+        filterDebounce = debounce(BEFORE_FILTERING_DELAY, lifecycleScope, false) { input ->
             viewModel.filterList(input.toString())
         }
 
@@ -90,6 +92,7 @@ class FilterRegionFragment : Fragment() {
 
         binding.editSearch.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
             binding.editSearchLayout.isHintEnabled = !hasFocus
+            if (hasFocus) showKeyboard()
         }
 
         binding.closeImage.setOnClickListener {
@@ -103,18 +106,16 @@ class FilterRegionFragment : Fragment() {
         _binding = null
     }
 
-    private fun manageMagnifierImageVisibility(s: CharSequence?){
-        if (s.isNullOrBlank()){
+    private fun manageMagnifierImageVisibility(s: CharSequence?) {
+        if (s.isNullOrBlank()) {
             binding.magnifierImage.visibility = View.VISIBLE
-        }
-        else binding.magnifierImage.visibility = View.GONE
+        } else binding.magnifierImage.visibility = View.GONE
     }
 
-    private fun manageCloseImageVisibility(s: CharSequence?){
-        if (s.isNullOrBlank()){
+    private fun manageCloseImageVisibility(s: CharSequence?) {
+        if (s.isNullOrBlank()) {
             binding.closeImage.visibility = View.GONE
-        }
-        else binding.closeImage.visibility = View.VISIBLE
+        } else binding.closeImage.visibility = View.VISIBLE
     }
 
     private fun setRecyclerView() {
@@ -135,6 +136,7 @@ class FilterRegionFragment : Fragment() {
                     if (state.isListEmpty) {
                         layoutErrorNotFound.visibility = View.VISIBLE
                         recyclerRegion.visibility = View.GONE
+                        hideKeyboard()
                     } else {
                         layoutErrorNotFound.visibility = View.GONE
                         recyclerRegion.visibility = View.VISIBLE
@@ -172,8 +174,19 @@ class FilterRegionFragment : Fragment() {
         }
     }
 
+    private fun hideKeyboard() {
+        val inputMethodManager =
+            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(binding.containerView.windowToken, 0)
+    }
 
-    companion object{
+    private fun showKeyboard() {
+        val inputMethodManager =
+            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(binding.editSearch, 0)
+    }
+
+    companion object {
         const val BEFORE_FILTERING_DELAY = 1000L
     }
 }

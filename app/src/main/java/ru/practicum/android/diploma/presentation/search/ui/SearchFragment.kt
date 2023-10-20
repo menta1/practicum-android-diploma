@@ -59,6 +59,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         scrolling(adapter)
         stateView()
         openFilters()
+        manageFilterButtonsVisibility(viewModel.isFilterEmpty())
     }
 
     private fun stateView() {
@@ -211,9 +212,19 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         }
     }
 
+    private fun manageFilterButtonsVisibility(isFilterEmpty: Boolean) {
+        binding.buttonFiltersEmpty.visibility = if (isFilterEmpty) View.VISIBLE else View.GONE
+        binding.buttonFiltersNotEmpty.visibility = if (isFilterEmpty) View.GONE else View.VISIBLE
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getFilter()
     }
 
     override fun onClick(item: Vacancy) {
@@ -227,7 +238,10 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     }
 
     private fun openFilters() {
-        binding.buttonFilters.setOnClickListener {
+        binding.buttonFiltersEmpty.setOnClickListener {
+            findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)
+        }
+        binding.buttonFiltersNotEmpty.setOnClickListener {
             findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)
         }
     }
