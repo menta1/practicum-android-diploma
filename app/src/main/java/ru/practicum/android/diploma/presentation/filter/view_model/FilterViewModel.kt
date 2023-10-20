@@ -41,7 +41,7 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
 
         val resultFromData = interactor.getFilter()
 
-        _filterScreenState.value = if (resultFromData != null) {
+        _filterScreenState.postValue(if (resultFromData != null) {
             FilterScreenState.Content(
                 countryName = resultFromData.countryName,
                 regionName = resultFromData.regionName,
@@ -50,7 +50,7 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
                 isOnlyWithSalary = resultFromData.isOnlyWithSalary
             )
 
-        } else FilterScreenState.Default
+        } else FilterScreenState.Default)
 
         filter = resultFromData
     }
