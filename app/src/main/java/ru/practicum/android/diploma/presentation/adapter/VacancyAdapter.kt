@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.presentation.adapter
 
+import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -130,6 +131,22 @@ class VacancyAdapter(private val listener: Listener) :
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
             return oldList[oldItemPosition] == newList[newItemPosition]
+        }
+    }
+
+    class MarginItemDecorator(private val marginTop: Int) : RecyclerView.ItemDecoration() {
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            super.getItemOffsets(outRect, view, parent, state)
+            if(parent.getChildAdapterPosition(view) == 0){
+                outRect.top = marginTop
+            }else{
+                outRect.top = 0
+            }
         }
     }
 

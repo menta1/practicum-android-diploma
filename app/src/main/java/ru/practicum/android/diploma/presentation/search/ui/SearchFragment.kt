@@ -53,8 +53,11 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
 
         viewModel.getFilter()
         val adapter = VacancyAdapter(this)
+        val itemDecorator =
+            VacancyAdapter.MarginItemDecorator(resources.getDimensionPixelSize(R.dimen.item_margin_top))
         binding.recyclerVacancy.adapter = adapter
         binding.recyclerVacancy.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerVacancy.addItemDecoration(itemDecorator)
         setVacancies(adapter)
         setupSearchInput()
         scrolling(adapter)

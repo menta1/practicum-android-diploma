@@ -77,10 +77,17 @@ class SearchViewModel @Inject constructor(
     }
 
     fun onTextChangedInput(inputChar: CharSequence?) {
-        searchText = inputChar.toString()
-        if (searchText.isBlank()) {
-            _viewStateLiveData.value = SearchModelState.NoSearch
+        if (::searchText.isInitialized) {
+            if (searchText != inputChar.toString()) {
+                searchText = inputChar.toString()
+                currentPage = 0
+                searchDebounce(true)
+            }
+            if (searchText.isBlank()) {
+                _viewStateLiveData.value = SearchModelState.NoSearch
+            }
         } else {
+            searchText = inputChar.toString()
             currentPage = 0
             searchDebounce(true)
         }
