@@ -7,11 +7,9 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.App
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
@@ -23,6 +21,10 @@ import javax.inject.Inject
 
 
 class SearchFragment : Fragment(), VacancyAdapter.Listener {
+
+    companion object {
+        const val START_SEARCH = "startSearch"
+    }
 
     @Inject
     lateinit var viewModel: SearchViewModel
@@ -40,8 +42,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchBinding.inflate(layoutInflater, container, false)
         return binding.root
@@ -65,22 +66,36 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         manageFilterButtonsVisibility(viewModel.isFilterEmpty())
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getFilter()
+    }
+
+    override fun onClick(item: Vacancy) {
+        findNavController().navigate(
+            SearchFragmentDirections.actionSearchFragmentToDetailsFragment(item.id)
+        )
+    }
+
     private fun stateView() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.viewState.collect { state ->
-                when (state) {
-                    SearchModelState.NoSearch -> stateNoSearch()
+        viewModel.viewStateLiveData.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                SearchModelState.NoSearch -> stateNoSearch()
 
-                    SearchModelState.Loading -> stateLoading()
+                SearchModelState.Loading -> stateLoading()
 
-                    SearchModelState.Search -> stateSearch()
+                SearchModelState.Search -> stateSearch()
 
-                    SearchModelState.Loaded -> stateLoaded()
+                SearchModelState.Loaded -> stateLoaded()
 
-                    SearchModelState.NoInternet -> stateNoInternet()
+                SearchModelState.NoInternet -> stateNoInternet()
 
-                    SearchModelState.FailedToGetList -> stateFailedToGetList()
-                }
+                SearchModelState.FailedToGetList -> stateFailedToGetList()
             }
         }
     }
@@ -111,7 +126,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
 
     private fun stateSearch() {
         with(binding) {
-            progressBarItem.visibility = View.VISIBLE
+            progressBar.visibility = View.VISIBLE
             imageSearchNotStarted.visibility = View.GONE
             recyclerVacancy.visibility = View.VISIBLE
             recyclerVacancyLayout.visibility = View.VISIBLE
@@ -124,7 +139,6 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     private fun stateLoaded() {
         with(binding) {
             progressBar.visibility = View.GONE
-            progressBarItem.visibility = View.GONE
             imageSearchNotStarted.visibility = View.GONE
             recyclerVacancy.visibility = View.VISIBLE
             recyclerVacancyLayout.visibility = View.VISIBLE
@@ -177,15 +191,13 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
 
 
     private fun setVacancies(adapter: VacancyAdapter) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.usersFlow.collect { list ->
-                adapter.setData(list)
-            }
+        viewModel.usersLiveData.observe(viewLifecycleOwner) {
+            adapter.setData(it)
         }
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.usersFound.collect {
-                if (it.isNotBlank())
-                    binding.searchMessage.text = formatVacanciesString(it.toInt())
+
+        viewModel.usersFoundLiveData.observe(viewLifecycleOwner) {
+            if (it.isNotBlank()) {
+                binding.searchMessage.text = formatVacanciesString(it.toInt())
             }
         }
     }
@@ -219,26 +231,6 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     private fun manageFilterButtonsVisibility(isFilterEmpty: Boolean) {
         binding.buttonFiltersEmpty.visibility = if (isFilterEmpty) View.VISIBLE else View.GONE
         binding.buttonFiltersNotEmpty.visibility = if (isFilterEmpty) View.GONE else View.VISIBLE
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.getFilter()
-    }
-
-    override fun onClick(item: Vacancy) {
-        findNavController().navigate(
-            SearchFragmentDirections.actionSearchFragmentToDetailsFragment(item.id)
-        )
-    }
-
-    companion object {
-        const val START_SEARCH = "startSearch"
     }
 
     private fun openFilters() {

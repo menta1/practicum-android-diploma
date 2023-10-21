@@ -1,10 +1,9 @@
 package ru.practicum.android.diploma.presentation.search.view_model
 
-import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.domain.filter.FilterInteractor
 import ru.practicum.android.diploma.domain.models.Filter
@@ -24,15 +23,20 @@ class SearchViewModel @Inject constructor(
     private lateinit var searchText: String
     private var isNextPageLoading = true
 
-    private val _usersFlow: MutableStateFlow<List<Vacancy>> = MutableStateFlow(emptyList())
-    val usersFlow: StateFlow<List<Vacancy>> = _usersFlow
+    private val _usersLiveData = MutableLiveData<List<Vacancy>>().apply {
+        postValue(emptyList())
+    }
+    val usersLiveData: LiveData<List<Vacancy>> = _usersLiveData
 
-    private val _usersFound: MutableStateFlow<String> = MutableStateFlow("")
-    val usersFound: StateFlow<String> = _usersFound
+    private val _usersFoundLiveData = MutableLiveData<String>().apply {
+        postValue("")
+    }
+    val usersFoundLiveData: LiveData<String> = _usersFoundLiveData
 
-    private val _viewState: MutableStateFlow<SearchModelState> =
-        MutableStateFlow(SearchModelState.NoSearch)
-    val viewState: StateFlow<SearchModelState> = _viewState
+    private val _viewStateLiveData = MutableLiveData<SearchModelState>().apply {
+        postValue(SearchModelState.NoSearch)
+    }
+    val viewStateLiveData: LiveData<SearchModelState> = _viewStateLiveData
 
     private val searchDebounce = debounce<Boolean>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) {
         search()
@@ -43,30 +47,29 @@ class SearchViewModel @Inject constructor(
     fun search() {
         if (searchText.isNotEmpty()) {
             viewModelScope.launch {
-                if (currentPage == 0) _viewState.value = SearchModelState.Loading
+                if (currentPage == 0) _viewStateLiveData.value = SearchModelState.Loading
                 interactor.search(searchText, currentPage, filter).collect { result ->
-                    _viewState.value = SearchModelState.Search
+                    _viewStateLiveData.value = SearchModelState.Search
                     if (result.second.page?.let { it < 1 } == true) {
-                        _usersFound.value = result.second.found.toString()
+                        _usersFoundLiveData.value = result.second.found.toString()
                     }
                     when (result.first.code) {
-                        -1 -> _viewState.value = SearchModelState.NoInternet
+                        -1 -> _viewStateLiveData.value = SearchModelState.NoInternet
                         200 -> {
-                            _viewState.value = SearchModelState.Loaded
+                            _viewStateLiveData.value = SearchModelState.Loaded
                             if (result.second.page?.let { it >= 1 } == true) {
-                                val tempFile = _usersFlow.value + result.first.data!!
-                                _usersFlow.value = tempFile
-                            } else _usersFlow.value = result.first.data!!
+                                val tempFile = _usersLiveData.value?.plus(result.first.data!!)
+                                _usersLiveData.value = tempFile
+                            } else _usersLiveData.value = result.first.data!!
                             isNextPageLoading = true
                         }
 
-                        else -> _viewState.value = SearchModelState.FailedToGetList
+                        else -> _viewStateLiveData.value = SearchModelState.FailedToGetList
                     }
                     currentPage = result.second.page?.plus(1) ?: 0
                     maxPages = result.second.pages ?: 0
                     if (result.second.found?.let { it <= 0 } == true) {
-                        Log.d("tag", "FailedToGetList")
-                        _viewState.value = SearchModelState.FailedToGetList
+                        _viewStateLiveData.value = SearchModelState.FailedToGetList
                     }
                 }
             }
@@ -81,7 +84,7 @@ class SearchViewModel @Inject constructor(
                 searchDebounce(true)
             }
             if (searchText.isBlank()) {
-                _viewState.value = SearchModelState.NoSearch
+                _viewStateLiveData.value = SearchModelState.NoSearch
             }
         } else {
             searchText = inputChar.toString()
@@ -102,8 +105,4 @@ class SearchViewModel @Inject constructor(
     }
 
     fun isFilterEmpty(): Boolean = filterInteractor.isFilterEmpty()
-
-    fun onClick(item: Vacancy) {
-
-    }
 }

@@ -92,8 +92,7 @@
             android:id="@+id/recycler_vacancy_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="gone"
-            >
+            android:visibility="gone">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_vacancy"
@@ -110,8 +109,8 @@
                 android:background="@drawable/search_message_background"
                 android:paddingHorizontal="@dimen/message_margin_horizontal"
                 android:paddingVertical="@dimen/message_margin_vertical"
-                tools:text="@string/vacancy_not_found"
-                android:visibility="gone"/>
+                android:visibility="gone"
+                tools:text="@string/vacancy_not_found" />
 
             <include
                 android:id="@+id/error_failed_get_cat"
@@ -120,15 +119,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:visibility="gone" />
-
-            <ProgressBar
-                android:id="@+id/progress_bar_item"
-                android:layout_width="match_parent"
-                android:layout_height="36dp"
-                android:layout_gravity="center|bottom"
-                android:backgroundTint="@color/black"
-                android:indeterminateTint="@color/blue"
-                android:visibility="gone"/>
         </FrameLayout>
 
         <include

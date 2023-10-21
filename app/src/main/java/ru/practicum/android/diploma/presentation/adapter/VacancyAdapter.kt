@@ -113,8 +113,6 @@ class VacancyAdapter(private val listener: Listener) :
                 if (it > 0) NumberFormat.getNumberInstance(Locale.getDefault()).format(it) else "0"
             } ?: ""
         }
-
-
     }
 
     class ItemDiffCallback(private val oldList: List<Vacancy>, private val newList: List<Vacancy>) :
