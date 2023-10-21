@@ -9,6 +9,7 @@ import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.data.network.dto.IndustryResponse
 import ru.practicum.android.diploma.data.network.dto.RegionResponse
 import ru.practicum.android.diploma.data.network.dto.Response
+import ru.practicum.android.diploma.data.network.dto.SingleRegionResponse
 import ru.practicum.android.diploma.data.network.dto.VacancyDetailResponse
 import javax.inject.Inject
 
@@ -39,11 +40,11 @@ class NetworkClientImpl @Inject constructor(
 
     override suspend fun getAllCountries(): Response {
 
-        val response = hhSearchApi.getAllCountries()
-
         if (!isConnected()){
             return Response().apply { resultCode = -1 }
         }
+        val response = hhSearchApi.getAllCountries()
+
         return if (response.code()==200 && response.body() != null){
             RegionResponse(results = response.body()!!).apply { resultCode = 200 }
         } else{
@@ -53,13 +54,13 @@ class NetworkClientImpl @Inject constructor(
 
     override suspend fun getAllRegionsInCountry(countryId: String): Response {
 
-        val response = hhSearchApi.getAllRegionsInCountry(countryId)
-
         if (!isConnected()){
             return Response().apply { resultCode = -1 }
         }
+        val response = hhSearchApi.getAllRegionsInCountry(countryId)
+
         return if (response.code()==200 && response.body() != null){
-            RegionResponse(results = response.body()!! ).apply { resultCode = 200 }
+            SingleRegionResponse(results = response.body()!! ).apply { resultCode = 200 }
         } else{
             Response().apply { resultCode = response.code() }
         }
@@ -67,11 +68,11 @@ class NetworkClientImpl @Inject constructor(
 
     override suspend fun getAllIndustries(): Response {
 
-        val response = hhSearchApi.getAllIndustries()
-
         if (!isConnected()){
             return Response().apply { resultCode = -1 }
         }
+        val response = hhSearchApi.getAllIndustries()
+
         return if (response.code()==200 && response.body() != null){
             IndustryResponse(results = response.body()!! ).apply { resultCode = 200 }
         } else{
@@ -92,6 +93,20 @@ class NetworkClientImpl @Inject constructor(
         }
     }
 
+    override suspend fun getSimilarVacancy(vacancyId: String, dto: Any): Response {
+        if (!isConnected()) {
+            return Response().apply { resultCode = -1 }
+        }
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = hhSearchApi.getSimilarVacancy(vacancyId, dto as HashMap<String, String>)
+                response.apply { resultCode = 200 }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Response().apply { resultCode = 500 }
+            }
+        }
+    }
 
     private fun isConnected(): Boolean {
         val connectivityManager = context.getSystemService(

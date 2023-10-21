@@ -24,7 +24,7 @@ interface HHSearchApi {
     @GET("/areas/{countryId}")
     suspend fun getAllRegionsInCountry(
         @Path("countryId") countryId: String
-    ): Response<List<RegionDto>>
+    ): Response<RegionDto>
 
     @GET("/industries")
     suspend fun getAllIndustries(): Response<List<IndustryDto>>
@@ -33,6 +33,15 @@ interface HHSearchApi {
     suspend fun getVacancyDetail(
         @Path("vacancy_id") vacancyId: String
     ): Response<VacancyDetailDto>
+
+    @Headers(
+        "Authorization: Bearer $token", "HH-User-Agent: Talent Trove (bulatov.aynur@yandex.ru)"
+    )
+    @GET("/vacancies/{vacancy_id}/similar_vacancies")
+    suspend fun getSimilarVacancy(
+        @Path("vacancy_id") vacancyId: String,
+        @QueryMap options: Map<String, String>
+    ): VacancyResponse
 
     companion object {
         const val token = BuildConfig.HH_ACCESS_TOKEN

@@ -3,10 +3,10 @@ package ru.practicum.android.diploma.di.modules
 import dagger.Module
 import dagger.Provides
 import ru.practicum.android.diploma.domain.details.DetailsInteractor
-import ru.practicum.android.diploma.domain.developers.DevelopersInteractor
 import ru.practicum.android.diploma.domain.favourite.FavouriteInteractor
 import ru.practicum.android.diploma.domain.filter.FilterInteractor
 import ru.practicum.android.diploma.domain.search.SearchInteractor
+import ru.practicum.android.diploma.domain.share.SharingInteractor
 import ru.practicum.android.diploma.domain.share.impl.SharingInteractorImpl
 import ru.practicum.android.diploma.domain.similar.SimilarInteractor
 import ru.practicum.android.diploma.presentation.details.view_model.DetailsViewModel
@@ -25,22 +25,29 @@ class ViewModelModule {
     ): DetailsViewModel {
         return DetailsViewModel(interactor, sharingInteractor)
     }
+
     @Provides
-    fun provideDevelopersViewModel(interactor: DevelopersInteractor): DevelopersViewModel {
+    fun provideDevelopersViewModel(interactor: SharingInteractor): DevelopersViewModel {
         return DevelopersViewModel(interactor)
     }
+
     @Provides
     fun provideFavouriteViewModel(interactor: FavouriteInteractor): FavouriteViewModel {
         return FavouriteViewModel(interactor)
     }
+
     @Provides
     fun provideFilterViewModel(interactor: FilterInteractor): FilterViewModel {
         return FilterViewModel(interactor)
     }
+
     @Provides
-    fun provideSearchViewModel(interactor: SearchInteractor, filterInteractor: FilterInteractor): SearchViewModel {
+    fun provideSearchViewModel(
+        interactor: SearchInteractor, filterInteractor: FilterInteractor
+    ): SearchViewModel {
         return SearchViewModel(interactor, filterInteractor)
     }
+
     @Provides
     fun provideSimilarViewModel(interactor: SimilarInteractor): SimilarViewModel {
         return SimilarViewModel(interactor)

@@ -24,7 +24,7 @@ class FilterSettingsFragment : Fragment() {
 
     private var _binding: FragmentFilterSettingsBinding? = null
     private val binding get() = _binding!!
-    private lateinit var editDebounce: (CharSequence?)-> Unit
+    private lateinit var editDebounce: (CharSequence?) -> Unit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,12 +45,12 @@ class FilterSettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        editDebounce = debounce(500L,lifecycleScope,false){input->
+        editDebounce = debounce(SHARED_PREFS_EDITING_DELAY, lifecycleScope, false) { input ->
             viewModel.editExpectedSalary(input.toString().toInt())
         }
 
         viewModel.getFilter()
-        viewModel.filterScreenState.observe(viewLifecycleOwner){state->
+        viewModel.filterScreenState.observe(viewLifecycleOwner) { state ->
             manageScreenContent(state)
         }
 
@@ -65,7 +65,7 @@ class FilterSettingsFragment : Fragment() {
             viewModel.clearExpectedSalary()
         }
 
-        binding.filterSalaryInputEditText.addTextChangedListener(object : TextWatcher{
+        binding.filterSalaryInputEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
             }
@@ -87,44 +87,86 @@ class FilterSettingsFragment : Fragment() {
         binding.filterSettingClearButton.setOnClickListener { viewModel.clearFiler() }
 
         binding.filterSettingSelectButton.setOnClickListener {
-            val action = FilterSettingsFragmentDirections.actionFilterSettingsFragmentToSearchFragment(true)
+            val action =
+                FilterSettingsFragmentDirections.actionFilterSettingsFragmentToSearchFragment(true)
             findNavController().navigate(action)
         }
 
+        binding.filterPlaceWork.setOnClickListener {
+            val action =
+                FilterSettingsFragmentDirections.actionFilterSettingsFragmentToFilterPlaceFragment()
+            findNavController().navigate(action)
+        }
+
+        binding.filterPlaceWorkCloseButton.setOnClickListener {
+            viewModel.clearPlace()
+        }
+
+        binding.filterPlaceWorkSelected.setOnClickListener {
+            val action =
+                FilterSettingsFragmentDirections.actionFilterSettingsFragmentToFilterPlaceFragment()
+            findNavController().navigate(action)
+        }
+
+        binding.filterIndustry.setOnClickListener {
+            val action =
+                FilterSettingsFragmentDirections.actionFilterSettingsFragmentToFilterSectorFragment()
+            findNavController().navigate(action)
+        }
+
+        binding.filterIndustrySelected.setOnClickListener {
+            val action =
+                FilterSettingsFragmentDirections.actionFilterSettingsFragmentToFilterSectorFragment()
+            findNavController().navigate(action)
+        }
+        
     }
 
-    private fun manageScreenContent(state: FilterScreenState){
-        with(binding){
-            when(state){
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun manageScreenContent(state: FilterScreenState) {
+        with(binding) {
+            when (state) {
 
                 is FilterScreenState.Content -> {
                     filterSettingClearButton.visibility = View.VISIBLE
                     filterSettingSelectButton.visibility = View.VISIBLE
 
-                   state.countryName?.let {
-                       filterPlaceWork.visibility = View.GONE
-                       filterPlaceWorkSelected.visibility = View.VISIBLE
-                       filterPlaceWorkCloseButton.visibility = View.VISIBLE
-                       filterPlaceWorkName.text = it
-                   }
-
-                    state.regionName?.let{
+                    if (state.countryName == null && state.regionName == null) {
+                        filterPlaceWork.visibility = View.VISIBLE
+                        filterPlaceWorkSelected.visibility = View.GONE
+                        filterPlaceWorkCloseButton.visibility = View.GONE
+                        filterPlaceWorkName.text = ""
+                    } else if (state.countryName != null && state.regionName != null) {
                         filterPlaceWork.visibility = View.GONE
                         filterPlaceWorkSelected.visibility = View.VISIBLE
                         filterPlaceWorkCloseButton.visibility = View.VISIBLE
-                        val workPlace = "${state.countryName}, $it"
+                        val workPlace = "${state.countryName}, ${state.regionName}"
                         filterPlaceWorkName.text = workPlace
+                    } else {
+                        filterPlaceWork.visibility = View.GONE
+                        filterPlaceWorkSelected.visibility = View.VISIBLE
+                        filterPlaceWorkCloseButton.visibility = View.VISIBLE
+                        filterPlaceWorkName.text = state.countryName
                     }
 
-                    state.industryName?.let{
+                    if (state.industryName != null) {
                         filterIndustry.visibility = View.GONE
                         filterIndustrySelected.visibility = View.VISIBLE
                         filterIndustryCloseButton.visibility = View.VISIBLE
-                        filterIndustryName.text = it
+                        filterIndustryName.text = state.industryName
+                    } else {
+                        filterIndustry.visibility = View.VISIBLE
+                        filterIndustrySelected.visibility = View.GONE
+                        filterIndustryCloseButton.visibility = View.GONE
+                        filterIndustryName.text = ""
                     }
 
                     state.expectedSalary?.let {
-                        if (filterSalaryInputEditText.text.isNullOrBlank()){
+                        if (filterSalaryInputEditText.text.isNullOrBlank()) {
                             filterSalaryInputEditText.setText(it.toString())
                         }
                     }
@@ -132,6 +174,7 @@ class FilterSettingsFragment : Fragment() {
                     filterSalary.isChecked = state.isOnlyWithSalary
 
                 }
+
                 FilterScreenState.Default -> {
                     filterPlaceWork.visibility = View.VISIBLE
                     filterIndustry.visibility = View.VISIBLE
@@ -155,9 +198,9 @@ class FilterSettingsFragment : Fragment() {
             if (s.isNullOrBlank()) View.GONE else View.VISIBLE
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    companion object {
+        const val SHARED_PREFS_EDITING_DELAY = 500L
     }
+
 
 }

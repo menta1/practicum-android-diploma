@@ -44,7 +44,7 @@ class SearchViewModel @Inject constructor(
         if (searchText.isNotEmpty()) {
             viewModelScope.launch {
                 if (currentPage == 0) _viewState.value = SearchModelState.Loading
-                interactor.search(searchText, currentPage).collect { result ->
+                interactor.search(searchText, currentPage, filter).collect { result ->
                     _viewState.value = SearchModelState.Search
                     if (result.second.page?.let { it < 1 } == true) {
                         _usersFound.value = result.second.found.toString()
@@ -99,7 +99,6 @@ class SearchViewModel @Inject constructor(
 
     fun getFilter() {
         filter = filterInteractor.getFilter()
-        filter = null
     }
 
     fun isFilterEmpty(): Boolean = filterInteractor.isFilterEmpty()

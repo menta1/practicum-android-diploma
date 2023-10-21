@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import ru.practicum.android.diploma.App
 import ru.practicum.android.diploma.databinding.FragmentFilterPlaceBinding
+import ru.practicum.android.diploma.presentation.filter.models.FilterScreenState
 import ru.practicum.android.diploma.presentation.filter.view_model.FilterViewModel
 import javax.inject.Inject
 
@@ -25,6 +28,11 @@ class FilterPlaceFragment : Fragment() {
 
         }
         (activity?.application as App).appComponent.activityComponent().create().inject(this)
+
+
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            customBackNavigation()
+        }
     }
 
     override fun onCreateView(
@@ -38,11 +46,122 @@ class FilterPlaceFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.getFilter()
+        viewModel.filterScreenState.observe(viewLifecycleOwner) { state ->
+            manageScreenContent(state)
+        }
 
+        viewModel.isAllowedToNavigate.observe(viewLifecycleOwner) { isNavigationAllowed ->
+
+            if (isNavigationAllowed) {
+                val action =
+                    FilterPlaceFragmentDirections.actionFilterPlaceFragmentToFilterSettingsFragment()
+                findNavController().navigate(action)
+            }
+        }
+
+        binding.navigationBackButton.setOnClickListener {
+            customBackNavigation()
+        }
+
+        binding.filterCountry.setOnClickListener {
+            val action =
+                FilterPlaceFragmentDirections.actionFilterPlaceFragmentToFilterCountryFragment()
+            findNavController().navigate(action)
+        }
+
+        binding.filterCountySelected.setOnClickListener {
+            val action =
+                FilterPlaceFragmentDirections.actionFilterPlaceFragmentToFilterCountryFragment()
+            findNavController().navigate(action)
+        }
+
+        binding.filterRegion.setOnClickListener {
+            val action =
+                FilterPlaceFragmentDirections.actionFilterPlaceFragmentToFilterRegionFragment()
+            findNavController().navigate(action)
+        }
+
+        binding.filterRegionSelected.setOnClickListener {
+            val action =
+                FilterPlaceFragmentDirections.actionFilterPlaceFragmentToFilterRegionFragment()
+            findNavController().navigate(action)
+        }
+
+        binding.countryCloseButton.setOnClickListener {
+            viewModel.clearCountry()
+        }
+
+        binding.cityCloseButton.setOnClickListener {
+            viewModel.clearRegion()
+        }
+
+
+        binding.selectionButton.setOnClickListener {
+            customBackNavigation()
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun customBackNavigation() {
+        if (viewModel.checkIfSelectionDoneProperly()) {
+            val action =
+                FilterPlaceFragmentDirections.actionFilterPlaceFragmentToFilterSettingsFragment()
+            findNavController().navigate(action)
+        } else {
+            viewModel.addCountryWhenItIsNotSelected()
+        }
+    }
+
+    private fun manageScreenContent(state: FilterScreenState) {
+        with(binding) {
+            when (state) {
+                is FilterScreenState.Content -> {
+
+                    if (state.countryName != null) {
+                        filterCountry.visibility = View.GONE
+                        filterCountySelected.visibility = View.VISIBLE
+                        countryCloseButton.visibility = View.VISIBLE
+                        filterCountryName.text = state.countryName
+                    } else {
+                        filterCountry.visibility = View.VISIBLE
+                        filterCountySelected.visibility = View.GONE
+                        countryCloseButton.visibility = View.GONE
+                    }
+
+
+                    if (state.regionName != null) {
+                        filterRegion.visibility = View.GONE
+                        filterRegionSelected.visibility = View.VISIBLE
+                        cityCloseButton.visibility = View.VISIBLE
+                        filterRegionName.text = state.regionName
+                    } else {
+                        filterRegion.visibility = View.VISIBLE
+                        filterRegionSelected.visibility = View.GONE
+                        cityCloseButton.visibility = View.GONE
+                    }
+
+                    if (state.regionName == null && state.countryName == null) {
+                        selectionButton.visibility = View.GONE
+                    } else selectionButton.visibility = View.VISIBLE
+                }
+
+                FilterScreenState.Default -> {
+                    filterCountry.visibility = View.VISIBLE
+                    filterRegion.visibility = View.VISIBLE
+
+                    filterCountySelected.visibility = View.GONE
+                    filterRegionSelected.visibility = View.GONE
+                    countryCloseButton.visibility = View.GONE
+                    cityCloseButton.visibility = View.GONE
+
+                    selectionButton.visibility = View.GONE
+                }
+            }
+        }
     }
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/ScreensBackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    style="@style/ScreensBackground"
     tools:context=".presentation.developers.ui.DevelopersFragment">
 
     <TextView
@@ -26,6 +26,7 @@
         android:text="@string/worked_on_app" />
 
     <TextView
+        android:id="@+id/first_developer"
         style="@style/baseLineMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,6 +35,7 @@
         android:text="@string/first_developer" />
 
     <TextView
+        android:id="@+id/second_developer"
         style="@style/baseLineMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,6 +44,7 @@
         android:text="@string/second_developer" />
 
     <TextView
+        android:id="@+id/third_developer"
         style="@style/baseLineMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,6 +53,7 @@
         android:text="@string/third_developer" />
 
     <TextView
+        android:id="@+id/fourth_developer"
         style="@style/baseLineMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

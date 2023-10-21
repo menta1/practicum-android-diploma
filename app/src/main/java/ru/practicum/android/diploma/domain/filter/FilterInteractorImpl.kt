@@ -17,6 +17,10 @@ class FilterInteractorImpl @Inject constructor(
 
     override fun getAllIndustries(): Flow<NetworkResource<List<Industry>>> = repository.getAllIndustries()
 
+    override fun getAllPossibleRegions(): Flow<NetworkResource<List<Region>>>  = repository.getAllPossibleRegions()
+
+    override fun getCountyByRegionId(regionId: String): Flow<NetworkResource<Region>>  = repository.getCountyByRegionId(regionId)
+
     override fun getFilter(): Filter? {
         return repository.getFilter()
     }
@@ -63,5 +67,9 @@ class FilterInteractorImpl @Inject constructor(
 
     override fun isFilterEmpty(): Boolean {
         return repository.isFilterEmpty()
+    }
+
+    override fun clearPlace() {
+        return repository.clearPlace()
     }
 }

@@ -103,15 +103,8 @@ class FavouriteFragment : Fragment(), ClickListener {
     }
 
     override fun clickOnVacancy(vacancyId: String) {
-        val bundle = Bundle()
-        bundle.putString(VACANCY, vacancyId)
         findNavController().navigate(
-            R.id.action_favouriteFragment_to_detailsFragment,
-            bundle
+            FavouriteFragmentDirections.actionFavouriteFragmentToDetailsFragment(vacancyId)
         )
-    }
-
-    companion object {
-        const val VACANCY = "vacancy"
     }
 }

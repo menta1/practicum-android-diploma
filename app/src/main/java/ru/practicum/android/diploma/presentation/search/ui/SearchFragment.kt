@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import androidx.core.os.bundleOf
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
@@ -63,6 +62,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         scrolling(adapter)
         stateView()
         openFilters()
+        manageFilterButtonsVisibility(viewModel.isFilterEmpty())
     }
 
     private fun stateView() {
@@ -216,23 +216,36 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         }
     }
 
+    private fun manageFilterButtonsVisibility(isFilterEmpty: Boolean) {
+        binding.buttonFiltersEmpty.visibility = if (isFilterEmpty) View.VISIBLE else View.GONE
+        binding.buttonFiltersNotEmpty.visibility = if (isFilterEmpty) View.GONE else View.VISIBLE
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getFilter()
+    }
+
     override fun onClick(item: Vacancy) {
-        val bundle = bundleOf(VACANCY to item.id)
-        findNavController().navigate(R.id.action_searchFragment_to_detailsFragment, bundle)
+        findNavController().navigate(
+            SearchFragmentDirections.actionSearchFragmentToDetailsFragment(item.id)
+        )
     }
 
     companion object {
         const val START_SEARCH = "startSearch"
-        const val VACANCY = "vacancy"
     }
 
     private fun openFilters() {
-        binding.buttonFilters.setOnClickListener {
+        binding.buttonFiltersEmpty.setOnClickListener {
+            findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)
+        }
+        binding.buttonFiltersNotEmpty.setOnClickListener {
             findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)
         }
     }
