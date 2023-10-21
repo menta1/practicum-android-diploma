@@ -8,23 +8,51 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
+import ru.practicum.android.diploma.databinding.ItemProgressBinding
 import ru.practicum.android.diploma.databinding.VacancyItemBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import java.text.NumberFormat
 import java.util.Locale
 
 class VacancyAdapter(private val listener: Listener) :
-    RecyclerView.Adapter<VacancyAdapter.Holder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    companion object {
+        const val VIEW_TYPE_VACANCY = 1
+        const val VIEW_TYPE_LOADING = 0
+    }
 
     private var itemList = emptyList<Vacancy>()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.vacancy_item, parent, false)
-        return Holder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            VIEW_TYPE_VACANCY -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.vacancy_item, parent, false)
+                return VacancyViewHolder(view)
+            }
+
+            VIEW_TYPE_LOADING -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.item_progress, parent, false)
+                return LoadingViewHolder(view)
+            }
+
+            else -> throw IllegalArgumentException("Не правильный тип")
+        }
+
     }
 
-    override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.bind(itemList[position], listener)
+    override fun getItemViewType(position: Int): Int {
+        return if (position < itemList.size - 1) VIEW_TYPE_VACANCY else VIEW_TYPE_LOADING
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        if (holder is VacancyViewHolder) {
+            holder.bind(itemList[position], listener)
+        } else if (holder is LoadingViewHolder) {
+            holder.bind()
+        }
     }
 
 
@@ -36,49 +64,43 @@ class VacancyAdapter(private val listener: Listener) :
         diffResult.dispatchUpdatesTo(this)
     }
 
-    class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val binding = VacancyItemBinding.bind(itemView)
         fun bind(item: Vacancy, listener: Listener) = with(binding) {
             vacancyItemTitle.text = item.name
             vacancyItemEmployer.text = item.employer
             vacancyItemSalary.text = formatSalaryString(
-                salaryFrom = item.salaryFrom,
-                salaryTo = item.salaryTo,
-                currency = item.currency
+                salaryFrom = item.salaryFrom, salaryTo = item.salaryTo, currency = item.currency
             )
             itemView.setOnClickListener {
                 listener.onClick(item)
             }
-            Glide.with(vacancyImage)
-                .load(item.employerLogoUrls)
+            Glide.with(vacancyImage).load(item.employerLogoUrls)
                 .placeholder(R.drawable.logo_not_load)
                 .transform(RoundedCorners(vacancyImage.resources.getDimensionPixelSize(R.dimen.round_radius_search)))
                 .into(vacancyImage)
         }
 
         private fun formatSalaryString(
-            salaryFrom: Int?,
-            salaryTo: Int?,
-            currency: String?
+            salaryFrom: Int?, salaryTo: Int?, currency: String?
         ): String {
             val formattedFrom = formatNumber(salaryFrom)
             val formattedTo = formatNumber(salaryTo)
-            val currencySign: String =
-                when (currency) {
-                    "AZN" -> "₼"
-                    "BYR" -> "Br"
-                    "EUR" -> "€"
-                    "GEL" -> "₾"
-                    "KGS" -> "с"
-                    "KZT" -> "₸"
-                    "RUR" -> "₽"
-                    "UAH" -> "₴"
-                    "USD" -> "$"
-                    "UZS" -> "Soʻm"
-                    else -> {
-                        ""
-                    }
+            val currencySign: String = when (currency) {
+                "AZN" -> "₼"
+                "BYR" -> "Br"
+                "EUR" -> "€"
+                "GEL" -> "₾"
+                "KGS" -> "с"
+                "KZT" -> "₸"
+                "RUR" -> "₽"
+                "UAH" -> "₴"
+                "USD" -> "$"
+                "UZS" -> "Soʻm"
+                else -> {
+                    ""
                 }
+            }
 
             return when {
                 salaryFrom == 0 && salaryTo != null -> {
@@ -112,6 +134,11 @@ class VacancyAdapter(private val listener: Listener) :
                 if (it > 0) NumberFormat.getNumberInstance(Locale.getDefault()).format(it) else "0"
             } ?: ""
         }
+    }
+
+    inner class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val binding = ItemProgressBinding.bind(itemView)
+        fun bind() = binding
     }
 
     class ItemDiffCallback(private val oldList: List<Vacancy>, private val newList: List<Vacancy>) :
