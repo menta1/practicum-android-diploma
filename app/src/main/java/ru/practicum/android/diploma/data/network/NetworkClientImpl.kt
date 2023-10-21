@@ -3,7 +3,6 @@ package ru.practicum.android.diploma.data.network
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import ru.practicum.android.diploma.data.network.dto.IndustryResponse
@@ -11,6 +10,7 @@ import ru.practicum.android.diploma.data.network.dto.RegionResponse
 import ru.practicum.android.diploma.data.network.dto.Response
 import ru.practicum.android.diploma.data.network.dto.SingleRegionResponse
 import ru.practicum.android.diploma.data.network.dto.VacancyDetailResponse
+import ru.practicum.android.diploma.data.network.dto.VacancyRequest
 import javax.inject.Inject
 
 class NetworkClientImpl @Inject constructor(
@@ -18,21 +18,16 @@ class NetworkClientImpl @Inject constructor(
     private val context: Context
 ) : NetworkClient {
 
-    override suspend fun search(dto: Any): Response {
+    override suspend fun search(dto: VacancyRequest): Response {
         if (!isConnected()) {
-            Log.d("tag", "-1 ")
             return Response().apply { resultCode = -1 }
         }
-//        if (dto !is VacancyRequest) {
-//            Log.d("tag", "-400 " + dto)
-//            return Response().apply { resultCode = 400 }
-//        }
         return withContext(Dispatchers.IO) {
             try {
-                val response = hhSearchApi.search(dto as HashMap<String, String>)
+                val response = hhSearchApi.search(dto.request)
                 response.apply { resultCode = 200 }
             } catch (e: Exception) {
-               e.printStackTrace()
+                e.printStackTrace()
                 Response().apply { resultCode = 500 }
             }
         }
@@ -40,42 +35,42 @@ class NetworkClientImpl @Inject constructor(
 
     override suspend fun getAllCountries(): Response {
 
-        if (!isConnected()){
+        if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
         val response = hhSearchApi.getAllCountries()
 
-        return if (response.code()==200 && response.body() != null){
+        return if (response.code() == 200 && response.body() != null) {
             RegionResponse(results = response.body()!!).apply { resultCode = 200 }
-        } else{
+        } else {
             Response().apply { resultCode = response.code() }
         }
     }
 
     override suspend fun getAllRegionsInCountry(countryId: String): Response {
 
-        if (!isConnected()){
+        if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
         val response = hhSearchApi.getAllRegionsInCountry(countryId)
 
-        return if (response.code()==200 && response.body() != null){
-            SingleRegionResponse(results = response.body()!! ).apply { resultCode = 200 }
-        } else{
+        return if (response.code() == 200 && response.body() != null) {
+            SingleRegionResponse(results = response.body()!!).apply { resultCode = 200 }
+        } else {
             Response().apply { resultCode = response.code() }
         }
     }
 
     override suspend fun getAllIndustries(): Response {
 
-        if (!isConnected()){
+        if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
         val response = hhSearchApi.getAllIndustries()
 
-        return if (response.code()==200 && response.body() != null){
-            IndustryResponse(results = response.body()!! ).apply { resultCode = 200 }
-        } else{
+        return if (response.code() == 200 && response.body() != null) {
+            IndustryResponse(results = response.body()!!).apply { resultCode = 200 }
+        } else {
             Response().apply { resultCode = response.code() }
         }
     }
@@ -93,13 +88,13 @@ class NetworkClientImpl @Inject constructor(
         }
     }
 
-    override suspend fun getSimilarVacancy(vacancyId: String, dto: Any): Response {
+    override suspend fun getSimilarVacancy(vacancyId: String, dto: VacancyRequest): Response {
         if (!isConnected()) {
             return Response().apply { resultCode = -1 }
         }
         return withContext(Dispatchers.IO) {
             try {
-                val response = hhSearchApi.getSimilarVacancy(vacancyId, dto as HashMap<String, String>)
+                val response = hhSearchApi.getSimilarVacancy(vacancyId, dto.request)
                 response.apply { resultCode = 200 }
             } catch (e: Exception) {
                 e.printStackTrace()
