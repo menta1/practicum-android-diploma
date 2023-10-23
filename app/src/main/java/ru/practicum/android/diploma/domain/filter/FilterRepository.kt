@@ -30,4 +30,8 @@ interface FilterRepository {
     fun clearFilter()
 
     fun isFilterEmpty(): Boolean
+
+    fun getSavedInput(): String
+    fun putSavedInput(input: String)
+    fun clearSavedInput()
 }

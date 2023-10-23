@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -32,6 +33,9 @@ class FilterSettingsFragment : Fragment() {
 
         }
         (activity?.application as App).appComponent.activityComponent().create().inject(this)
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            navigateBackWithoutSearch()
+        }
     }
 
     override fun onCreateView(
@@ -60,7 +64,7 @@ class FilterSettingsFragment : Fragment() {
             }
         }
 
-        binding.buttonBack.setOnClickListener { findNavController().navigateUp() }
+        binding.buttonBack.setOnClickListener { navigateBackWithoutSearch() }
 
         binding.filterPlaceWorkCloseButton.setOnClickListener { viewModel.clearWorkPlace() }
 
@@ -209,9 +213,13 @@ class FilterSettingsFragment : Fragment() {
             if (s.isNullOrBlank()) View.GONE else View.VISIBLE
     }
 
+    private fun navigateBackWithoutSearch(){
+        val action =
+            FilterSettingsFragmentDirections.actionFilterSettingsFragmentToSearchFragment(false)
+        findNavController().navigate(action)
+    }
     companion object {
         const val SHARED_PREFS_EDITING_DELAY = 500L
     }
-
 
 }
