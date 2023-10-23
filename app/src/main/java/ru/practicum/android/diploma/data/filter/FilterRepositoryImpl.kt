@@ -235,13 +235,15 @@ class FilterRepositoryImpl @Inject constructor(
         if (expectedSalary.isNullOrBlank()){
             clearExpectedSalary()
         }
+        else if (expectedSalary.toString() =="0"){
+            clearExpectedSalary()
+        }
         else {
             val editedFilter =
                 filterFromData?.copy(expectedSalary = expectedSalary.toString().toLong())
                     ?: Filter(expectedSalary = expectedSalary.toString().toLong())
             filterStorage.editFilter(Gson().toJson(editedFilter))
         }
-
     }
 
     override fun editIsOnlyWithSalary(isOnlyWithSalary: Boolean) {
