@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Dispatchers
+import ru.practicum.android.diploma.data.Constants.NO_INTERNET
+import ru.practicum.android.diploma.data.Constants.OK_RESPONSE
 import ru.practicum.android.diploma.domain.details.DetailsInteractor
 import ru.practicum.android.diploma.domain.models.VacancyDetail
 import ru.practicum.android.diploma.domain.share.SharingInteractor
@@ -36,9 +38,9 @@ class DetailsViewModel @Inject constructor(
                 try {
                     val networkResource = interactor.getVacancyDetails(vacancyId)
                     when (networkResource.code) {
-                        -1 -> { detailsStateLiveData.postValue(DetailsState.Error)}
+                        NO_INTERNET -> { detailsStateLiveData.postValue(DetailsState.Error)}
 
-                        200 -> {
+                        OK_RESPONSE -> {
                             currentVacancy = networkResource.data!!
                             detailsStateLiveData.postValue(DetailsState.Content(networkResource.data))
                         }

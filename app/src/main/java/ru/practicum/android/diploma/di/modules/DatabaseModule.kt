@@ -12,10 +12,15 @@ import javax.inject.Singleton
 
 @Module
 class DatabaseModule {
+
+    companion object {
+        const val DATABASE = "database.db"
+    }
+
     @Singleton
     @Provides
     fun provideDatabase(context: Context): AppDatabase {
-        return Room.databaseBuilder(context, AppDatabase::class.java, "database.db")
+        return Room.databaseBuilder(context, AppDatabase::class.java, DATABASE)
             .fallbackToDestructiveMigration()
             .build()
     }
