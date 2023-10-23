@@ -21,8 +21,17 @@ class FilterStorageImpl @Inject constructor(context: Context): FilterStorage {
         sharedPrefs.edit().putString(FILTER,"").apply()
     }
 
+    override fun getPreviousCountry(): String {
+        return sharedPrefs.getString(PREVIOUS_COUNTRY, "") ?: ""
+    }
+
+    override fun editPreviousCountry(countryId: String) {
+        sharedPrefs.edit().putString(PREVIOUS_COUNTRY,countryId).apply()
+    }
+
     companion object{
         private const val SHARED_PREFS = "shared_prefs"
         private const val FILTER = "filter"
+        private const val PREVIOUS_COUNTRY ="prev_country"
     }
 }
