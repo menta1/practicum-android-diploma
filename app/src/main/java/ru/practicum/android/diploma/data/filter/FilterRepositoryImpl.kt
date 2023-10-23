@@ -203,12 +203,25 @@ class FilterRepositoryImpl @Inject constructor(
 
     override fun editCountryNameAndId(country: Region) {
         val filterFromData = getFilter()
+        val previousCountryId = filterStorage.getPreviousCountry()
 
-        val editedFilter =
-            filterFromData?.copy(countryName = country.name, countryId = country.id)
-                ?: Filter(countryName = country.name, countryId = country.id)
+        if (previousCountryId == country.id) {
 
-        filterStorage.editFilter(Gson().toJson(editedFilter))
+            val editedFilter =
+                filterFromData?.copy(countryName = country.name, countryId = country.id)
+                    ?: Filter(countryName = country.name, countryId = country.id)
+
+            filterStorage.editFilter(Gson().toJson(editedFilter))
+        } else {
+
+            val editedFilter =
+                filterFromData?.copy(countryName = country.name, countryId = country.id)
+                    ?: Filter(countryName = country.name, countryId = country.id)
+
+            filterStorage.editFilter(Gson().toJson(editedFilter))
+            filterStorage.editPreviousCountry(country.id)
+            clearRegionNameAndId()
+        }
     }
 
     override fun editRegionNameAndId(region: Region) {
