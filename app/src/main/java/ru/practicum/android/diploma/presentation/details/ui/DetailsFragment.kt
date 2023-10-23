@@ -158,18 +158,46 @@ class DetailsFragment : Fragment() {
         }
     }
 
-    private fun salaryText(salaryFrom: Int?, salaryTo: Int?, currency: String?) =
-        if (salaryFrom != null && salaryTo != null) {
-            getString(R.string.salary_from) + " " +
-                    salaryText(salaryFrom) + " " + getString(R.string.salary_to) + " " +
-                    salaryText(salaryTo) + " " + currency
-        } else if (salaryFrom != null) {
-            getString(R.string.salary_from) + " " + salaryText(salaryFrom) + " " + currency
-        } else if (salaryTo != null) {
-            getString(R.string.salary_to) + " " + salaryText(salaryTo) + " " + currency
-        } else {
-            getString(R.string.without_salary)
+    private fun salaryText(salaryFrom: Int?, salaryTo: Int?, currencyRaw: String?): String {
+        val currency = when (currencyRaw) {
+            "AZN" -> "₼"
+            "BYR" -> "Br"
+            "EUR" -> "€"
+            "GEL" -> "₾"
+            "KGS" -> "с"
+            "KZT" -> "₸"
+            "RUR" -> "₽"
+            "UAH" -> "₴"
+            "USD" -> "$"
+            "UZS" -> "Soʻm"
+            else -> {
+                currencyRaw
+            }
         }
+        return when {
+            salaryFrom == 0 && salaryTo != null && salaryTo != 0 -> {
+                getString(R.string.salary_to, salaryText(salaryTo), currency)
+            }
+            salaryFrom != null && salaryTo == null || salaryTo == 0 -> {
+                getString(
+                    R.string.salary_from,
+                    salaryText(salaryFrom!!),
+                    currency
+                )
+            }
+            salaryFrom != null && salaryTo != null -> {
+                getString(
+                    R.string.salary_from_to,
+                    salaryText(salaryFrom),
+                    salaryText(salaryTo),
+                    currency
+                )
+            }
+            else -> {
+                getString(R.string.without_salary)
+            }
+        }
+    }
 
     private fun salaryText(number: Int): String {
         return NumberFormat.getInstance().format(number)
