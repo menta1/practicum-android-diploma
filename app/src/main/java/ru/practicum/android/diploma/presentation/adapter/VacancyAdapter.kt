@@ -22,6 +22,7 @@ class VacancyAdapter(private val listener: Listener) :
         const val VIEW_TYPE_LOADING = 0
     }
 
+    var loading = false
     private var itemList = emptyList<Vacancy>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -29,13 +30,13 @@ class VacancyAdapter(private val listener: Listener) :
             VIEW_TYPE_VACANCY -> {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.vacancy_item, parent, false)
-                return VacancyViewHolder(view)
+                VacancyViewHolder(view)
             }
 
             VIEW_TYPE_LOADING -> {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.item_progress, parent, false)
-                return LoadingViewHolder(view)
+                LoadingViewHolder(view)
             }
 
             else -> throw IllegalArgumentException("Не правильный тип")
@@ -52,9 +53,13 @@ class VacancyAdapter(private val listener: Listener) :
             holder.bind(itemList[position], listener)
         } else if (holder is LoadingViewHolder) {
             holder.bind()
+            if (loading) {
+                holder.binding.root.visibility = View.GONE
+            } else {
+                holder.binding.root.visibility = View.VISIBLE
+            }
         }
     }
-
 
     override fun getItemCount(): Int = itemList.size
 
@@ -143,13 +148,9 @@ class VacancyAdapter(private val listener: Listener) :
 
     class ItemDiffCallback(private val oldList: List<Vacancy>, private val newList: List<Vacancy>) :
         DiffUtil.Callback() {
-        override fun getOldListSize(): Int {
-            return oldList.size
-        }
+        override fun getOldListSize(): Int = oldList.size
 
-        override fun getNewListSize(): Int {
-            return newList.size
-        }
+        override fun getNewListSize(): Int = newList.size
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
             return oldList[oldItemPosition].id == newList[newItemPosition].id

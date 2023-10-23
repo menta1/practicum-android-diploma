@@ -7,4 +7,5 @@ sealed class SearchModelState {
     object Loaded : SearchModelState()
     object NoInternet : SearchModelState()
     object FailedToGetList : SearchModelState()
+    object LastPage: SearchModelState()
 }

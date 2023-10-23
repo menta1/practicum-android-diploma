@@ -1,6 +1,7 @@
 package ru.practicum.android.diploma.presentation.search.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private var startSearch = false
+    val adapter by lazy { VacancyAdapter(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,12 +53,11 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getFilter()
-        val adapter = VacancyAdapter(this)
         binding.recyclerVacancy.adapter = adapter
         binding.recyclerVacancy.layoutManager = LinearLayoutManager(requireContext())
-        setVacancies(adapter)
+        setVacancies()
         setupSearchInput()
-        scrolling(adapter)
+        scrolling()
         stateView()
         openFilters()
         manageFilterButtonsVisibility(viewModel.isFilterEmpty())
@@ -77,9 +78,15 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
                     SearchModelState.NoInternet -> stateNoInternet()
 
                     SearchModelState.FailedToGetList -> stateFailedToGetList()
+
+                    SearchModelState.LastPage -> stateLastPage()
                 }
             }
         }
+    }
+
+    private fun stateLastPage() {
+        adapter.loading = true
     }
 
     private fun stateNoSearch() {
@@ -108,6 +115,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
 
     private fun stateSearch() {
         with(binding) {
+            adapter.loading = false
             progressBar.visibility = View.VISIBLE
             imageSearchNotStarted.visibility = View.GONE
             recyclerVacancy.visibility = View.VISIBLE
@@ -154,16 +162,17 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         }
     }
 
-    private fun scrolling(adapter: VacancyAdapter) {
+    private fun scrolling() {
         binding.recyclerVacancy.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-
                 if (dy > 0) {
                     val pos =
                         (binding.recyclerVacancy.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                     val itemsCount = adapter.itemCount
                     if (pos >= itemsCount - 1) {
+                        //adapter.loading = true
+                        Log.d("tag", "pos >= itemsCount " + adapter.loading)
                         viewModel.onLastItemReached()
                     }
                 }
@@ -171,10 +180,10 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         })
     }
 
-
-    private fun setVacancies(adapter: VacancyAdapter) {
+    private fun setVacancies() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.usersFlow.collect { list ->
+                Log.d("tag", "usersFlow.collect " + adapter.loading)
                 adapter.setData(list)
             }
         }
@@ -233,7 +242,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         )
     }
 
-    companion object{
+    companion object {
         const val START_SEARCH = "startSearch"
     }
 

@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.presentation.search.view_model
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -65,9 +64,9 @@ class SearchViewModel @Inject constructor(
                     currentPage = result.second.page?.plus(1) ?: 0
                     maxPages = result.second.pages ?: 0
                     if (result.second.found?.let { it <= 0 } == true) {
-                        Log.d("tag", "FailedToGetList")
                         _viewState.value = SearchModelState.FailedToGetList
                     }
+                    if (currentPage == maxPages) _viewState.value = SearchModelState.LastPage
                 }
             }
         }
@@ -90,7 +89,7 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun getFilter(){
+    fun getFilter() {
         filter = filterInteractor.getFilter()
     }
 
