@@ -19,7 +19,7 @@ interface FilterRepository {
     fun editCountryNameAndId(country: Region)
     fun editRegionNameAndId(region: Region)
     fun editIndustryNameAndId(industry: Industry)
-    fun editExpectedSalary(expectedSalary: Int)
+    fun editExpectedSalary(expectedSalary: CharSequence?)
     fun editIsOnlyWithSalary(isOnlyWithSalary: Boolean)
 
     fun clearPlace()

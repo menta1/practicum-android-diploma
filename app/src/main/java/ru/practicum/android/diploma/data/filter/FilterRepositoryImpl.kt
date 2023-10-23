@@ -194,7 +194,7 @@ class FilterRepositoryImpl @Inject constructor(
     override fun getFilter(): Filter? {
         val resultFromData = filterStorage.getFilter()
 
-        return if (resultFromData == "") {
+        return if (resultFromData == "" || resultFromData =="null") {
             null
         } else if (filterHasNoValues(Gson().fromJson(resultFromData, Filter::class.java))) {
             null
@@ -229,13 +229,19 @@ class FilterRepositoryImpl @Inject constructor(
         filterStorage.editFilter(Gson().toJson(editedFilter))
     }
 
-    override fun editExpectedSalary(expectedSalary: Int) {
+    override fun editExpectedSalary(expectedSalary: CharSequence?) {
         val filterFromData = getFilter()
 
-        val editedFilter =
-            filterFromData?.copy(expectedSalary = expectedSalary)
-                ?: Filter(expectedSalary = expectedSalary)
-        filterStorage.editFilter(Gson().toJson(editedFilter))
+        if (expectedSalary.isNullOrBlank()){
+            clearExpectedSalary()
+        }
+        else {
+            val editedFilter =
+                filterFromData?.copy(expectedSalary = expectedSalary.toString().toLong())
+                    ?: Filter(expectedSalary = expectedSalary.toString().toLong())
+            filterStorage.editFilter(Gson().toJson(editedFilter))
+        }
+
     }
 
     override fun editIsOnlyWithSalary(isOnlyWithSalary: Boolean) {

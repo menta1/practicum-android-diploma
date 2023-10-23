@@ -6,7 +6,7 @@ sealed interface FilterScreenState{
         val countryName: String? = null,
         val regionName: String? = null,
         val industryName: String? = null,
-        val expectedSalary: Int? = null,
+        val expectedSalary: Long? = null,
         val isOnlyWithSalary: Boolean = false
     ): FilterScreenState
 }

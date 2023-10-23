@@ -190,6 +190,7 @@
             android:inputType="number"
             android:paddingStart="@dimen/margin_horizontal"
             android:paddingTop="8dp"
+            android:maxLength="18"
             android:paddingEnd="@dimen/margin_horizontal"
             android:paddingBottom="8dp" />
     </com.google.android.material.textfield.TextInputLayout>

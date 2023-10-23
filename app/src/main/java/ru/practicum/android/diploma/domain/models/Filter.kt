@@ -8,6 +8,6 @@ data class Filter(
     val countryId: String? = null,
     val regionId: String? = null,
     val industryId: String? = null,
-    val expectedSalary: Int? = null,
+    val expectedSalary: Long? = null,
     val isOnlyWithSalary: Boolean = false
 )
