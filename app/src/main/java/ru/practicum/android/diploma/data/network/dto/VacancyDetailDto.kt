@@ -89,11 +89,7 @@ data class VacancyDetailDto(
     )
 
     fun getPhones(phones: List<Contacts.Phone?>?): List<Phone>? {
-        return if (phones == null) {
-            null
-        } else {
-            phones.map { phone -> Phone("${phone?.country}(${phone?.city})${phone?.number}", phone?.comment) }
-        }
+        return phones?.map { phone -> Phone("+${phone?.country}(${phone?.city})${phone?.number}", phone?.comment) }
     }
 }
 

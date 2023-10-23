@@ -86,7 +86,7 @@ class DetailsFragment : Fragment() {
     private fun updateData(data: VacancyDetail) {
         binding.textNameVacancy.text = data.name
         binding.textCurrency.text =
-            salaryText(data.salaryFrom, data.salaryTo, data.currency)
+            salaryText(data.salaryFrom, data.salaryTo, data.currencySign)
 
         Glide.with(this)
             .load(data.employerLogoUrls)
