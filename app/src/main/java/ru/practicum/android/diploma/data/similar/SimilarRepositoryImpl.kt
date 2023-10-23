@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.flow
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.PagingInfo
 import ru.practicum.android.diploma.data.network.dto.VacancyDto
+import ru.practicum.android.diploma.data.network.dto.VacancyRequest
 import ru.practicum.android.diploma.data.network.dto.VacancyResponse
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.similar.SimilarRepository
@@ -15,13 +16,12 @@ import javax.inject.Inject
 class SimilarRepositoryImpl @Inject constructor(
     private val networkClient: NetworkClient
 ) : SimilarRepository {
-    private val options: HashMap<String, String> = HashMap()
+    private val options = VacancyRequest(HashMap())
     override fun getSimilarVacancy(
-        vacancyId: String,
-        page: Int
+        vacancyId: String, page: Int
     ): Flow<Pair<NetworkResource<List<Vacancy>>, PagingInfo>> = flow {
-        options["page"] = page.toString()
-        options["per_page"] = PER_PAGE
+        options.request["page"] = page.toString()
+        options.request["per_page"] = PER_PAGE
         val response = networkClient.getSimilarVacancy(vacancyId, options)
         when (response.resultCode) {
             -1 -> {
@@ -35,9 +35,7 @@ class SimilarRepositoryImpl @Inject constructor(
                             VacancyDto::toVacancy
                         ), 200
                     ) to PagingInfo(
-                        page = response.page,
-                        pages = response.pages,
-                        found = response.found
+                        page = response.page, pages = response.pages, found = response.found
                     )
                 )
             }

@@ -2,10 +2,10 @@ package ru.practicum.android.diploma.data.search
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import ru.practicum.android.diploma.data.filter.FilterStorage
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.PagingInfo
 import ru.practicum.android.diploma.data.network.dto.VacancyDto
+import ru.practicum.android.diploma.data.network.dto.VacancyRequest
 import ru.practicum.android.diploma.data.network.dto.VacancyResponse
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Vacancy
@@ -19,24 +19,22 @@ class SearchRepositoryImpl @Inject constructor(
 ) : SearchRepository {
 
     override fun search(
-        expression: String,
-        page: Int,
-        filter: Filter?
+        expression: String, page: Int, filter: Filter?
     ): Flow<Pair<NetworkResource<List<Vacancy>>, PagingInfo>> = flow {
 
-        val options: HashMap<String, Any> = HashMap()
+        val options = VacancyRequest(HashMap())
 
         filter?.let {
-            filter.countryId?.let { options["area"] = it }
-            filter.regionId?.let { options["area"] = it }
-            filter.industryId?.let { options["industry"] = it }
-            filter.expectedSalary?.let { options["salary"] = it }
-            options["only_with_salary"] = filter.isOnlyWithSalary
+            filter.countryId?.let { options.request["area"] = it }
+            filter.regionId?.let { options.request["area"] = it }
+            filter.industryId?.let { options.request["industry"] = it }
+            filter.expectedSalary?.let { options.request["salary"] = it.toString() }
+            options.request["only_with_salary"] = filter.isOnlyWithSalary.toString()
         }
 
-        options["page"] = page.toString()
-        options["per_page"] = PER_PAGE
-        options["text"] = expression
+        options.request["page"] = page.toString()
+        options.request["per_page"] = PER_PAGE
+        options.request["text"] = expression
         val response = networkClient.search(options)
         when (response.resultCode) {
             -1 -> {
@@ -50,9 +48,7 @@ class SearchRepositoryImpl @Inject constructor(
                             VacancyDto::toVacancy
                         ), 200
                     ) to PagingInfo(
-                        page = response.page,
-                        pages = response.pages,
-                        found = response.found
+                        page = response.page, pages = response.pages, found = response.found
                     )
                 )
             }
