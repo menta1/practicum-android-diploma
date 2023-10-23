@@ -213,7 +213,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         return when {
             lastTwoDigits in 11..19 -> "Найдено $count ${vacanciesWordForms[2]}"
             lastDigit == 1 -> "Найдена $count ${vacanciesWordForms[0]}"
-            lastDigit == 0 -> "Таких вакансий нет"
+            count == 0 -> "Таких вакансий нет"
             lastDigit in 2..4 -> "Найдено $count ${vacanciesWordForms[1]}"
             else -> "Найдено $count ${vacanciesWordForms[2]}"
         }
