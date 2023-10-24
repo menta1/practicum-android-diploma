@@ -17,8 +17,8 @@ import ru.practicum.android.diploma.databinding.FragmentDetailsBinding
 import ru.practicum.android.diploma.domain.models.VacancyDetail
 import ru.practicum.android.diploma.presentation.details.models.DetailsState
 import ru.practicum.android.diploma.presentation.details.view_model.DetailsViewModel
-import java.text.NumberFormat
-import java.util.Locale
+import ru.practicum.android.diploma.presentation.utils.getCurrencySign
+import ru.practicum.android.diploma.presentation.utils.getSalaryText
 import javax.inject.Inject
 
 class DetailsFragment : Fragment() {
@@ -86,7 +86,7 @@ class DetailsFragment : Fragment() {
     private fun updateData(data: VacancyDetail) {
         binding.textNameVacancy.text = data.name
         binding.textCurrency.text =
-            salaryText(data.salaryFrom, data.salaryTo, data.currencySign)
+            getSalaryText(data.salaryFrom, data.salaryTo, getCurrencySign(data.currency), requireContext())
 
         Glide.with(this)
             .load(data.employerLogoUrls)
@@ -151,42 +151,6 @@ class DetailsFragment : Fragment() {
             binding.textMessage.visibility = View.GONE
             binding.textMessageTitle.visibility = View.GONE
         }
-    }
-
-    private fun salaryText(salaryFrom: Int?, salaryTo: Int?, currency: String?): String {
-        val formattedFrom = salaryFormat(salaryFrom)
-        val formattedTo = salaryFormat(salaryTo)
-
-        return when {
-            salaryFrom == 0 && salaryTo != null -> {
-                "$formattedFrom $currency"
-            }
-
-            salaryFrom != null && salaryTo == 0 -> {
-                "от $formattedFrom $currency"
-            }
-
-            salaryFrom != null && salaryTo != null -> {
-                "от $formattedFrom до $formattedTo $currency"
-            }
-
-            salaryFrom != null && salaryTo == null -> {
-                "от $formattedFrom $currency"
-            }
-
-            salaryFrom == null && salaryTo != null -> {
-                "$formattedTo $currency"
-            }
-            else -> {
-                getString(R.string.without_salary)
-            }
-        }
-    }
-
-    private fun salaryFormat(number: Int?): String {
-        return number?.let {
-            if (it > 0) NumberFormat.getNumberInstance(Locale.getDefault()).format(it) else "0"
-        } ?: ""
     }
 
     private fun skillText(skills: List<String>): String {

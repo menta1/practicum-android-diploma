@@ -18,21 +18,4 @@ data class VacancyDetail(
     val email: String?,
     val contactPerson: String?,
     val url: String
-) {
-    val currencySign: String
-        get() = when (currency) {
-            "AZN" -> "₼"
-            "BYR" -> "Br"
-            "EUR" -> "€"
-            "GEL" -> "₾"
-            "KGS" -> "с"
-            "KZT" -> "₸"
-            "RUR" -> "₽"
-            "UAH" -> "₴"
-            "USD" -> "$"
-            "UZS" -> "Soʻm"
-            else -> {
-                ""
-            }
-        }
-}
+)
