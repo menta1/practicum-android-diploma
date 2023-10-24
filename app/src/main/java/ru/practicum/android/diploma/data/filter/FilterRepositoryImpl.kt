@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import ru.practicum.android.diploma.data.Constants.OK_RESPONSE
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.converters.FiltersNetworkConverter
 import ru.practicum.android.diploma.data.network.dto.IndustryDto
@@ -31,7 +32,7 @@ class FilterRepositoryImpl @Inject constructor(
         val resultFromData = networkClient.getAllCountries()
         when (resultFromData.resultCode) {
 
-            200 -> {
+            OK_RESPONSE -> {
                 emit(
                     NetworkResource(
                         data =
@@ -55,7 +56,7 @@ class FilterRepositoryImpl @Inject constructor(
             val resultFromData = networkClient.getAllRegionsInCountry(countryId)
             when (resultFromData.resultCode) {
 
-                200 -> {
+                OK_RESPONSE -> {
                     val rawResults = (resultFromData as SingleRegionResponse).results
                     val finalResults = mutableListOf<RegionDto>()
 
@@ -92,7 +93,7 @@ class FilterRepositoryImpl @Inject constructor(
         when (resultFromData.resultCode) {
 
 
-            200 -> {
+            OK_RESPONSE -> {
                 val rawResults = (resultFromData as IndustryResponse).results
                 val finalResults = mutableListOf<IndustryDto>()
 
@@ -128,7 +129,7 @@ class FilterRepositoryImpl @Inject constructor(
         val resultFromData = networkClient.getAllCountries()
         when (resultFromData.resultCode) {
 
-            200 -> {
+            OK_RESPONSE -> {
                 val finalResults = mutableListOf<RegionDto>()
                 val rawResults = (resultFromData as RegionResponse).results
 
@@ -166,7 +167,7 @@ class FilterRepositoryImpl @Inject constructor(
         val resultFromData = networkClient.getAllRegionsInCountry(regionId)
         when (resultFromData.resultCode) {
 
-            200 -> {
+            OK_RESPONSE -> {
                 val rawResults = (resultFromData as SingleRegionResponse).results
                 var finalResult = rawResults
                 var id = finalResult.parentId

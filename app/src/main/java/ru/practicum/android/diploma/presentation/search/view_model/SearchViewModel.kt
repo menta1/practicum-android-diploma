@@ -5,12 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.data.Constants.NO_INTERNET
+import ru.practicum.android.diploma.data.Constants.OK_RESPONSE
 import ru.practicum.android.diploma.domain.filter.FilterInteractor
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.search.SearchInteractor
 import ru.practicum.android.diploma.presentation.search.SearchModelState
-import ru.practicum.android.diploma.util.Constants.SEARCH_DEBOUNCE_DELAY
 import ru.practicum.android.diploma.util.debounce
 import javax.inject.Inject
 
@@ -58,8 +59,8 @@ class SearchViewModel @Inject constructor(
                         _usersFoundLiveData.value = result.second.found.toString()
                     }
                     when (result.first.code) {
-                        -1 -> _viewStateLiveData.value = SearchModelState.NoInternet
-                        200 -> {
+                        NO_INTERNET -> _viewStateLiveData.value = SearchModelState.NoInternet
+                        OK_RESPONSE -> {
                             _viewStateLiveData.value = SearchModelState.Loaded
                             if (result.second.page?.let { it >= 1 } == true) {
                                 val tempFile = _usersLiveData.value?.plus(result.first.data!!)
@@ -128,5 +129,8 @@ class SearchViewModel @Inject constructor(
         }
         else filterInteractor.clearSavedInput()
     }
-
+    
+    companion object{
+        const val SEARCH_DEBOUNCE_DELAY = 2000L
+    }
 }
