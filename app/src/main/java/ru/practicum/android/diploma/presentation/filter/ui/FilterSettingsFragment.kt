@@ -45,13 +45,19 @@ class FilterSettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        editDebounce = debounce(SHARED_PREFS_EDITING_DELAY, lifecycleScope, false) { input ->
-            viewModel.editExpectedSalary(input.toString().toInt())
+        editDebounce = debounce(SHARED_PREFS_EDITING_DELAY, lifecycleScope, true) { input ->
+            viewModel.editExpectedSalary(input)
         }
 
         viewModel.getFilter()
         viewModel.filterScreenState.observe(viewLifecycleOwner) { state ->
             manageScreenContent(state)
+        }
+
+        viewModel.isSelectionButtonVisible.observe(viewLifecycleOwner){isVisible->
+            if (viewModel.filterScreenState.value == FilterScreenState.Default){
+                manageSelectionsButtonsVisibility(isVisible)
+            }
         }
 
         binding.buttonBack.setOnClickListener { findNavController().navigateUp() }
@@ -72,7 +78,7 @@ class FilterSettingsFragment : Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 manageClearButtonVisibility(s)
-                if (!s.isNullOrBlank()) editDebounce(s)
+                editDebounce(s)
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -191,6 +197,11 @@ class FilterSettingsFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun manageSelectionsButtonsVisibility(isVisible:Boolean   ){
+        binding.filterSettingClearButton.visibility = if (isVisible )View.VISIBLE else View.GONE
+        binding.filterSettingSelectButton.visibility = if (isVisible )View.VISIBLE else View.GONE
     }
 
     private fun manageClearButtonVisibility(s: CharSequence?) {

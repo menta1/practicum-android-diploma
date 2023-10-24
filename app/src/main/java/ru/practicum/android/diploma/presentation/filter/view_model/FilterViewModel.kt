@@ -242,7 +242,6 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
 
     fun clearExpectedSalary() {
         interactor.clearExpectedSalary()
-        getFilter()
     }
 
     fun clearFiler() {
@@ -250,9 +249,9 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
         getFilter()
     }
 
-    fun editExpectedSalary(input: Int) {
+    fun editExpectedSalary(input: CharSequence?) {
         interactor.editExpectedSalary(input)
-        getFilter()
+        _isSelectionButtonVisible.postValue(!input.isNullOrBlank())
     }
 
     fun editIsOnlyWithSalary(isOnlyWithSalary: Boolean) {
