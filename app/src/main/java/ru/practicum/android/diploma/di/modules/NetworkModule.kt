@@ -15,11 +15,14 @@ import ru.practicum.android.diploma.data.network.converters.FiltersNetworkConver
 @Module
 class NetworkModule {
 
-    @Provides
+    companion object {
+        const val BASE_URL = "https://api.hh.ru"
+    }
 
+    @Provides
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://api.hh.ru")
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

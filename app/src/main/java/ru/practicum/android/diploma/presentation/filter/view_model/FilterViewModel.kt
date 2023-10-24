@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.data.Constants.NO_INTERNET
+import ru.practicum.android.diploma.data.Constants.OK_RESPONSE
 import ru.practicum.android.diploma.domain.filter.FilterInteractor
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Industry
@@ -76,11 +78,11 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
         viewModelScope.launch(Dispatchers.IO) {
             interactor.getAllCountries().collect { apiResult ->
                 when (apiResult.code) {
-                    -1 -> {
+                    NO_INTERNET -> {
                         _filterCountryScreenState.postValue(FilterCountryScreenState.NoInternet)
                     }
 
-                    200 -> {
+                    OK_RESPONSE -> {
                         _filterCountryScreenState.postValue(FilterCountryScreenState.Content)
                         _countries.postValue(apiResult.data ?: emptyList())
                     }
@@ -103,11 +105,11 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
             if (countryId != null) {
                 interactor.getAllRegionsInCountry(countryId).collect { apiResult ->
                     when (apiResult.code) {
-                        -1 -> {
+                        NO_INTERNET -> {
                             _filterRegionScreenState.postValue(FilterRegionScreenState.NoInternet)
                         }
 
-                        200 -> {
+                        OK_RESPONSE -> {
                             _filterRegionScreenState.postValue(
                                 FilterRegionScreenState.Content(
                                     isListEmpty = false
@@ -125,11 +127,11 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
             } else {
                 interactor.getAllPossibleRegions().collect { apiResult ->
                     when (apiResult.code) {
-                        -1 -> {
+                        NO_INTERNET -> {
                             _filterRegionScreenState.postValue(FilterRegionScreenState.NoInternet)
                         }
 
-                        200 -> {
+                        OK_RESPONSE -> {
                             _filterRegionScreenState.postValue(
                                 FilterRegionScreenState.Content(
                                     isListEmpty = false
@@ -155,12 +157,12 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
         viewModelScope.launch(Dispatchers.IO) {
             interactor.getAllIndustries().collect { apiResult ->
                 when (apiResult.code) {
-                    -1 -> {
+                    NO_INTERNET -> {
                         _filterRegionScreenState.postValue(FilterRegionScreenState.NoInternet)
                         _isSelectionButtonVisible.postValue(false)
                     }
 
-                    200 -> {
+                    OK_RESPONSE -> {
                         _filterRegionScreenState.postValue(
                             FilterRegionScreenState.Content(
                                 isListEmpty = false
@@ -186,11 +188,11 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
             interactor.getCountyByRegionId(regionId).collect { apiResult ->
 
                 when (apiResult.code) {
-                    -1 -> {
+                    NO_INTERNET -> {
                         //подумать надо ли показывать ошибки и как
                     }
 
-                    200 -> {
+                    OK_RESPONSE -> {
                         editCountry(apiResult.data!!)
                         _isAllowedToNavigate.postValue(true)
                         delay(BACK_TO_DEFAULT)
@@ -211,11 +213,11 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
             interactor.getCountyByRegionId(filter?.regionId ?: "").collect { apiResult ->
 
                 when (apiResult.code) {
-                    -1 -> {
+                    NO_INTERNET -> {
                         //подумать надо ли показывать ошибки и как
                     }
 
-                    200 -> {
+                    OK_RESPONSE -> {
                         editCountry(apiResult.data!!)
                         _isAllowedToNavigate.postValue(true)
                         delay(BACK_TO_DEFAULT)
@@ -242,7 +244,6 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
 
     fun clearExpectedSalary() {
         interactor.clearExpectedSalary()
-        getFilter()
     }
 
     fun clearFiler() {
@@ -250,9 +251,9 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
         getFilter()
     }
 
-    fun editExpectedSalary(input: Int) {
+    fun editExpectedSalary(input: CharSequence?) {
         interactor.editExpectedSalary(input)
-        getFilter()
+        _isSelectionButtonVisible.postValue(!input.isNullOrBlank())
     }
 
     fun editIsOnlyWithSalary(isOnlyWithSalary: Boolean) {

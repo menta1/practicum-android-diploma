@@ -1,5 +1,8 @@
 package ru.practicum.android.diploma.data.details
 
+import ru.practicum.android.diploma.data.Constants.NO_INTERNET
+import ru.practicum.android.diploma.data.Constants.OK_RESPONSE
+import ru.practicum.android.diploma.data.Constants.SERVER_ERROR
 import ru.practicum.android.diploma.data.db.VacancyDao
 import ru.practicum.android.diploma.data.db.converters.VacancyDetailDbConverters
 import ru.practicum.android.diploma.data.network.NetworkClient
@@ -13,7 +16,7 @@ class DetailsRepositoryImpl @Inject constructor(
     private val vacancyDao: VacancyDao,
     private val converter: VacancyDetailDbConverters,
     private val networkClient: NetworkClient
-): DetailsRepository {
+) : DetailsRepository {
 
     override suspend fun saveVacancy(vacancy: VacancyDetail) {
         vacancyDao.insertVacancy(converter.map(vacancy))
@@ -33,20 +36,20 @@ class DetailsRepositoryImpl @Inject constructor(
 
     override suspend fun getVacancyDetails(vacancyId: String): NetworkResource<VacancyDetail> {
         val response = networkClient.getVacancyDetail(vacancyId)
-        when (response.resultCode) {
-            -1 -> {
-                return NetworkResource<VacancyDetail>(code = -1)
+        return when (response.resultCode) {
+            NO_INTERNET -> {
+                NetworkResource(code = NO_INTERNET)
             }
-            200 -> {
-                return NetworkResource(
-                    (response as VacancyDetailResponse).result.toVacancyDetail(), 200
+
+            OK_RESPONSE -> {
+                NetworkResource(
+                    (response as VacancyDetailResponse).result.toVacancyDetail(), OK_RESPONSE
                 )
             }
+
             else -> {
-                return NetworkResource<VacancyDetail>(code = 400)
+                NetworkResource(code = SERVER_ERROR)
             }
         }
     }
-
-
 }

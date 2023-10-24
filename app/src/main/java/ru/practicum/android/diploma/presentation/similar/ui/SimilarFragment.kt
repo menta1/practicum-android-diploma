@@ -71,6 +71,10 @@ class SimilarFragment : Fragment(), SimilarClickListener {
                 }
             }
         }
+
+        binding.navigationBackButton.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun changeContentVisibility(loading: Boolean) {

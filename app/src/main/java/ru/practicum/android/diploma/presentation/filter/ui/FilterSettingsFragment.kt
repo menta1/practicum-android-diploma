@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -32,6 +33,9 @@ class FilterSettingsFragment : Fragment() {
 
         }
         (activity?.application as App).appComponent.activityComponent().create().inject(this)
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            navigateBackWithoutSearch()
+        }
     }
 
     override fun onCreateView(
@@ -45,8 +49,8 @@ class FilterSettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        editDebounce = debounce(SHARED_PREFS_EDITING_DELAY, lifecycleScope, false) { input ->
-            viewModel.editExpectedSalary(input.toString().toInt())
+        editDebounce = debounce(SHARED_PREFS_EDITING_DELAY, lifecycleScope, true) { input ->
+            viewModel.editExpectedSalary(input)
         }
 
         viewModel.getFilter()
@@ -54,7 +58,13 @@ class FilterSettingsFragment : Fragment() {
             manageScreenContent(state)
         }
 
-        binding.buttonBack.setOnClickListener { findNavController().navigateUp() }
+        viewModel.isSelectionButtonVisible.observe(viewLifecycleOwner){isVisible->
+            if (viewModel.filterScreenState.value == FilterScreenState.Default){
+                manageSelectionsButtonsVisibility(isVisible)
+            }
+        }
+
+        binding.buttonBack.setOnClickListener { navigateBackWithoutSearch() }
 
         binding.filterPlaceWorkCloseButton.setOnClickListener { viewModel.clearWorkPlace() }
 
@@ -72,7 +82,7 @@ class FilterSettingsFragment : Fragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 manageClearButtonVisibility(s)
-                if (!s.isNullOrBlank()) editDebounce(s)
+                editDebounce(s)
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -193,14 +203,23 @@ class FilterSettingsFragment : Fragment() {
         }
     }
 
+    private fun manageSelectionsButtonsVisibility(isVisible:Boolean   ){
+        binding.filterSettingClearButton.visibility = if (isVisible )View.VISIBLE else View.GONE
+        binding.filterSettingSelectButton.visibility = if (isVisible )View.VISIBLE else View.GONE
+    }
+
     private fun manageClearButtonVisibility(s: CharSequence?) {
         binding.salaryFilterClearButton.visibility =
             if (s.isNullOrBlank()) View.GONE else View.VISIBLE
     }
 
+    private fun navigateBackWithoutSearch(){
+        val action =
+            FilterSettingsFragmentDirections.actionFilterSettingsFragmentToSearchFragment(false)
+        findNavController().navigate(action)
+    }
     companion object {
         const val SHARED_PREFS_EDITING_DELAY = 500L
     }
-
 
 }

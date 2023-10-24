@@ -5,6 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import ru.practicum.android.diploma.data.Constants.NO_INTERNET
+import ru.practicum.android.diploma.data.Constants.OK_RESPONSE
 import ru.practicum.android.diploma.domain.similar.SimilarInteractor
 import ru.practicum.android.diploma.presentation.similar.models.SimilarState
 import javax.inject.Inject
@@ -30,10 +32,10 @@ class SimilarViewModel @Inject constructor(
         viewModelScope.launch {
             interactor.getSimilarVacancy(idVacancy, currentPage).collect { result ->
                 when(result.first.code) {
-                    -1 -> {
+                    NO_INTERNET -> {
                         similarStateLiveData.postValue(SimilarState.NoInternet)
                     }
-                    200 -> {
+                    OK_RESPONSE -> {
                         result.first.data?.let { data ->
                             similarStateLiveData.postValue(
                                 SimilarState.Content(data)

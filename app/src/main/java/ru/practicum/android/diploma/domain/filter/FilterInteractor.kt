@@ -19,7 +19,7 @@ interface FilterInteractor {
     fun editCountryNameAndId(country: Region)
     fun editRegionNameAndId(region: Region)
     fun editIndustryNameAndId(industry: Industry)
-    fun editExpectedSalary(expectedSalary: Int)
+    fun editExpectedSalary(expectedSalary: CharSequence?)
     fun editIsOnlyWithSalary(isOnlyWithSalary: Boolean)
 
     fun clearPlace()
@@ -30,4 +30,8 @@ interface FilterInteractor {
     fun clearFilter()
 
     fun isFilterEmpty(): Boolean
+
+    fun getSavedInput(): String
+    fun putSavedInput(input: String)
+    fun clearSavedInput()
 }

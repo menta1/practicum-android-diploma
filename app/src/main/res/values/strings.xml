@@ -102,8 +102,9 @@ CI по модели Trunk Based Development
 
     <!-- Favourite screen -->
     <string name="without_salary">Зарплата не указана</string>
-    <string name="salary_from">от</string>
-    <string name="salary_to">до</string>
+    <string name="salary_from">от %1$s %2$s</string>
+    <string name="salary_to">до %1$s %2$s</string>
+    <string name="salary_from_to">от %1$s до %2$s %3$s</string>
     <string name="failed_get_list_vacancies">Не удалось получить\n список вакансий</string>
     <string name="button_close_description">кнопка удалить</string>
 

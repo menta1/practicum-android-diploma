@@ -1,10 +1,12 @@
 package ru.practicum.android.diploma.presentation.search.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -51,7 +53,15 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        arguments?.let {
+            viewModel.getStartingInfo(it.getBoolean(START_SEARCH))
+        }
         viewModel.getFilter()
+        viewModel.startSearchIfNewFiltersSelected()
+        viewModel.savedInput.observe(viewLifecycleOwner){savedInput->
+            binding.editSearch.setText(savedInput)
+        }
+
         val adapter = VacancyAdapter(this)
         val itemDecorator =
             VacancyAdapter.MarginItemDecorator(resources.getDimensionPixelSize(R.dimen.item_margin_top))
@@ -60,6 +70,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         binding.recyclerVacancy.addItemDecoration(itemDecorator)
         setVacancies(adapter)
         setupSearchInput()
+        clearTextSearch()
         scrolling(adapter)
         stateView()
         openFilters()
@@ -210,15 +221,34 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         return when {
             lastTwoDigits in 11..19 -> "Найдено $count ${vacanciesWordForms[2]}"
             lastDigit == 1 -> "Найдена $count ${vacanciesWordForms[0]}"
-            lastDigit == 0 -> "Таких вакансий нет"
+            count == 0 -> "Таких вакансий нет"
             lastDigit in 2..4 -> "Найдено $count ${vacanciesWordForms[1]}"
             else -> "Найдено $count ${vacanciesWordForms[2]}"
         }
     }
 
+    private fun clearTextSearch(){
+        binding.clearButton.setOnClickListener{
+            binding.editSearch.setText("")
+            it.hideKeyboard()
+        }
+    }
+    private fun View.hideKeyboard() {
+        val inputManager =
+            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(windowToken, 0)
+    }
+
     private fun setupSearchInput() {
         binding.editSearch.addTextChangedListener {
             viewModel.onTextChangedInput(it)
+            if (it?.isNotEmpty() == true) {
+                binding.searchButton.visibility = View.GONE
+                binding.clearButton.visibility = View.VISIBLE
+            } else {
+                binding.searchButton.visibility = View.VISIBLE
+                binding.clearButton.visibility = View.GONE
+            }
             binding.editSearch.setOnEditorActionListener { _, actionId, _ ->
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     viewModel.search()
@@ -235,9 +265,11 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
 
     private fun openFilters() {
         binding.buttonFiltersEmpty.setOnClickListener {
+            viewModel.editSavedInput(binding.editSearch.text.toString())
             findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)
         }
         binding.buttonFiltersNotEmpty.setOnClickListener {
+            viewModel.editSavedInput(binding.editSearch.text.toString())
             findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)
         }
     }

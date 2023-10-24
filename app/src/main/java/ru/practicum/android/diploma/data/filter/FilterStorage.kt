@@ -7,4 +7,14 @@ interface FilterStorage {
     fun editFilter(editedFilter: String)
 
     fun clearFilter()
+
+    fun getPreviousCountry(): String
+
+    fun editPreviousCountry(countryId: String)
+
+    fun getSavedInput(): String
+
+    fun putSavedInput(input: String)
+
+    fun clearSavedInput()
 }
