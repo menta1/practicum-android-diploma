@@ -62,7 +62,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             binding.editSearch.setText(savedInput)
         }
 
-        val adapter = VacancyAdapter(this)
+        val adapter = VacancyAdapter(requireContext(), this)
         val itemDecorator =
             VacancyAdapter.MarginItemDecorator(resources.getDimensionPixelSize(R.dimen.item_margin_top))
         binding.recyclerVacancy.adapter = adapter

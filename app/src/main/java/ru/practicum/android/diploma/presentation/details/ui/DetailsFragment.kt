@@ -17,7 +17,6 @@ import ru.practicum.android.diploma.databinding.FragmentDetailsBinding
 import ru.practicum.android.diploma.domain.models.VacancyDetail
 import ru.practicum.android.diploma.presentation.details.models.DetailsState
 import ru.practicum.android.diploma.presentation.details.view_model.DetailsViewModel
-import ru.practicum.android.diploma.presentation.utils.getCurrencySign
 import ru.practicum.android.diploma.presentation.utils.getSalaryText
 import javax.inject.Inject
 
@@ -86,7 +85,7 @@ class DetailsFragment : Fragment() {
     private fun updateData(data: VacancyDetail) {
         binding.textNameVacancy.text = data.name
         binding.textCurrency.text =
-            getSalaryText(data.salaryFrom, data.salaryTo, getCurrencySign(data.currency), requireContext())
+            getSalaryText(data.salaryFrom, data.salaryTo, data.currency, requireContext())
 
         Glide.with(this)
             .load(data.employerLogoUrls)
