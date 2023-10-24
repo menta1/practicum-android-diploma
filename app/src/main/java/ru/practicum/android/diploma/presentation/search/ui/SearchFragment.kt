@@ -24,21 +24,17 @@ import javax.inject.Inject
 
 class SearchFragment : Fragment(), VacancyAdapter.Listener {
 
-    companion object {
-        const val START_SEARCH = "startSearch"
-    }
 
     @Inject
     lateinit var viewModel: SearchViewModel
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
-    private var startSearch = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            startSearch = it.getBoolean(START_SEARCH)
+
         }
         (activity?.application as App).appComponent.activityComponent().create().inject(this)
     }
@@ -53,9 +49,6 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.let {
-            viewModel.getStartingInfo(it.getBoolean(START_SEARCH))
-        }
         viewModel.getFilter()
         viewModel.startSearchIfNewFiltersSelected()
         viewModel.savedInput.observe(viewLifecycleOwner){savedInput->
@@ -265,11 +258,9 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
 
     private fun openFilters() {
         binding.buttonFiltersEmpty.setOnClickListener {
-            viewModel.editSavedInput(binding.editSearch.text.toString())
             findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)
         }
         binding.buttonFiltersNotEmpty.setOnClickListener {
-            viewModel.editSavedInput(binding.editSearch.text.toString())
             findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)
         }
     }

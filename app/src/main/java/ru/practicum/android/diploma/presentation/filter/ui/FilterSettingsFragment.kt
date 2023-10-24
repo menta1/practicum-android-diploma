@@ -34,7 +34,9 @@ class FilterSettingsFragment : Fragment() {
         }
         (activity?.application as App).appComponent.activityComponent().create().inject(this)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            navigateBackWithoutSearch()
+            //navigateBackWithoutSearch()
+            viewModel.putSearchingMode(false)
+            findNavController().navigateUp()
         }
     }
 
@@ -53,83 +55,89 @@ class FilterSettingsFragment : Fragment() {
             viewModel.editExpectedSalary(input)
         }
 
-        viewModel.getFilter()
-        viewModel.filterScreenState.observe(viewLifecycleOwner) { state ->
-            manageScreenContent(state)
-        }
+        with(viewModel){
+            getFilter()
+            filterScreenState.observe(viewLifecycleOwner) { state ->
+                manageScreenContent(state)
+            }
 
-        viewModel.isSelectionButtonVisible.observe(viewLifecycleOwner){isVisible->
-            if (viewModel.filterScreenState.value == FilterScreenState.Default){
-                manageSelectionsButtonsVisibility(isVisible)
+            isSelectionButtonVisible.observe(viewLifecycleOwner){isVisible->
+                if (filterScreenState.value == FilterScreenState.Default){
+                    manageSelectionsButtonsVisibility(isVisible)
+                }
             }
         }
 
-        binding.buttonBack.setOnClickListener { navigateBackWithoutSearch() }
+        with(binding){
 
-        binding.filterPlaceWorkCloseButton.setOnClickListener { viewModel.clearWorkPlace() }
-
-        binding.filterIndustryCloseButton.setOnClickListener { viewModel.clearIndustry() }
-
-        binding.salaryFilterClearButton.setOnClickListener {
-            binding.filterSalaryInputEditText.setText("")
-            viewModel.clearExpectedSalary()
-        }
-
-        binding.filterSalaryInputEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
+            buttonBack.setOnClickListener {
+                viewModel.putSearchingMode(false)
+                findNavController().navigateUp()
             }
 
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                manageClearButtonVisibility(s)
-                editDebounce(s)
+            filterPlaceWorkCloseButton.setOnClickListener { viewModel.clearWorkPlace() }
+
+            filterIndustryCloseButton.setOnClickListener { viewModel.clearIndustry() }
+
+            salaryFilterClearButton.setOnClickListener {
+                filterSalaryInputEditText.setText("")
+                viewModel.clearExpectedSalary()
             }
 
-            override fun afterTextChanged(s: Editable?) {
+            filterSalaryInputEditText.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
 
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    manageClearButtonVisibility(s)
+                    editDebounce(s)
+                }
+
+                override fun afterTextChanged(s: Editable?) {
+
+                }
+            })
+
+            filterSalary.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.editIsOnlyWithSalary(isChecked)
             }
-        })
 
-        binding.filterSalary.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.editIsOnlyWithSalary(isChecked)
+            filterSettingClearButton.setOnClickListener { viewModel.clearFiler() }
+
+            filterSettingSelectButton.setOnClickListener {
+                viewModel.putSearchingMode(true)
+                findNavController().navigateUp()
+            }
+
+            filterPlaceWork.setOnClickListener {
+                val action =
+                    FilterSettingsFragmentDirections.actionFilterSettingsFragmentToFilterPlaceFragment()
+                findNavController().navigate(action)
+            }
+
+            filterPlaceWorkCloseButton.setOnClickListener {
+                viewModel.clearPlace()
+            }
+
+            filterPlaceWorkSelected.setOnClickListener {
+                val action =
+                    FilterSettingsFragmentDirections.actionFilterSettingsFragmentToFilterPlaceFragment()
+                findNavController().navigate(action)
+            }
+
+            filterIndustry.setOnClickListener {
+                val action =
+                    FilterSettingsFragmentDirections.actionFilterSettingsFragmentToFilterSectorFragment()
+                findNavController().navigate(action)
+            }
+
+            filterIndustrySelected.setOnClickListener {
+                val action =
+                    FilterSettingsFragmentDirections.actionFilterSettingsFragmentToFilterSectorFragment()
+                findNavController().navigate(action)
+            }
         }
-
-        binding.filterSettingClearButton.setOnClickListener { viewModel.clearFiler() }
-
-        binding.filterSettingSelectButton.setOnClickListener {
-            val action =
-                FilterSettingsFragmentDirections.actionFilterSettingsFragmentToSearchFragment(true)
-            findNavController().navigate(action)
-        }
-
-        binding.filterPlaceWork.setOnClickListener {
-            val action =
-                FilterSettingsFragmentDirections.actionFilterSettingsFragmentToFilterPlaceFragment()
-            findNavController().navigate(action)
-        }
-
-        binding.filterPlaceWorkCloseButton.setOnClickListener {
-            viewModel.clearPlace()
-        }
-
-        binding.filterPlaceWorkSelected.setOnClickListener {
-            val action =
-                FilterSettingsFragmentDirections.actionFilterSettingsFragmentToFilterPlaceFragment()
-            findNavController().navigate(action)
-        }
-
-        binding.filterIndustry.setOnClickListener {
-            val action =
-                FilterSettingsFragmentDirections.actionFilterSettingsFragmentToFilterSectorFragment()
-            findNavController().navigate(action)
-        }
-
-        binding.filterIndustrySelected.setOnClickListener {
-            val action =
-                FilterSettingsFragmentDirections.actionFilterSettingsFragmentToFilterSectorFragment()
-            findNavController().navigate(action)
-        }
-        
     }
 
     override fun onDestroyView() {
@@ -213,11 +221,6 @@ class FilterSettingsFragment : Fragment() {
             if (s.isNullOrBlank()) View.GONE else View.VISIBLE
     }
 
-    private fun navigateBackWithoutSearch(){
-        val action =
-            FilterSettingsFragmentDirections.actionFilterSettingsFragmentToSearchFragment(false)
-        findNavController().navigate(action)
-    }
     companion object {
         const val SHARED_PREFS_EDITING_DELAY = 500L
     }

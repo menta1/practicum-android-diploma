@@ -31,7 +31,6 @@ interface FilterRepository {
 
     fun isFilterEmpty(): Boolean
 
-    fun getSavedInput(): String
-    fun putSavedInput(input: String)
-    fun clearSavedInput()
+    fun putSearchMode(isSearchingNow: Boolean)
+    fun getSearchingMode(): Boolean
 }
