@@ -51,7 +51,15 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        arguments?.let {
+            viewModel.getStartingInfo(it.getBoolean(START_SEARCH))
+        }
         viewModel.getFilter()
+        viewModel.startSearchIfNewFiltersSelected()
+        viewModel.savedInput.observe(viewLifecycleOwner){savedInput->
+            binding.editSearch.setText(savedInput)
+        }
+
         val adapter = VacancyAdapter(this)
         val itemDecorator =
             VacancyAdapter.MarginItemDecorator(resources.getDimensionPixelSize(R.dimen.item_margin_top))
@@ -235,9 +243,11 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
 
     private fun openFilters() {
         binding.buttonFiltersEmpty.setOnClickListener {
+            viewModel.editSavedInput(binding.editSearch.text.toString())
             findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)
         }
         binding.buttonFiltersNotEmpty.setOnClickListener {
+            viewModel.editSavedInput(binding.editSearch.text.toString())
             findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)
         }
     }

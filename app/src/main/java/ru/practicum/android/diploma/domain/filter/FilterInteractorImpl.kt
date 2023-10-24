@@ -37,7 +37,7 @@ class FilterInteractorImpl @Inject constructor(
         repository.editIndustryNameAndId(industry)
     }
 
-    override fun editExpectedSalary(expectedSalary: Int) {
+    override fun editExpectedSalary(expectedSalary: CharSequence?) {
         repository.editExpectedSalary(expectedSalary)
     }
 
@@ -71,5 +71,17 @@ class FilterInteractorImpl @Inject constructor(
 
     override fun clearPlace() {
         return repository.clearPlace()
+    }
+
+    override fun getSavedInput(): String {
+        return repository.getSavedInput()
+    }
+
+    override fun putSavedInput(input: String) {
+        repository.putSavedInput(input)
+    }
+
+    override fun clearSavedInput() {
+        repository.clearSavedInput()
     }
 }
