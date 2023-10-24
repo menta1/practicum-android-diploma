@@ -49,6 +49,7 @@
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:clickable="true"
+            android:layout_marginEnd="12dp"
             android:contentDescription="@string/favourite"
             android:src="@drawable/ic_favourite_off" />
     </LinearLayout>
@@ -274,7 +275,7 @@
     <ProgressBar
         android:id="@+id/progress_bar_details"
         android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:indeterminateTint="@color/blue"
         android:visibility="visible" />
