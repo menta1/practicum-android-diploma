@@ -319,4 +319,16 @@ class FilterRepositoryImpl @Inject constructor(
             !isOnlyWithSalary && countryName == null && regionName == null && regionId == null && industryName == null && industryId == null && expectedSalary == null
         }
 
+
+    override fun getSavedInput(): String {
+        return filterStorage.getSavedInput()
+    }
+
+    override fun putSavedInput(input: String) {
+        filterStorage.putSavedInput(input)
+    }
+
+    override fun clearSavedInput() {
+        filterStorage.clearSavedInput()
+    }
 }
