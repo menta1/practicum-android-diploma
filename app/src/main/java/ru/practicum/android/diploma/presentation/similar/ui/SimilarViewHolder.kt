@@ -39,7 +39,6 @@ class SimilarViewHolder(
             .load(data.employerLogoUrls)
             .placeholder(R.drawable.logo_not_load)
             .transform(
-                CenterCrop(),
                 RoundedCorners(
                     itemView.resources.getDimensionPixelSize(R.dimen.round_radius_search)
                 )
