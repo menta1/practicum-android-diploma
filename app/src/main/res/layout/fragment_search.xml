@@ -65,13 +65,12 @@
             android:autofillHints=""
             android:background="@drawable/rounder_background"
             android:hint="@string/search_hint"
-
             android:inputType="text"
             android:lines="1"
             android:paddingHorizontal="@dimen/margin_horizontal"
             android:paddingVertical="@dimen/margin_horizontal"
             android:singleLine="true"
-            android:textColorHint="@color/grey"
+            android:textColorHint="?attr/colorOnSecondary"
             android:textCursorDrawable="@drawable/cursor_drawable" />
 
         <ImageView
