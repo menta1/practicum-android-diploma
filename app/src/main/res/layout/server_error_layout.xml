@@ -17,7 +17,7 @@
         android:src="@drawable/image_server_error" />
 
     <TextView
-        style="@style/titleText"
+        style="@style/title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top"

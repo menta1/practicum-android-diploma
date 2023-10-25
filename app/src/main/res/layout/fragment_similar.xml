@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/ScreensBackground"
+    style="@style/screens_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.similar.ui.SimilarFragment">
@@ -21,7 +21,7 @@
 
     <TextView
         android:id="@+id/screen_title_text"
-        style="@style/titleText"
+        style="@style/title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/navigation_back_start_margin"

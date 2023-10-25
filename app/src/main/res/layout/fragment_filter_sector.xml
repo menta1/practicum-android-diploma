@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/container_view"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/ScreensBackground"
+    style="@style/screens_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.filter.ui.FilterSectorFragment">
@@ -21,13 +21,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/margin_8"
             android:clickable="true"
             android:contentDescription="@string/back"
             android:src="@drawable/ic_back_arrow" />
 
         <TextView
-            style="@style/titleText"
+            style="@style/title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginVertical="@dimen/margin_vertical_19"
@@ -88,39 +88,6 @@
             app:layout_constraintEnd_toEndOf="@id/edit_search_layout"
             app:layout_constraintTop_toTopOf="@+id/edit_search_layout" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <!--<FrameLayout
-        android:id="@+id/search_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_layout">
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/search_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_horizontal"
-            android:layout_marginVertical="@dimen/edit_text_margin_vertical"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar_layout">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/search_text"
-                style="@style/search_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/industry_search_hint" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|end"
-            android:layout_marginEnd="32dp"
-            android:src="@drawable/ic_search" />
-    </FrameLayout>-->
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_industry"
@@ -135,12 +102,12 @@
 
     <Button
         android:id="@+id/selection_button"
-        style="@style/SelectionButton"
+        style="@style/selection_button"
         android:layout_width="0dp"
         android:layout_height="@dimen/selection_button_height"
         android:visibility="gone"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="@dimen/margin_vertical_24"
         android:text="@string/choose"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -148,8 +115,8 @@
 
     <ProgressBar
         android:id="@+id/progress_bar"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="@dimen/progress_bar_width"
+        android:layout_height="@dimen/progress_bar_height"
         android:layout_gravity="center"
         android:indeterminateTint="@color/blue"
         android:visibility="gone"
@@ -175,10 +142,10 @@
             android:src="@drawable/not_found" />
 
         <TextView
-            style="@style/titleText"
+            style="@style/title_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_vertical"
+            android:layout_marginTop="@dimen/margin_vertical_16"
             android:text="@string/industry_not_found"
             android:textAlignment="center" />
     </LinearLayout>
@@ -200,10 +167,10 @@
             android:src="@drawable/failed_get_list" />
 
         <TextView
-            style="@style/titleText"
+            style="@style/title_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_vertical"
+            android:layout_marginTop="@dimen/margin_vertical_16"
             android:text="@string/failed_get_list"
             android:textAlignment="center" />
     </LinearLayout>

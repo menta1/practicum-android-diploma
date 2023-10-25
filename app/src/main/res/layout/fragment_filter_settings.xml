@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/ScreensBackground"
+    style="@style/screens_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="16dp"
+    android:layout_marginBottom="@dimen/margin_vertical_16"
     tools:context=".presentation.filter.ui.FilterSettingsFragment">
 
     <LinearLayout
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:orientation="horizontal"
-        android:paddingVertical="@dimen/title_margin_vertical"
+        android:paddingVertical="@dimen/margin_vertical_19"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -31,7 +31,7 @@
             android:src="@drawable/ic_arrow_back" />
 
         <TextView
-            style="@style/titleText"
+            style="@style/title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/small_margin_horizontal"
@@ -51,10 +51,9 @@
 
         <TextView
             android:id="@+id/filter_place_work"
-            style="@style/filterItemNotSelect"
+            style="@style/filter_item_not_select"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:clickable="true"
             android:focusable="true"
             android:paddingVertical="@dimen/filter_item_vertical_padding"
@@ -82,7 +81,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    style="@style/filterItemSelectedSmall"
+                    style="@style/filter_item_selected_small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -90,14 +89,12 @@
 
                 <TextView
                     android:id="@+id/filter_place_work_name"
-                    style="@style/filterItemSelected"
+                    style="@style/filter_item_selected"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     tools:text="Страна" />
             </LinearLayout>
-
-
         </LinearLayout>
     </FrameLayout>
 
@@ -111,7 +108,7 @@
 
         <TextView
             android:id="@+id/filter_industry"
-            style="@style/filterItemNotSelect"
+            style="@style/filter_item_not_select"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
@@ -142,7 +139,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    style="@style/filterItemSelectedSmall"
+                    style="@style/filter_item_selected_small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -150,21 +147,20 @@
 
                 <TextView
                     android:id="@+id/filter_industry_name"
-                    style="@style/filterItemSelected"
-                    android:lines="1"
-                    android:ellipsize="end"
+                    style="@style/filter_item_selected"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:ellipsize="end"
+                    android:lines="1"
                     tools:text="IT" />
             </LinearLayout>
-
         </LinearLayout>
     </FrameLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/filter_salary_input_layout"
-        style="@style/editText"
+        style="@style/edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
@@ -181,16 +177,16 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/filter_salary_input_edit_text"
-            style="@style/editText"
+            style="@style/edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounder_background"
             android:gravity="bottom"
             android:hint="@string/salary_hint"
             android:inputType="number"
+            android:maxLength="18"
             android:paddingStart="@dimen/margin_horizontal"
             android:paddingTop="8dp"
-            android:maxLength="18"
             android:paddingEnd="@dimen/margin_horizontal"
             android:paddingBottom="8dp" />
     </com.google.android.material.textfield.TextInputLayout>
@@ -210,10 +206,10 @@
 
     <CheckBox
         android:id="@+id/filter_salary"
-        style="@style/baseText"
+        style="@style/base_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="16dp"
+        android:layout_marginHorizontal="@dimen/margin_horizontal_16"
         android:layout_marginVertical="@dimen/filters_margin_top"
         android:layoutDirection="rtl"
         android:paddingVertical="@dimen/filter_item_vertical_padding"
@@ -248,7 +244,7 @@
         android:layout_height="@dimen/selection_button_height"
         android:layout_gravity="center_vertical"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="@dimen/margin_vertical_8"
         android:background="@drawable/rounder_background"
         android:stateListAnimator="@null"
         android:text="@string/clear_button"
