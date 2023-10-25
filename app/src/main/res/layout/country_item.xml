@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/filter_country_name"
-        style="@style/baseText"
-        app:drawableEndCompat="@drawable/ic_arrow"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/filter_title_block"
+        style="@style/base_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
+        android:paddingVertical="@dimen/filter_item_vertical_padding"
         android:paddingStart="@dimen/margin_horizontal"
         android:paddingEnd="@dimen/filter_icon_end_margin"
-        android:paddingVertical="@dimen/filter_item_vertical_padding"
+        app:drawableEndCompat="@drawable/ic_arrow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filter_title_block"
         tools:text="country" />
 </FrameLayout>

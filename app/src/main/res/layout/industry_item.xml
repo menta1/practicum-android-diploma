@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:paddingVertical="@dimen/margin_vertical_6"
     android:paddingStart="@dimen/margin_horizontal"
-    android:paddingEnd="12dp">
+    android:paddingEnd="@dimen/padding_end">
 
     <RadioButton
         android:id="@+id/radio_button"
@@ -15,7 +15,7 @@
         android:layout_gravity="start"
         android:buttonTint="@color/blue"
         android:layoutDirection="rtl"
-        android:paddingStart="48dp"
+        android:paddingStart="@dimen/padding_start"
         android:textAlignment="textStart"
         android:textSize="@dimen/text_size"
         app:layout_constraintStart_toStartOf="parent"

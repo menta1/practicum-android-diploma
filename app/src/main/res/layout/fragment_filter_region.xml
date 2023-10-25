@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/ScreensBackground"
     android:id="@+id/container_view"
+    style="@style/screens_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -13,7 +13,7 @@
         android:id="@+id/filter_title_block"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
+        android:layout_marginHorizontal="@dimen/margin_horizontal_8"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,11 +30,11 @@
             android:src="@drawable/ic_back_arrow" />
 
         <TextView
-            style="@style/titleText"
+            style="@style/title_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/small_margin_horizontal"
-            android:paddingVertical="@dimen/title_margin_vertical"
+            android:paddingVertical="@dimen/margin_vertical_19"
             android:text="@string/region_selection" />
     </LinearLayout>
 
@@ -60,9 +60,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:cursorVisible="true"
-                android:textCursorDrawable="@drawable/cursor_drawable"
                 android:hint="@string/search_enter_region"
-                android:paddingVertical="@dimen/navigation_back_start_margin" />
+                android:paddingVertical="@dimen/navigation_back_start_margin"
+                android:textCursorDrawable="@drawable/cursor_drawable" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <ImageView
@@ -93,7 +93,7 @@
         android:id="@+id/recycler_region_block"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="@dimen/margin_vertical_8">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_region"
@@ -104,8 +104,8 @@
 
         <ProgressBar
             android:id="@+id/progress_bar_country"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="@dimen/progress_bar_width"
+            android:layout_height="@dimen/progress_bar_height"
             android:layout_gravity="center"
             android:indeterminateTint="@color/blue"
             android:visibility="gone" />
@@ -131,7 +131,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginHorizontal="17dp"
+            android:layout_marginHorizontal="@dimen/margin_horizontal_17"
             android:visibility="gone" />
 
         <LinearLayout
@@ -152,7 +152,7 @@
 
             <TextView
                 android:id="@+id/text_error_not_found"
-                style="@style/titleText"
+                style="@style/title_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

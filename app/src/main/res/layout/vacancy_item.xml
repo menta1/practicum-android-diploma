@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/screens_background"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/ScreensBackground"
     android:layout_marginHorizontal="@dimen/margin_horizontal"
     android:layout_marginVertical="@dimen/vacancy_item_margin_vertical"
     android:clickable="true"
@@ -12,35 +12,37 @@
 
     <ImageView
         android:id="@+id/vacancy_image"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/logo_not_load"
+        android:layout_width="@dimen/employer_logo_size"
+        android:layout_height="@dimen/employer_logo_size"
         android:layout_gravity="center_horizontal"
-        android:layout_marginEnd="12dp"
-        android:contentDescription="@string/image_vacancy_description" />
+        android:layout_marginEnd="@dimen/margin_vertical_12"
+        android:contentDescription="@string/image_vacancy_description"
+        android:src="@drawable/logo_not_load" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/vacancy_item_title"
+            style="@style/title_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/titleText"
-            tools:text="Title"/>
+            tools:text="Title" />
 
         <TextView
             android:id="@+id/vacancy_item_employer"
+            style="@style/base_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/baseText"
-            tools:text="Title"/>
+            tools:text="Title" />
 
         <TextView
             android:id="@+id/vacancy_item_salary"
+            style="@style/base_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/baseText"
-            tools:text="Title"/>
+            tools:text="Title" />
     </LinearLayout>
 </LinearLayout>

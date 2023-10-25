@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/screens_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    style="@style/ScreensBackground"
     tools:context=".presentation.favourite.ui.FavouriteFragment">
 
     <TextView
-        style="@style/titleText"
+        style="@style/title_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_horizontal"
         android:layout_marginVertical="@dimen/margin_vertical_19"
+        android:layout_marginStart="@dimen/margin_horizontal"
         android:text="@string/favourite" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -21,10 +21,11 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/margin_horizontal"
         android:visibility="gone" />
+
     <ProgressBar
         android:id="@+id/progress_bar_favourite"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="@dimen/progress_bar_width"
+        android:layout_height="@dimen/progress_bar_height"
         android:layout_gravity="center"
         android:indeterminateTint="@color/blue"
         android:visibility="gone" />
@@ -44,8 +45,8 @@
             android:src="@drawable/favourite_list_empty" />
 
         <TextView
-            style="@style/titleText"
             android:id="@+id/favourite_text"
+            style="@style/title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

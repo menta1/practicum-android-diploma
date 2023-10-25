@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/no_internet_layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:gravity="center"
+    android:orientation="vertical"
     android:visibility="gone"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:visibility="visible"
-    android:orientation="vertical">
+    tools:visibility="visible">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -18,7 +18,7 @@
 
     <TextView
         android:id="@+id/text"
-        style="@style/titleText"
+        style="@style/title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_top"

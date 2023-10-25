@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/ScreensBackground"
+    style="@style/screens_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.filter.ui.FilterPlaceFragment">
@@ -21,7 +21,7 @@
 
     <TextView
         android:id="@+id/screen_title_text"
-        style="@style/titleText"
+        style="@style/title_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/navigation_back_start_margin"
@@ -32,7 +32,7 @@
 
     <TextView
         android:id="@+id/filter_country"
-        style="@style/filterItemNotSelect"
+        style="@style/filter_item_not_select"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/filter_item_margin_from_navigation"
@@ -48,7 +48,7 @@
 
     <TextView
         android:id="@+id/filter_region"
-        style="@style/filterItemNotSelect"
+        style="@style/filter_item_not_select"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/filter_second_item_margin_from_navigation"
@@ -80,7 +80,7 @@
         tools:visibility="visible">
 
         <TextView
-            style="@style/filterItemSelectedSmall"
+            style="@style/filter_item_selected_small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -88,7 +88,7 @@
 
         <TextView
             android:id="@+id/filter_country_name"
-            style="@style/filterItemSelected"
+            style="@style/filter_item_selected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -125,7 +125,7 @@
         app:layout_constraintTop_toBottomOf="@id/navigation_back_button">
 
         <TextView
-            style="@style/filterItemSelectedSmall"
+            style="@style/filter_item_selected_small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -133,7 +133,7 @@
 
         <TextView
             android:id="@+id/filter_region_name"
-            style="@style/filterItemSelected"
+            style="@style/filter_item_selected"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -155,13 +155,13 @@
 
     <Button
         android:id="@+id/selection_button"
-        style="@style/SelectionButton"
+        style="@style/selection_button"
         android:layout_width="0dp"
         android:layout_height="@dimen/selection_button_height"
-        android:visibility="gone"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
         android:layout_marginBottom="24dp"
         android:text="@string/choose"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/ScreensBackground"
+    style="@style/screens_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -29,12 +29,12 @@
             android:src="@drawable/ic_back_arrow" />
 
         <TextView
-            style="@style/titleText"
+            style="@style/title_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/small_margin_horizontal"
             android:gravity="center_vertical"
-            android:paddingVertical="@dimen/title_margin_vertical"
+            android:paddingVertical="@dimen/margin_vertical_19"
             android:text="@string/select_country_title" />
     </LinearLayout>
 
@@ -42,7 +42,7 @@
         android:id="@+id/recycler_country_block"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="@dimen/margin_vertical_16">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_country"
@@ -53,8 +53,8 @@
 
         <ProgressBar
             android:id="@+id/progress_bar_country"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="@dimen/progress_bar_width"
+            android:layout_height="@dimen/progress_bar_height"
             android:layout_gravity="center"
             android:indeterminateTint="@color/blue"
             android:visibility="gone"

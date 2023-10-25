@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/ScreensBackground"
+
+    style="@style/screens_background"
     android:id="@+id/container_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -13,11 +14,10 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingHorizontal="@dimen/margin_horizontal"
-
         android:paddingVertical="@dimen/margin_vertical_19">
 
         <TextView
-            style="@style/titleText"
+            style="@style/title_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="9"
@@ -57,13 +57,12 @@
 
         <EditText
             android:id="@+id/edit_search"
-            style="@style/baseText"
+            style="@style/base_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_horizontal"
             android:layout_marginVertical="@dimen/edit_text_margin_vertical"
             android:autofillHints=""
-            android:textCursorDrawable="@drawable/cursor_drawable"
             android:background="@drawable/rounder_background"
             android:hint="@string/search_hint"
 
@@ -72,7 +71,8 @@
             android:paddingHorizontal="@dimen/margin_horizontal"
             android:paddingVertical="@dimen/margin_horizontal"
             android:singleLine="true"
-            android:textColorHint="@color/grey" />
+            android:textColorHint="@color/grey"
+            android:textCursorDrawable="@drawable/cursor_drawable" />
 
         <ImageView
             android:id="@+id/search_button"
@@ -126,13 +126,13 @@
 
             <TextView
                 android:id="@+id/search_message"
-                style="@style/searchMessageText"
+                style="@style/search_message_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|top"
                 android:background="@drawable/search_message_background"
                 android:paddingHorizontal="@dimen/message_margin_horizontal"
-                android:paddingVertical="@dimen/message_margin_vertical"
+                android:paddingVertical="@dimen/margin_vertical_4"
                 android:visibility="gone"
                 tools:text="@string/vacancy_not_found" />
 
@@ -153,8 +153,8 @@
 
         <ProgressBar
             android:id="@+id/progress_bar"
-            android:layout_width="@dimen/progress_bar_size"
-            android:layout_height="@dimen/progress_bar_size"
+            android:layout_width="@dimen/progress_bar_width"
+            android:layout_height="@dimen/progress_bar_height"
             android:layout_gravity="center"
             android:indeterminateTint="@color/blue"
             android:visibility="gone" />
