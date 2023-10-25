@@ -16,7 +16,7 @@ class SharingRepositoryImpl @Inject constructor(
     override fun sendEmail(emailData: EmailData) {
         val intent = Intent(Intent.ACTION_SENDTO).apply {
             data = Uri.parse("mailto:")
-            putExtra(Intent.EXTRA_EMAIL, emailData.email)
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(emailData.email))
             this.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         }
 
