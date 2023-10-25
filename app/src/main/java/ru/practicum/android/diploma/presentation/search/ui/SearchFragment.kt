@@ -58,7 +58,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         }
         viewModel.getFilter()
         viewModel.startSearchIfNewFiltersSelected()
-        viewModel.savedInput.observe(viewLifecycleOwner){savedInput->
+        viewModel.savedInput.observe(viewLifecycleOwner) { savedInput ->
             binding.editSearch.setText(savedInput)
         }
 
@@ -107,7 +107,22 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
                 SearchModelState.NoInternet -> stateNoInternet()
 
                 SearchModelState.FailedToGetList -> stateFailedToGetList()
+
+                SearchModelState.ServerError -> stateServerError()
             }
+        }
+    }
+
+    private fun stateServerError() {
+        with(binding) {
+            progressBar.visibility = View.GONE
+            imageSearchNotStarted.visibility = View.GONE
+            searchMessage.visibility = View.GONE
+            recyclerVacancy.visibility = View.GONE
+            recyclerVacancyLayout.visibility = View.GONE
+            errorServer.serverErrorLayout.visibility = View.VISIBLE
+            errorNoInternet.noInternetLayout.visibility = View.GONE
+            errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
         }
     }
 
@@ -119,6 +134,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             searchMessage.visibility = View.GONE
             recyclerVacancyLayout.visibility = View.GONE
             errorNoInternet.noInternetLayout.visibility = View.GONE
+            errorServer.serverErrorLayout.visibility = View.GONE
             errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
         }
     }
@@ -132,6 +148,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             recyclerVacancyLayout.visibility = View.GONE
             errorNoInternet.noInternetLayout.visibility = View.GONE
             errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
+            errorServer.serverErrorLayout.visibility = View.GONE
         }
     }
 
@@ -144,6 +161,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             searchMessage.visibility = View.VISIBLE
             errorNoInternet.noInternetLayout.visibility = View.GONE
             errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
+            errorServer.serverErrorLayout.visibility = View.GONE
         }
     }
 
@@ -156,6 +174,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             searchMessage.visibility = View.VISIBLE
             errorNoInternet.noInternetLayout.visibility = View.GONE
             errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
+            errorServer.serverErrorLayout.visibility = View.GONE
         }
     }
 
@@ -168,6 +187,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             searchMessage.visibility = View.GONE
             errorNoInternet.noInternetLayout.visibility = View.VISIBLE
             errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
+            errorServer.serverErrorLayout.visibility = View.GONE
         }
     }
 
@@ -176,10 +196,11 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             progressBar.visibility = View.GONE
             imageSearchNotStarted.visibility = View.GONE
             recyclerVacancy.visibility = View.GONE
-            searchMessage.visibility = View.VISIBLE
+            searchMessage.visibility = View.GONE
             recyclerVacancyLayout.visibility = View.VISIBLE
             errorNoInternet.noInternetLayout.visibility = View.GONE
             errorFailedGetCat.errorFailedGetCat.visibility = View.VISIBLE
+            errorServer.serverErrorLayout.visibility = View.GONE
         }
     }
 
@@ -227,12 +248,14 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         }
     }
 
-    private fun clearTextSearch(){
-        binding.clearButton.setOnClickListener{
+    private fun clearTextSearch() {
+        binding.clearButton.setOnClickListener {
             binding.editSearch.setText("")
+            stateNoSearch()
             it.hideKeyboard()
         }
     }
+
     private fun View.hideKeyboard() {
         val inputManager =
             context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

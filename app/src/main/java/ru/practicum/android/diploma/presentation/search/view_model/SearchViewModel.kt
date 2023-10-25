@@ -16,8 +16,7 @@ import ru.practicum.android.diploma.util.debounce
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
-    val interactor: SearchInteractor,
-    private val filterInteractor: FilterInteractor
+    val interactor: SearchInteractor, private val filterInteractor: FilterInteractor
 ) : ViewModel() {
     private var currentPage: Int = 0
     private var maxPages: Int = 0
@@ -61,15 +60,19 @@ class SearchViewModel @Inject constructor(
                     when (result.first.code) {
                         NO_INTERNET -> _viewStateLiveData.value = SearchModelState.NoInternet
                         OK_RESPONSE -> {
-                            _viewStateLiveData.value = SearchModelState.Loaded
-                            if (result.second.page?.let { it >= 1 } == true) {
-                                val tempFile = _usersLiveData.value?.plus(result.first.data!!)
-                                _usersLiveData.value = tempFile
-                            } else _usersLiveData.value = result.first.data!!
-                            isNextPageLoading = true
+                            if (result.first.data != null) {
+                                _viewStateLiveData.value = SearchModelState.Loaded
+                                if (result.second.page?.let { it >= 1 } == true) {
+                                    val tempFile = _usersLiveData.value?.plus(result.first.data!!)
+                                    _usersLiveData.value = tempFile
+                                } else _usersLiveData.value = result.first.data!!
+                                isNextPageLoading = true
+                            } else {
+                                _viewStateLiveData.value = SearchModelState.FailedToGetList
+                            }
                         }
 
-                        else -> _viewStateLiveData.value = SearchModelState.FailedToGetList
+                        else -> _viewStateLiveData.value = SearchModelState.ServerError
                     }
                     currentPage = result.second.page?.plus(1) ?: 0
                     maxPages = result.second.pages ?: 0
@@ -111,26 +114,25 @@ class SearchViewModel @Inject constructor(
 
     fun isFilterEmpty(): Boolean = filterInteractor.isFilterEmpty()
 
-    fun getStartingInfo(isNow: Boolean){
+    fun getStartingInfo(isNow: Boolean) {
         isStartingTime = isNow
     }
 
-    fun startSearchIfNewFiltersSelected(){
-        if (isStartingTime){
+    fun startSearchIfNewFiltersSelected() {
+        if (isStartingTime) {
             val savedInputFromData = filterInteractor.getSavedInput()
             if (savedInputFromData.isNotBlank()) _savedInput.value = savedInputFromData
         }
     }
 
-    fun editSavedInput(input: String){
+    fun editSavedInput(input: String) {
 
-        if (input.isNotBlank()){
+        if (input.isNotBlank()) {
             filterInteractor.putSavedInput(input)
-        }
-        else filterInteractor.clearSavedInput()
+        } else filterInteractor.clearSavedInput()
     }
-    
-    companion object{
+
+    companion object {
         const val SEARCH_DEBOUNCE_DELAY = 2000L
     }
 }

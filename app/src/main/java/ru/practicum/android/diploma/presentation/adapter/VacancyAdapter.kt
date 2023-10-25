@@ -99,7 +99,7 @@ class VacancyAdapter(private val listener: Listener) :
                 }
 
                 salaryFrom == null && salaryTo != null -> {
-                    "$formattedTo $currencySign"
+                    "до $formattedTo $currencySign"
                 }
 
                 else -> {
