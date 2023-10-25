@@ -61,12 +61,18 @@ class SearchViewModel @Inject constructor(
 
                         else -> _viewState.value = SearchModelState.FailedToGetList
                     }
-                    currentPage = result.second.page?.plus(1) ?: 0
+                    currentPage = if (result.second.pages == 1) {
+                        1
+                    } else {
+                        result.second.page?.plus(1) ?: 0
+                    }
                     maxPages = result.second.pages ?: 0
                     if (result.second.found?.let { it <= 0 } == true) {
                         _viewState.value = SearchModelState.FailedToGetList
                     }
-                    if (currentPage == maxPages) _viewState.value = SearchModelState.LastPage
+                    if (currentPage == maxPages) {
+                        _viewState.value = SearchModelState.LastPage
+                    }
                 }
             }
         }

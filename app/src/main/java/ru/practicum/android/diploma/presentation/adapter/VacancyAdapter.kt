@@ -22,8 +22,9 @@ class VacancyAdapter(private val listener: Listener) :
         const val VIEW_TYPE_LOADING = 0
     }
 
-    var loading = false
+    var loading = View.GONE
     private var itemList = emptyList<Vacancy>()
+    private lateinit var progressBarVisibility: ItemProgressBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
@@ -41,32 +42,34 @@ class VacancyAdapter(private val listener: Listener) :
 
             else -> throw IllegalArgumentException("Не правильный тип")
         }
-
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position < itemList.size - 1) VIEW_TYPE_VACANCY else VIEW_TYPE_LOADING
+        return if (position < itemList.size) VIEW_TYPE_VACANCY else VIEW_TYPE_LOADING
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is VacancyViewHolder) {
             holder.bind(itemList[position], listener)
         } else if (holder is LoadingViewHolder) {
-            holder.bind()
-            if (loading) {
-                holder.binding.root.visibility = View.GONE
-            } else {
-                holder.binding.root.visibility = View.VISIBLE
-            }
+            progressBarVisibility = holder.bind()
+            progressBarVisibility.root.visibility = loading
         }
     }
 
-    override fun getItemCount(): Int = itemList.size
+    override fun getItemCount(): Int = itemList.size + 1
 
     fun setData(newList: List<Vacancy>) {
         val diffResult = DiffUtil.calculateDiff(ItemDiffCallback(itemList, newList))
         itemList = newList
         diffResult.dispatchUpdatesTo(this)
+    }
+
+    fun visibilityProgress(visibility: Int) {
+        loading = visibility
+        if (::progressBarVisibility.isInitialized) {
+            progressBarVisibility.root.visibility = visibility
+        }
     }
 
     inner class VacancyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -142,8 +145,7 @@ class VacancyAdapter(private val listener: Listener) :
     }
 
     inner class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val binding = ItemProgressBinding.bind(itemView)
-        fun bind() = binding
+        fun bind() = ItemProgressBinding.bind(itemView)
     }
 
     class ItemDiffCallback(private val oldList: List<Vacancy>, private val newList: List<Vacancy>) :

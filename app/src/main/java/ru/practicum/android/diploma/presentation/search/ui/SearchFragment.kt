@@ -1,7 +1,6 @@
 package ru.practicum.android.diploma.presentation.search.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -86,7 +85,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     }
 
     private fun stateLastPage() {
-        adapter.loading = true
+        adapter.visibilityProgress(View.GONE)
     }
 
     private fun stateNoSearch() {
@@ -115,7 +114,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
 
     private fun stateSearch() {
         with(binding) {
-            adapter.loading = false
+            adapter.visibilityProgress(View.VISIBLE)
             progressBar.visibility = View.VISIBLE
             imageSearchNotStarted.visibility = View.GONE
             recyclerVacancy.visibility = View.VISIBLE
@@ -171,8 +170,6 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
                         (binding.recyclerVacancy.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                     val itemsCount = adapter.itemCount
                     if (pos >= itemsCount - 1) {
-                        //adapter.loading = true
-                        Log.d("tag", "pos >= itemsCount " + adapter.loading)
                         viewModel.onLastItemReached()
                     }
                 }
@@ -183,7 +180,6 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     private fun setVacancies() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.usersFlow.collect { list ->
-                Log.d("tag", "usersFlow.collect " + adapter.loading)
                 adapter.setData(list)
             }
         }
@@ -203,7 +199,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         return when {
             lastTwoDigits in 11..19 -> "Найдено $count ${vacanciesWordForms[2]}"
             lastDigit == 1 -> "Найдена $count ${vacanciesWordForms[0]}"
-            lastDigit == 0 -> "Таких вакансий нет"
+            count == 0 -> "Таких вакансий нет"
             lastDigit in 2..4 -> "Найдено $count ${vacanciesWordForms[1]}"
             else -> "Найдено $count ${vacanciesWordForms[2]}"
         }
