@@ -5,7 +5,6 @@ import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -34,9 +33,8 @@ class VacancyAdapter(
     override fun getItemCount(): Int = itemList.size
 
     fun setData(newList: List<Vacancy>) {
-        val diffResult = DiffUtil.calculateDiff(ItemDiffCallback(itemList, newList))
         itemList = newList
-        diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
     class Holder(itemView: View, private val context: Context) : RecyclerView.ViewHolder(itemView) {
@@ -58,25 +56,6 @@ class VacancyAdapter(
                 .placeholder(R.drawable.logo_not_load)
                 .transform(RoundedCorners(vacancyImage.resources.getDimensionPixelSize(R.dimen.round_radius_search)))
                 .into(vacancyImage)
-        }
-    }
-
-    class ItemDiffCallback(private val oldList: List<Vacancy>, private val newList: List<Vacancy>) :
-        DiffUtil.Callback() {
-        override fun getOldListSize(): Int {
-            return oldList.size
-        }
-
-        override fun getNewListSize(): Int {
-            return newList.size
-        }
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition].id == newList[newItemPosition].id
-        }
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition] == newList[newItemPosition]
         }
     }
 

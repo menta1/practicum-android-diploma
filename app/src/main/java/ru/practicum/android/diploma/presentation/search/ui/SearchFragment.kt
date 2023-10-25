@@ -5,8 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -17,6 +17,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.adapter.VacancyAdapter
+import ru.practicum.android.diploma.presentation.search.LoadingPageErrorStates
 import ru.practicum.android.diploma.presentation.search.SearchModelState
 import ru.practicum.android.diploma.presentation.search.view_model.SearchViewModel
 import javax.inject.Inject
@@ -24,21 +25,17 @@ import javax.inject.Inject
 
 class SearchFragment : Fragment(), VacancyAdapter.Listener {
 
-    companion object {
-        const val START_SEARCH = "startSearch"
-    }
 
     @Inject
     lateinit var viewModel: SearchViewModel
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
-    private var startSearch = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            startSearch = it.getBoolean(START_SEARCH)
+
         }
         (activity?.application as App).appComponent.activityComponent().create().inject(this)
     }
@@ -53,13 +50,17 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.let {
-            viewModel.getStartingInfo(it.getBoolean(START_SEARCH))
-        }
         viewModel.getFilter()
         viewModel.startSearchIfNewFiltersSelected()
         viewModel.savedInput.observe(viewLifecycleOwner){savedInput->
             binding.editSearch.setText(savedInput)
+        }
+        viewModel.isNextPageLoading.observe(viewLifecycleOwner){isNextPageLoading->
+            managePagingProgressVisibility(isNextPageLoading)
+        }
+
+        viewModel.loadingPageErrorState.observe(viewLifecycleOwner){state->
+            manageLoadingPageErrors(state)
         }
 
         val adapter = VacancyAdapter(requireContext(), this)
@@ -132,6 +133,8 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             recyclerVacancyLayout.visibility = View.GONE
             errorNoInternet.noInternetLayout.visibility = View.GONE
             errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
+            binding.pagingProgressBar.visibility= View.GONE
+            hideKeyboard()
         }
     }
 
@@ -168,6 +171,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             searchMessage.visibility = View.GONE
             errorNoInternet.noInternetLayout.visibility = View.VISIBLE
             errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
+            binding.pagingProgressBar.visibility= View.GONE
         }
     }
 
@@ -180,6 +184,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             recyclerVacancyLayout.visibility = View.VISIBLE
             errorNoInternet.noInternetLayout.visibility = View.GONE
             errorFailedGetCat.errorFailedGetCat.visibility = View.VISIBLE
+            binding.pagingProgressBar.visibility= View.GONE
         }
     }
 
@@ -230,13 +235,8 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     private fun clearTextSearch(){
         binding.clearButton.setOnClickListener{
             binding.editSearch.setText("")
-            it.hideKeyboard()
+            showKeyboard()
         }
-    }
-    private fun View.hideKeyboard() {
-        val inputManager =
-            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.hideSoftInputFromWindow(windowToken, 0)
     }
 
     private fun setupSearchInput() {
@@ -249,12 +249,6 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
                 binding.searchButton.visibility = View.VISIBLE
                 binding.clearButton.visibility = View.GONE
             }
-            binding.editSearch.setOnEditorActionListener { _, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    viewModel.search()
-                }
-                false
-            }
         }
     }
 
@@ -265,12 +259,41 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
 
     private fun openFilters() {
         binding.buttonFiltersEmpty.setOnClickListener {
-            viewModel.editSavedInput(binding.editSearch.text.toString())
             findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)
         }
         binding.buttonFiltersNotEmpty.setOnClickListener {
-            viewModel.editSavedInput(binding.editSearch.text.toString())
             findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)
+        }
+    }
+
+    private fun managePagingProgressVisibility(isNewPageLoading: Boolean){
+        binding.pagingProgressBar.visibility = if(isNewPageLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun hideKeyboard() {
+        val inputMethodManager =
+            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(binding.containerView.windowToken, 0)
+    }
+
+    private fun showKeyboard() {
+        val inputMethodManager =
+            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(binding.editSearch, 0)
+    }
+
+    private fun manageLoadingPageErrors(state: LoadingPageErrorStates){
+
+        when(state){
+            LoadingPageErrorStates.Default -> {
+
+            }
+            LoadingPageErrorStates.NoInternet -> {
+                Toast.makeText(requireContext(),getString(R.string.no_internet_while_loading_page), Toast.LENGTH_LONG).show()
+            }
+            LoadingPageErrorStates.ServerError -> {
+                Toast.makeText(requireContext(),getString(R.string.server_error_while_loading_page), Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

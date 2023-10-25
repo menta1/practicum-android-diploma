@@ -30,17 +30,40 @@
         app:layout_constraintStart_toEndOf="@id/navigation_back_button"
         app:layout_constraintTop_toTopOf="@+id/navigation_back_button" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested_scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/similar_recycler_view_top_margin"
+        android:layout_marginTop="@dimen/margin_vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/screen_title_text"
-        tools:itemCount="5"
-        tools:listitem="@layout/vacancy_item"
-        tools:visibility="gone" />
+        app:layout_constraintTop_toBottomOf="@id/screen_title_text">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:overScrollMode="never"
+                tools:itemCount="5"
+                tools:listitem="@layout/vacancy_item"
+                tools:visibility="visible" />
+
+            <ProgressBar
+                android:id="@+id/progress_bar_recycler"
+                android:layout_width="@dimen/progress_bar_size"
+                android:layout_height="@dimen/progress_bar_size"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/filter_item_vertical_padding"
+                android:indeterminateTint="@color/blue"
+                android:visibility="invisible" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
 
     <ProgressBar
         android:id="@+id/progress_bar"
