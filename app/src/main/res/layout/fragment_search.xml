@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/ScreensBackground"
+    android:id="@+id/container_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -65,7 +66,7 @@
             android:textCursorDrawable="@drawable/cursor_drawable"
             android:background="@drawable/rounder_background"
             android:hint="@string/search_hint"
-            android:imeOptions="actionDone"
+
             android:inputType="text"
             android:lines="1"
             android:paddingHorizontal="@dimen/margin_horizontal"
@@ -97,8 +98,9 @@
     </FrameLayout>
 
     <LinearLayout
+        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -117,6 +119,7 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_vacancy"
+                android:overScrollMode="never"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone" />
@@ -150,11 +153,19 @@
 
         <ProgressBar
             android:id="@+id/progress_bar"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="@dimen/progress_bar_size"
+            android:layout_height="@dimen/progress_bar_size"
             android:layout_gravity="center"
             android:indeterminateTint="@color/blue"
             android:visibility="gone" />
     </LinearLayout>
 
+    <ProgressBar
+        android:id="@+id/paging_progress_bar"
+        android:layout_width="@dimen/progress_bar_size"
+        android:layout_height="@dimen/progress_bar_size"
+        android:layout_marginVertical="@dimen/paging_progress_vertical_margin"
+        android:layout_gravity="center"
+        android:indeterminateTint="@color/blue"
+        android:visibility="gone" />
 </LinearLayout>
