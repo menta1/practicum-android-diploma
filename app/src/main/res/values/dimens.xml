@@ -33,4 +33,5 @@
     <dimen name="selection_button_height">60dp</dimen>
     <dimen name="industry_name_margin_end">60dp</dimen>
     <dimen name="progress_bar_size">36dp</dimen>
+    <dimen name="paging_progress_vertical_margin">22dp</dimen>
 </resources>

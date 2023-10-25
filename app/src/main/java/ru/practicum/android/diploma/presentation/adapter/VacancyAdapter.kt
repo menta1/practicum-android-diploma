@@ -4,7 +4,6 @@ import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -12,7 +11,7 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.VacancyItemBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import java.text.NumberFormat
-import java.util.Locale
+import java.util.*
 
 class VacancyAdapter(private val listener: Listener) :
     RecyclerView.Adapter<VacancyAdapter.Holder>() {
@@ -32,9 +31,8 @@ class VacancyAdapter(private val listener: Listener) :
     override fun getItemCount(): Int = itemList.size
 
     fun setData(newList: List<Vacancy>) {
-        val diffResult = DiffUtil.calculateDiff(ItemDiffCallback(itemList, newList))
         itemList = newList
-        diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
     class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -112,25 +110,6 @@ class VacancyAdapter(private val listener: Listener) :
             return number?.let {
                 if (it > 0) NumberFormat.getNumberInstance(Locale.getDefault()).format(it) else "0"
             } ?: ""
-        }
-    }
-
-    class ItemDiffCallback(private val oldList: List<Vacancy>, private val newList: List<Vacancy>) :
-        DiffUtil.Callback() {
-        override fun getOldListSize(): Int {
-            return oldList.size
-        }
-
-        override fun getNewListSize(): Int {
-            return newList.size
-        }
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition].id == newList[newItemPosition].id
-        }
-
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition] == newList[newItemPosition]
         }
     }
 
