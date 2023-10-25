@@ -45,7 +45,7 @@ fun getCurrencySign(currencyCode: String?): String {
         "USD" -> "$"
         "UZS" -> "Soʻm"
         else -> {
-            currencyCode.toString()
+            currencyCode?: ""
         }
     }
 }
