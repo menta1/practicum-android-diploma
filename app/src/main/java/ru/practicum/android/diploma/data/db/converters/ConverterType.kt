@@ -3,7 +3,7 @@ package ru.practicum.android.diploma.data.db.converters
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import ru.practicum.android.diploma.domain.models.Phone
+import ru.practicum.android.diploma.data.db.PhoneDto
 
 class ConverterType {
 
@@ -21,15 +21,15 @@ class ConverterType {
     }
 
     @TypeConverter
-    fun phonesListToJson(value: List<Phone>?) = Gson().toJson(value)
+    fun phonesListToJson(value: List<PhoneDto>?) = Gson().toJson(value)
 
     @TypeConverter
-    fun jsonToPhonesList(value: String?): List<Phone> {
+    fun jsonToPhonesList(value: String?): List<PhoneDto> {
         if (value == null || value.trim() == "null"){
             return listOf()
         }
 
-        val typeToken = object : TypeToken<List<Phone>>() {}.type
+        val typeToken = object : TypeToken<List<PhoneDto>>() {}.type
         return Gson().fromJson(value, typeToken)
     }
 }

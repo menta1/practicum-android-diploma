@@ -4,10 +4,8 @@ import android.app.Application
 import ru.practicum.android.diploma.di.AppComponent
 import ru.practicum.android.diploma.di.DaggerAppComponent
 
-//import ru.practicum.android.diploma.di.DaggerAppComponent
 
 class App: Application() {
-
 
     val appComponent: AppComponent by lazy {
         initializeComponent()

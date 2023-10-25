@@ -36,8 +36,9 @@ class FilterRepositoryImpl @Inject constructor(
                 emit(
                     NetworkResource(
                         data =
-                        (resultFromData as RegionResponse).results.map { regionDto ->
-                            converter.convertRegionToDomain(regionDto)
+                        (resultFromData as RegionResponse).results
+                            .map {
+                            converter.convertRegionToDomain(it)
                         }, code = resultFromData.resultCode
                     )
                 )
@@ -69,12 +70,15 @@ class FilterRepositoryImpl @Inject constructor(
                         }
                     }
 
-                    emit(NetworkResource(data =
-                    finalResults.sortedBy { it.name }.map { regionDto ->
+                    val allRegionsInCountry = finalResults.sortedBy { it.name }.map { regionDto ->
                         converter.convertRegionToDomain(regionDto)
-                    },
-                        code = resultFromData.resultCode
-                    )
+                    }
+
+                    emit(
+                        NetworkResource(
+                            data = allRegionsInCountry,
+                            code = resultFromData.resultCode
+                        )
                     )
                 }
 
@@ -99,21 +103,21 @@ class FilterRepositoryImpl @Inject constructor(
 
                 rawResults.forEach { generalIndustry ->
                     finalResults.add(generalIndustry)
-                    if (generalIndustry.industries != null) {
-                        generalIndustry.industries.forEach { specificIndustry ->
-                            finalResults.add(specificIndustry)
-                        }
+
+                    generalIndustry.industries?.forEach { specificIndustry ->
+                        finalResults.add(specificIndustry)
                     }
                 }
 
-                emit(NetworkResource(data =
-                finalResults.sortedBy { it.name }.map { industryDto ->
+                val allIndustries = finalResults.sortedBy { it.name }.map { industryDto ->
                     converter.convertIndustryToDomain(industryDto)
-                },
-                    code = resultFromData.resultCode
+                }
+                emit(
+                    NetworkResource(
+                        data = allIndustries,
+                        code = resultFromData.resultCode
+                    )
                 )
-                )
-
             }
 
             else -> {
@@ -195,7 +199,7 @@ class FilterRepositoryImpl @Inject constructor(
     override fun getFilter(): Filter? {
         val resultFromData = filterStorage.getFilter()
 
-        return if (resultFromData == "" || resultFromData =="null") {
+        return if (resultFromData.isEmpty() || resultFromData =="null") {
             null
         } else if (filterHasNoValues(Gson().fromJson(resultFromData, Filter::class.java))) {
             null
