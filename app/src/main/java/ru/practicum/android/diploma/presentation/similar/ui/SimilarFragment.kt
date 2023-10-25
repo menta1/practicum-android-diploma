@@ -100,7 +100,7 @@ class SimilarFragment : Fragment(), SimilarClickListener {
     private fun updateData(data: List<Vacancy>) {
         adapter.data.addAll(data)
         adapter.notifyDataSetChanged()
-        binding.progressBarRecycler.visibility = View.GONE
+        binding.progressBarRecycler.visibility = View.INVISIBLE
     }
 
     private fun scrolling(adapter: SimilarAdapter) {

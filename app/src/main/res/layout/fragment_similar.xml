@@ -34,6 +34,7 @@
         android:id="@+id/nested_scroll"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/margin_vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +60,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/filter_item_vertical_padding"
                 android:indeterminateTint="@color/blue"
-                android:visibility="gone" />
+                android:visibility="invisible" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
