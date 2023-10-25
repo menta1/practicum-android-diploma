@@ -9,6 +9,7 @@
         <item name="colorPrimary">@color/blue</item>
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorButtonNormal">@color/blue</item>
+        <item name="colorOnSecondary">@color/white</item>
         <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
     </style>
 
