@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.App
 import ru.practicum.android.diploma.R
@@ -18,7 +17,7 @@ import ru.practicum.android.diploma.databinding.FragmentDetailsBinding
 import ru.practicum.android.diploma.domain.models.VacancyDetail
 import ru.practicum.android.diploma.presentation.details.models.DetailsState
 import ru.practicum.android.diploma.presentation.details.view_model.DetailsViewModel
-import java.text.NumberFormat
+import ru.practicum.android.diploma.presentation.utils.getSalaryText
 import javax.inject.Inject
 
 class DetailsFragment : Fragment() {
@@ -63,7 +62,6 @@ class DetailsFragment : Fragment() {
                 is DetailsState.Content -> {
                     changeContentVisibility(true)
                     updateData(state.data)
-                    viewModel.existInFavourite(state.data.id)
                 }
             }
         }
@@ -86,17 +84,12 @@ class DetailsFragment : Fragment() {
     private fun updateData(data: VacancyDetail) {
         binding.textNameVacancy.text = data.name
         binding.textCurrency.text =
-            salaryText(data.salaryFrom, data.salaryTo, data.currency)
+            getSalaryText(data.salaryFrom, data.salaryTo, data.currency, requireContext())
 
         Glide.with(this)
             .load(data.employerLogoUrls)
             .placeholder(R.drawable.logo_not_load)
-            .transform(
-                CenterCrop(),
-                RoundedCorners(
-                    resources.getDimensionPixelSize(R.dimen.round_radius_search)
-                )
-            )
+            .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.round_radius_search)))
             .into(binding.employerLogo)
 
         binding.employerName.text = data.employer
@@ -137,70 +130,28 @@ class DetailsFragment : Fragment() {
             binding.textPhone.visibility = View.VISIBLE
             binding.textPhoneTitle.visibility = View.VISIBLE
             binding.textPhone.text = data.phone.first().number
+
+            if (!data.phone.first().comment.isNullOrEmpty()) {
+                binding.textMessage.visibility = View.VISIBLE
+                binding.textMessageTitle.visibility = View.VISIBLE
+                binding.textMessage.text = data.phone.first().comment
+            } else {
+                binding.textMessage.visibility = View.GONE
+                binding.textMessageTitle.visibility = View.GONE
+            }
+
         } else {
             binding.textPhone.visibility = View.GONE
             binding.textPhoneTitle.visibility = View.GONE
+            binding.textMessage.visibility = View.GONE
+            binding.textMessageTitle.visibility = View.GONE
         }
 
-        if (data.contactPerson == null && data.email == null && data.phone == null) {
+        if (data.contactPerson.isNullOrEmpty() && data.email.isNullOrEmpty() && data.phone.isNullOrEmpty()) {
             binding.textContactTitle.visibility = View.GONE
         } else {
             binding.textContactTitle.visibility = View.VISIBLE
         }
-
-        if (data.phone?.first()?.comment != null) {
-            binding.textMessage.visibility = View.VISIBLE
-            binding.textMessageTitle.visibility = View.VISIBLE
-            binding.textMessage.text = data.phone.first().comment
-        } else {
-            binding.textMessage.visibility = View.GONE
-            binding.textMessageTitle.visibility = View.GONE
-        }
-    }
-
-    private fun salaryText(salaryFrom: Int?, salaryTo: Int?, currencyRaw: String?): String {
-        val currency = when (currencyRaw) {
-            "AZN" -> "₼"
-            "BYR" -> "Br"
-            "EUR" -> "€"
-            "GEL" -> "₾"
-            "KGS" -> "с"
-            "KZT" -> "₸"
-            "RUR" -> "₽"
-            "UAH" -> "₴"
-            "USD" -> "$"
-            "UZS" -> "Soʻm"
-            else -> {
-                currencyRaw
-            }
-        }
-        return when {
-            salaryFrom == 0 && salaryTo != null && salaryTo != 0 -> {
-                getString(R.string.salary_to, salaryText(salaryTo), currency)
-            }
-            salaryFrom != null && salaryTo == null || salaryTo == 0 -> {
-                getString(
-                    R.string.salary_from,
-                    salaryText(salaryFrom!!),
-                    currency
-                )
-            }
-            salaryFrom != null && salaryTo != null -> {
-                getString(
-                    R.string.salary_from_to,
-                    salaryText(salaryFrom),
-                    salaryText(salaryTo),
-                    currency
-                )
-            }
-            else -> {
-                getString(R.string.without_salary)
-            }
-        }
-    }
-
-    private fun salaryText(number: Int): String {
-        return NumberFormat.getInstance().format(number)
     }
 
     private fun skillText(skills: List<String>): String {

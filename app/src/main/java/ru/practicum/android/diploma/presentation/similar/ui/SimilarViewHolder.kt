@@ -6,11 +6,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.domain.models.Vacancy
-import java.text.NumberFormat
+import ru.practicum.android.diploma.presentation.utils.getSalaryText
 
 class SimilarViewHolder(
     itemView: View,
@@ -32,8 +31,7 @@ class SimilarViewHolder(
     fun binding(data: Vacancy) {
         vacancyTitle.text = data.name
         vacancyEmployer.text = data.employer
-        vacancySalary.text =
-            salaryText(data.salaryFrom, data.salaryTo, data.currency)
+        vacancySalary.text = getSalaryText(data.salaryFrom, data.salaryTo, data.currency, context)
 
         Glide.with(itemView)
             .load(data.employerLogoUrls)
@@ -47,50 +45,5 @@ class SimilarViewHolder(
         itemView.setOnClickListener {
             clickListener.clickOnVacancy(data.id)
         }
-    }
-
-    private fun salaryText(salaryFrom: Int?, salaryTo: Int?, currencyRaw: String?): String {
-        val currency = when (currencyRaw) {
-            "AZN" -> "₼"
-            "BYR" -> "Br"
-            "EUR" -> "€"
-            "GEL" -> "₾"
-            "KGS" -> "с"
-            "KZT" -> "₸"
-            "RUR" -> "₽"
-            "UAH" -> "₴"
-            "USD" -> "$"
-            "UZS" -> "Soʻm"
-            else -> {
-                currencyRaw
-            }
-        }
-        return when {
-            salaryFrom == 0 && salaryTo != null && salaryTo != 0 -> {
-                context.getString(R.string.salary_to, salaryText(salaryTo), currency)
-            }
-            salaryFrom != null && salaryTo == null || salaryTo == 0 -> {
-                context.getString(
-                    R.string.salary_from,
-                    salaryText(salaryFrom!!),
-                    currency
-                )
-            }
-            salaryFrom != null && salaryTo != null -> {
-                context.getString(
-                    R.string.salary_from_to,
-                    salaryText(salaryFrom),
-                    salaryText(salaryTo),
-                    currency
-                )
-            }
-            else -> {
-                context.getString(R.string.without_salary)
-            }
-        }
-    }
-
-    private fun salaryText(number: Int): String {
-        return NumberFormat.getInstance().format(number)
     }
 }

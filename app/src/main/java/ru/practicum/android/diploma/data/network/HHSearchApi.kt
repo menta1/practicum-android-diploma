@@ -29,6 +29,9 @@ interface HHSearchApi {
     @GET("/industries")
     suspend fun getAllIndustries(): Response<List<IndustryDto>>
 
+    @Headers(
+        "Authorization: Bearer $token", "HH-User-Agent: Talent Trove (bulatov.aynur@yandex.ru)"
+    )
     @GET("/vacancies/{vacancy_id}")
     suspend fun getVacancyDetail(
         @Path("vacancy_id") vacancyId: String
