@@ -24,6 +24,8 @@
     <string name="filter_description">Фильтр поиска</string>
     <string name="vacancy_not_found">Таких вакансий нет</string>
     <string name="vacancy_found">Найдено %1$s вакансий</string>
+    <string name="no_internet_while_loading_page">Невозможно загрузить данные - отсутствует интернет</string>
+    <string name="server_error_while_loading_page">Невозможно загрузить данные - ошибка сервера</string>
 
     <!-- Vacancy item -->
     <string name="image_vacancy_description">Логотип компании</string>

@@ -7,6 +7,7 @@ sealed interface SimilarState {
     data class Content(
         val data: List<Vacancy>
     ): SimilarState
+    object Empty: SimilarState
     object Error: SimilarState
     object NoInternet: SimilarState
 }

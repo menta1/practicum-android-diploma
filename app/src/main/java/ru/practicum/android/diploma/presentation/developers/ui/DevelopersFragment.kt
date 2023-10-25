@@ -21,9 +21,7 @@ class DevelopersFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
 
-        }
         (activity?.application as App).appComponent.activityComponent().create().inject(this)
     }
 

@@ -55,6 +55,10 @@ class SimilarViewModel @Inject constructor(
     fun onLastItemReached() {
         if (maxPages != currentPage) {
             searchSimilarVacancy(currentVacancyId!!)
+        } else {
+            similarStateLiveData.postValue(
+                SimilarState.Empty
+            )
         }
     }
 }
