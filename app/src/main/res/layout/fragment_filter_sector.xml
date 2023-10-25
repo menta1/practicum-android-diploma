@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_horizontal"
             android:layout_marginVertical="@dimen/edit_text_margin_vertical"
-            android:textColorHint="@color/grey"
+            android:textColorHint="?attr/colorOnSecondary"
             app:boxStrokeWidth="0dp"
             app:boxStrokeWidthFocused="0dp"
             app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +60,7 @@
                 style="@style/search_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/search_enter_region"
+                android:hint="@string/industry_search_hint"
                 android:paddingVertical="@dimen/navigation_back_start_margin" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -68,7 +68,7 @@
             android:id="@+id/magnifier_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/navigation_back_start_margin"
+
             android:contentDescription="@string/image_description"
             android:src="@drawable/ic_search"
             android:visibility="visible"
