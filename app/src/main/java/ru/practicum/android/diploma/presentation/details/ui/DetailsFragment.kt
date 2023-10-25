@@ -62,7 +62,6 @@ class DetailsFragment : Fragment() {
                 is DetailsState.Content -> {
                     changeContentVisibility(true)
                     updateData(state.data)
-                    viewModel.existInFavourite(state.data.id)
                 }
             }
         }
@@ -131,24 +130,27 @@ class DetailsFragment : Fragment() {
             binding.textPhone.visibility = View.VISIBLE
             binding.textPhoneTitle.visibility = View.VISIBLE
             binding.textPhone.text = data.phone.first().number
+
+            if (!data.phone.first().comment.isNullOrEmpty()) {
+                binding.textMessage.visibility = View.VISIBLE
+                binding.textMessageTitle.visibility = View.VISIBLE
+                binding.textMessage.text = data.phone.first().comment
+            } else {
+                binding.textMessage.visibility = View.GONE
+                binding.textMessageTitle.visibility = View.GONE
+            }
+
         } else {
             binding.textPhone.visibility = View.GONE
             binding.textPhoneTitle.visibility = View.GONE
+            binding.textMessage.visibility = View.GONE
+            binding.textMessageTitle.visibility = View.GONE
         }
 
-        if (data.contactPerson == null && data.email == null && data.phone == null) {
+        if (data.contactPerson.isNullOrEmpty() && data.email.isNullOrEmpty() && data.phone.isNullOrEmpty()) {
             binding.textContactTitle.visibility = View.GONE
         } else {
             binding.textContactTitle.visibility = View.VISIBLE
-        }
-
-        if (data.phone?.first()?.comment != null) {
-            binding.textMessage.visibility = View.VISIBLE
-            binding.textMessageTitle.visibility = View.VISIBLE
-            binding.textMessage.text = data.phone.first().comment
-        } else {
-            binding.textMessage.visibility = View.GONE
-            binding.textMessageTitle.visibility = View.GONE
         }
     }
 
