@@ -177,7 +177,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/filter_salary_input_edit_text"
-            style="@style/edit_text"
+            style="@style/edit_text_normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounder_background"
@@ -188,7 +188,7 @@
             android:paddingStart="@dimen/margin_horizontal"
             android:paddingTop="8dp"
             android:paddingEnd="@dimen/margin_horizontal"
-            android:paddingBottom="8dp" />
+            android:paddingBottom="8dp"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <ImageButton

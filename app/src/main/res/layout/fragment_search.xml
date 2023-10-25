@@ -58,7 +58,7 @@
         <EditText
             android:minHeight="@dimen/search_height"
             android:id="@+id/edit_search"
-            style="@style/base_text"
+            style="@style/edit_text_normal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_horizontal"
