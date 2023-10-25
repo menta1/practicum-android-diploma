@@ -368,6 +368,10 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
         }
     }
 
+    fun putSearchingMode(isSearchingNow:Boolean){
+        interactor.putSearchMode(isSearchingNow)
+    }
+
     companion object {
         const val BACK_TO_DEFAULT = 100L
     }

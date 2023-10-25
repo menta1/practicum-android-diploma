@@ -12,9 +12,7 @@ interface FilterStorage {
 
     fun editPreviousCountry(countryId: String)
 
-    fun getSavedInput(): String
+    fun putSearchMode(isSearchingNow: Boolean)
 
-    fun putSavedInput(input: String)
-
-    fun clearSavedInput()
+    fun getSearchingMode(): Boolean
 }

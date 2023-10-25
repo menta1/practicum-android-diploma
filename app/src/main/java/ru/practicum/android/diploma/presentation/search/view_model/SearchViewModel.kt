@@ -111,25 +111,15 @@ class SearchViewModel @Inject constructor(
 
     fun isFilterEmpty(): Boolean = filterInteractor.isFilterEmpty()
 
-    fun getStartingInfo(isNow: Boolean){
-        isStartingTime = isNow
-    }
-
     fun startSearchIfNewFiltersSelected(){
-        if (isStartingTime){
-            val savedInputFromData = filterInteractor.getSavedInput()
-            if (savedInputFromData.isNotBlank()) _savedInput.value = savedInputFromData
+        val isSearchingNow =filterInteractor.getSearchingMode()
+
+        if (isSearchingNow && ::searchText.isInitialized && searchText.isNotBlank()){
+            currentPage = 0
+            search()
         }
     }
 
-    fun editSavedInput(input: String){
-
-        if (input.isNotBlank()){
-            filterInteractor.putSavedInput(input)
-        }
-        else filterInteractor.clearSavedInput()
-    }
-    
     companion object{
         const val SEARCH_DEBOUNCE_DELAY = 2000L
     }

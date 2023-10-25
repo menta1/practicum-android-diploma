@@ -29,22 +29,20 @@ class FilterStorageImpl @Inject constructor(context: Context) : FilterStorage {
         sharedPrefs.edit().putString(PREVIOUS_COUNTRY, countryId).apply()
     }
 
-    override fun getSavedInput(): String {
-        return sharedPrefs.getString(SAVED_INPUT, "") ?: ""
+    override fun putSearchMode(isSearchingNow: Boolean) {
+        sharedPrefs.edit().putBoolean(SEARCHING_MODE, isSearchingNow).apply()
     }
 
-    override fun putSavedInput(input: String) {
-        sharedPrefs.edit().putString(SAVED_INPUT, input).apply()
+    override fun getSearchingMode(): Boolean {
+        return sharedPrefs.getBoolean(SEARCHING_MODE, false)
     }
 
-    override fun clearSavedInput() {
-        sharedPrefs.edit().putString(SAVED_INPUT, "").apply()
-    }
 
     companion object {
         private const val SHARED_PREFS = "shared_prefs"
         private const val FILTER = "filter"
         private const val PREVIOUS_COUNTRY = "prev_country"
         private const val SAVED_INPUT = "saved_input"
+        private const val SEARCHING_MODE = "searching_mode"
     }
 }

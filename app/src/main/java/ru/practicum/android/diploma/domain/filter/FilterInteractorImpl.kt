@@ -73,15 +73,11 @@ class FilterInteractorImpl @Inject constructor(
         return repository.clearPlace()
     }
 
-    override fun getSavedInput(): String {
-        return repository.getSavedInput()
+    override fun putSearchMode(isSearchingNow: Boolean) {
+        repository.putSearchMode(isSearchingNow)
     }
 
-    override fun putSavedInput(input: String) {
-        repository.putSavedInput(input)
-    }
-
-    override fun clearSavedInput() {
-        repository.clearSavedInput()
+    override fun getSearchingMode(): Boolean {
+        return repository.getSearchingMode()
     }
 }
