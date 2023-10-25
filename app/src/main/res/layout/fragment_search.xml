@@ -56,6 +56,7 @@
         android:layout_height="wrap_content">
 
         <EditText
+            android:minHeight="@dimen/search_height"
             android:id="@+id/edit_search"
             style="@style/base_text"
             android:layout_width="match_parent"
@@ -68,7 +69,6 @@
             android:inputType="text"
             android:lines="1"
             android:paddingHorizontal="@dimen/margin_horizontal"
-            android:paddingVertical="@dimen/margin_horizontal"
             android:singleLine="true"
             android:textColorHint="?attr/colorOnSecondary"
             android:textCursorDrawable="@drawable/cursor_drawable" />
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginHorizontal="@dimen/navigation_back_start_margin"
-            android:layout_marginVertical="@dimen/edit_text_margin_vertical"
+            android:layout_marginVertical="@dimen/margin_vertical_12"
             android:contentDescription="@string/image_description"
             android:src="@drawable/ic_search" />
 
@@ -89,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_marginHorizontal="@dimen/navigation_back_start_margin"
-            android:layout_marginVertical="@dimen/edit_text_margin_vertical"
+            android:layout_marginVertical="@dimen/margin_vertical_12"
             android:contentDescription="@string/button_close_description"
             android:src="@drawable/ic_clear_button"
             android:visibility="gone" />

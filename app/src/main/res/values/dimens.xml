@@ -53,4 +53,5 @@
     <dimen name="progress_bar_width">36dp</dimen>
     <dimen name="progress_bar_height">36dp</dimen>
     <dimen name="paging_progress_vertical_margin">22dp</dimen>
+    <dimen name="search_height">56dp</dimen>
 </resources>
