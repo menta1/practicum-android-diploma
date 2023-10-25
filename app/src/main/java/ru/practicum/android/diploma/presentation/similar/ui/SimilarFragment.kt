@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import ru.practicum.android.diploma.App
 import ru.practicum.android.diploma.databinding.FragmentSimilarBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
@@ -69,6 +69,9 @@ class SimilarFragment : Fragment(), SimilarClickListener {
                     changeContentVisibility(false)
                     updateData(state.data)
                 }
+                SimilarState.Empty -> {
+                    binding.progressBarRecycler.visibility = View.GONE
+                }
             }
         }
 
@@ -97,21 +100,29 @@ class SimilarFragment : Fragment(), SimilarClickListener {
     private fun updateData(data: List<Vacancy>) {
         adapter.data.addAll(data)
         adapter.notifyDataSetChanged()
+        binding.progressBarRecycler.visibility = View.GONE
     }
 
     private fun scrolling(adapter: SimilarAdapter) {
-        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (dy > 0) {
+        binding.nestedScroll.setOnScrollChangeListener(object: NestedScrollView.OnScrollChangeListener {
+            override fun onScrollChange(
+                v: NestedScrollView,
+                scrollX: Int,
+                scrollY: Int,
+                oldScrollX: Int,
+                oldScrollY: Int
+            ) {
+                if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
                     val pos =
                         (binding.recyclerView.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                     val itemsCount = adapter.itemCount
                     if (pos >= itemsCount - 1) {
+                        binding.progressBarRecycler.visibility = View.VISIBLE
                         viewModel.onLastItemReached()
                     }
                 }
             }
+
         })
     }
 
