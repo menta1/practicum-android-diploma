@@ -2,11 +2,9 @@ package ru.practicum.android.diploma.presentation.search.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
@@ -116,6 +114,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             recyclerVacancyLayout.visibility = View.GONE
             errorNoInternet.noInternetLayout.visibility = View.GONE
             errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
+            errorServer.serverErrorLayout.visibility = View.GONE
         }
     }
 
@@ -129,6 +128,8 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             errorNoInternet.noInternetLayout.visibility = View.GONE
             errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
             binding.pagingProgressBar.visibility = View.GONE
+            errorServer.serverErrorLayout.visibility = View.GONE
+            hideKeyboard()
         }
     }
 
@@ -141,6 +142,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             searchMessage.visibility = View.VISIBLE
             errorNoInternet.noInternetLayout.visibility = View.GONE
             errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
+            errorServer.serverErrorLayout.visibility = View.GONE
         }
     }
 
@@ -154,7 +156,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             errorNoInternet.noInternetLayout.visibility = View.GONE
             errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
             pagingProgressBar.visibility = View.GONE
-            showKeyboard()
+            errorServer.serverErrorLayout.visibility = View.GONE
         }
     }
 
@@ -168,14 +170,13 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             searchMessage.visibility = View.VISIBLE
             errorNoInternet.noInternetLayout.visibility = View.GONE
             errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
+            errorServer.serverErrorLayout.visibility = View.GONE
         }
     }
 
     private fun stateNoInternet() {
         Toast.makeText(
-            requireContext(),
-            getString(R.string.no_internet_while_loading_page),
-            Toast.LENGTH_LONG
+            requireContext(), getString(R.string.no_internet_while_loading_page), Toast.LENGTH_LONG
         ).show()
         with(binding) {
             progressBar.visibility = View.GONE
@@ -186,6 +187,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             errorNoInternet.noInternetLayout.visibility = View.VISIBLE
             errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
             binding.pagingProgressBar.visibility = View.GONE
+            errorServer.serverErrorLayout.visibility = View.GONE
         }
     }
 
@@ -199,6 +201,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             errorNoInternet.noInternetLayout.visibility = View.GONE
             errorFailedGetCat.errorFailedGetCat.visibility = View.VISIBLE
             binding.pagingProgressBar.visibility = View.GONE
+            errorServer.serverErrorLayout.visibility = View.GONE
         }
     }
 
@@ -230,9 +233,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
                     val pos =
                         (binding.recyclerVacancy.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
                     val itemsCount = adapter.itemCount
-                    Log.d("tag", "itemsCount " + itemsCount + "pos " + pos)
                     if (pos >= itemsCount - 1) {
-                        Log.d("tag", "onLastItemReached() " + pos)
                         viewModel.onLastItemReached()
                     }
                 }
@@ -274,14 +275,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     private fun setupSearchInput() {
         binding.editSearch.addTextChangedListener {
             viewModel.onTextChangedInput(it)
-
             if (it?.isNotEmpty() == true) {
-                binding.editSearch.setOnEditorActionListener { _, actionId, _ ->
-                    if (actionId == EditorInfo.IME_ACTION_DONE) {
-                        viewModel.searchWithNewText()
-                    }
-                    false
-                }
                 binding.searchButton.visibility = View.GONE
                 binding.clearButton.visibility = View.VISIBLE
             } else {
@@ -305,10 +299,10 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         }
     }
 
-    private fun View.hideKeyboard() {
-        val inputManager =
-            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputManager.hideSoftInputFromWindow(windowToken, 0)
+    private fun hideKeyboard() {
+        val inputMethodManager =
+            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(binding.containerView.windowToken, 0)
     }
 
     private fun showKeyboard() {

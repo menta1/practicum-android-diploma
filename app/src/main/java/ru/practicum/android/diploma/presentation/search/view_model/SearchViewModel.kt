@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.presentation.search.view_model
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -23,9 +22,8 @@ class SearchViewModel @Inject constructor(
     private var currentPage: Int = 0
     private var maxPages: Int = 0
     private lateinit var searchText: String
-    private var isNewPageLoaded: Boolean = false
     private var isNewSearch: Boolean = YES_NEW_SEARCH
-    private val tempList = ArrayList<Vacancy>()
+    private var tempList = ArrayList<Vacancy>()
     private var lastSearchList: List<Vacancy> = emptyList()
 
     private val _usersFoundLiveData = MutableLiveData<String>().apply {
@@ -37,6 +35,8 @@ class SearchViewModel @Inject constructor(
         postValue(SearchModelStates.NoSearch)
     }
     val searchStateLiveData = _searchStateLiveData
+
+    private val _isNextPageLoading = MutableLiveData(false)
 
     private val searchDebounce = debounce<Boolean>(SEARCH_DEBOUNCE_DELAY, viewModelScope, true) {
         search()
@@ -57,24 +57,26 @@ class SearchViewModel @Inject constructor(
 
     fun search() {
         if (searchText.isNotBlank()) {
-            Log.d("tag", "search()")
+            _isNextPageLoading.value = currentPage != 1
             newSearch(isNewSearch)
             viewModelScope.launch {
                 interactor.search(searchText, currentPage, filter).collect { result ->
                     when (result.first.code) {
-                        NO_INTERNET -> _searchStateLiveData.value = SearchModelStates.NoInternet
+                        NO_INTERNET -> {
+                            _isNextPageLoading.value = false
+                            _searchStateLiveData.value = SearchModelStates.NoInternet
+                        }
 
                         OK_RESPONSE -> {
+                            _isNextPageLoading.value = false
                             if (result.second.page?.let { it < 1 } == true) {
                                 _usersFoundLiveData.value = result.second.found.toString()
                             }
                             if (result.second.page?.let { it >= 1 } == true) {
-                                Log.d("tag", " it >= 1 } == true")
                                 tempList.addAll(result.first.data ?: emptyList())
-                                lastSearchList = result.first.data ?: emptyList()
                                 _searchStateLiveData.value = SearchModelStates.Content(tempList)
+                                _isNextPageLoading.value = false
                             } else {
-                                Log.d("tag", "else if")
                                 lastSearchList = result.first.data ?: emptyList()
                                 _searchStateLiveData.value =
                                     SearchModelStates.Content(result.first.data!!)
@@ -83,9 +85,11 @@ class SearchViewModel @Inject constructor(
                             if (result.first.data.isNullOrEmpty()) {
                                 _searchStateLiveData.value = SearchModelStates.FailedToGetList
                             }
+
                         }
 
                         SERVER_ERROR -> {
+                            _isNextPageLoading.value = false
                             _searchStateLiveData.value = SearchModelStates.ServerError
                         }
                     }
@@ -95,7 +99,6 @@ class SearchViewModel @Inject constructor(
                     if (result.second.found?.let { it <= 0 } == true) {
                         _searchStateLiveData.value = SearchModelStates.FailedToGetList
                     }
-                    isNewPageLoaded = true
                 }
             }
         }
@@ -103,41 +106,27 @@ class SearchViewModel @Inject constructor(
 
     fun onTextChangedInput(inputChar: CharSequence?) {
         if (::searchText.isInitialized) {
-            Log.d("tag", "isInitialized")
-            if (inputChar.toString().isBlank()) {
-                Log.d("tag", "isInitialized isBlank()")
+            if (searchText != inputChar.toString()) {
                 searchText = inputChar.toString()
-                _searchStateLiveData.value = SearchModelStates.NoSearch
-            } else if (searchText != inputChar.toString()) {
-                Log.d("tag", "isInitialized != inputChar.toString()")
-                searchText = inputChar.toString()
-                currentPage = 0
-                isNewSearch = YES_NEW_SEARCH
                 tempList.clear()
+                currentPage = 0
                 searchDebounce(true)
             }
+            if (searchText.isBlank()) {
+                _searchStateLiveData.value = SearchModelStates.NoSearch
+            }
         } else {
-            Log.d("tag", "else")
-            isNewSearch = YES_NEW_SEARCH
             searchText = inputChar.toString()
-            currentPage = 0
             tempList.clear()
+            currentPage = 0
             searchDebounce(true)
         }
     }
 
-    fun searchWithNewText() {
-        tempList.clear()
-        search()
-    }
-
     fun onLastItemReached() {
-        if (maxPages != currentPage) {
+        if (maxPages != currentPage && _isNextPageLoading.value == false) {
             isNewSearch = NO_NEW_SEARCH
-            if (isNewPageLoaded) {
-                isNewPageLoaded = false
-                search()
-            }
+            search()
         }
     }
 

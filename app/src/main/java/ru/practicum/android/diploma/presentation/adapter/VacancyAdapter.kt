@@ -5,7 +5,6 @@ import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -15,8 +14,7 @@ import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.utils.getSalaryText
 
 class VacancyAdapter(
-    private val context: Context,
-    private val listener: Listener
+    private val context: Context, private val listener: Listener
 ) : RecyclerView.Adapter<VacancyAdapter.Holder>() {
 
     private var itemList = emptyList<Vacancy>()
@@ -34,9 +32,8 @@ class VacancyAdapter(
     override fun getItemCount(): Int = itemList.size
 
     fun setData(newList: List<Vacancy>) {
-        val diffResult = DiffUtil.calculateDiff(ItemDiffCallback(itemList, newList))
         itemList = newList
-        diffResult.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 
     class Holder(itemView: View, private val context: Context) : RecyclerView.ViewHolder(itemView) {
@@ -53,8 +50,7 @@ class VacancyAdapter(
             itemView.setOnClickListener {
                 listener.onClick(item)
             }
-            Glide.with(vacancyImage)
-                .load(item.employerLogoUrls)
+            Glide.with(vacancyImage).load(item.employerLogoUrls)
                 .placeholder(R.drawable.logo_not_load)
                 .transform(RoundedCorners(vacancyImage.resources.getDimensionPixelSize(R.dimen.round_radius_search)))
                 .into(vacancyImage)
@@ -63,10 +59,7 @@ class VacancyAdapter(
 
     class MarginItemDecorator(private val marginTop: Int) : RecyclerView.ItemDecoration() {
         override fun getItemOffsets(
-            outRect: Rect,
-            view: View,
-            parent: RecyclerView,
-            state: RecyclerView.State
+            outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State
         ) {
             super.getItemOffsets(outRect, view, parent, state)
             if (parent.getChildAdapterPosition(view) == 0) {
@@ -74,22 +67,6 @@ class VacancyAdapter(
             } else {
                 outRect.top = 0
             }
-        }
-    }
-
-    class ItemDiffCallback(private val oldList: List<Vacancy>, private val newList: List<Vacancy>) :
-        DiffUtil.Callback() {
-        override fun getOldListSize(): Int {
-            return oldList.size
-        }
-        override fun getNewListSize(): Int {
-            return newList.size
-        }
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition].id == newList[newItemPosition].id
-        }
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldList[oldItemPosition] == newList[newItemPosition]
         }
     }
 
