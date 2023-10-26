@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/screens_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    style="@style/ScreensBackground"
     tools:context=".presentation.developers.ui.DevelopersFragment">
 
     <TextView
-        style="@style/titleText"
+        style="@style/title_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/margin_horizontal"
@@ -17,44 +17,48 @@
         android:text="@string/team" />
 
     <TextView
-        style="@style/mainHeadline"
+        style="@style/main_headline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:layout_marginTop="24dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="@dimen/margin_vertical_24"
+        android:layout_marginBottom="@dimen/margin_vertical_8"
         android:text="@string/worked_on_app" />
 
     <TextView
-        style="@style/baseLineMedium"
+        android:id="@+id/first_developer"
+        style="@style/base_line_medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/margin_vertical_16"
         android:text="@string/first_developer" />
 
     <TextView
-        style="@style/baseLineMedium"
+        android:id="@+id/second_developer"
+        style="@style/base_line_medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/margin_vertical_16"
         android:text="@string/second_developer" />
 
     <TextView
-        style="@style/baseLineMedium"
+        android:id="@+id/third_developer"
+        style="@style/base_line_medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/margin_vertical_16"
         android:text="@string/third_developer" />
 
     <TextView
-        style="@style/baseLineMedium"
+        android:id="@+id/fourth_developer"
+        style="@style/base_line_medium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_horizontal"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/margin_vertical_16"
         android:text="@string/fourth_developer" />
 
 </LinearLayout>

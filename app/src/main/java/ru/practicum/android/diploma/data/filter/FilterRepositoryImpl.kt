@@ -5,12 +5,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import ru.practicum.android.diploma.data.Constants.OK_RESPONSE
 import ru.practicum.android.diploma.data.network.NetworkClient
 import ru.practicum.android.diploma.data.network.converters.FiltersNetworkConverter
 import ru.practicum.android.diploma.data.network.dto.IndustryDto
 import ru.practicum.android.diploma.data.network.dto.IndustryResponse
 import ru.practicum.android.diploma.data.network.dto.RegionDto
 import ru.practicum.android.diploma.data.network.dto.RegionResponse
+import ru.practicum.android.diploma.data.network.dto.SingleRegionResponse
 import ru.practicum.android.diploma.domain.filter.FilterRepository
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Industry
@@ -30,12 +32,13 @@ class FilterRepositoryImpl @Inject constructor(
         val resultFromData = networkClient.getAllCountries()
         when (resultFromData.resultCode) {
 
-            200 -> {
+            OK_RESPONSE -> {
                 emit(
                     NetworkResource(
                         data =
-                        (resultFromData as RegionResponse).results.map { regionDto ->
-                            converter.convertRegionToDomain(regionDto)
+                        (resultFromData as RegionResponse).results
+                            .map {
+                            converter.convertRegionToDomain(it)
                         }, code = resultFromData.resultCode
                     )
                 )
@@ -54,11 +57,11 @@ class FilterRepositoryImpl @Inject constructor(
             val resultFromData = networkClient.getAllRegionsInCountry(countryId)
             when (resultFromData.resultCode) {
 
-                200 -> {
-                    val rawResults = (resultFromData as RegionResponse).results
+                OK_RESPONSE -> {
+                    val rawResults = (resultFromData as SingleRegionResponse).results
                     val finalResults = mutableListOf<RegionDto>()
 
-                    rawResults.first().areas.forEach { region ->
+                    rawResults.areas.forEach { region ->
                         finalResults.add(region)
                         if (region.areas.isNotEmpty()) {
                             region.areas.forEach { town ->
@@ -67,12 +70,15 @@ class FilterRepositoryImpl @Inject constructor(
                         }
                     }
 
-                    emit(NetworkResource(data =
-                    finalResults.sortedBy { it.name }.map { regionDto ->
+                    val allRegionsInCountry = finalResults.sortedBy { it.name }.map { regionDto ->
                         converter.convertRegionToDomain(regionDto)
-                    },
-                        code = resultFromData.resultCode
-                    )
+                    }
+
+                    emit(
+                        NetworkResource(
+                            data = allRegionsInCountry,
+                            code = resultFromData.resultCode
+                        )
                     )
                 }
 
@@ -91,27 +97,27 @@ class FilterRepositoryImpl @Inject constructor(
         when (resultFromData.resultCode) {
 
 
-            200 -> {
+            OK_RESPONSE -> {
                 val rawResults = (resultFromData as IndustryResponse).results
                 val finalResults = mutableListOf<IndustryDto>()
 
                 rawResults.forEach { generalIndustry ->
                     finalResults.add(generalIndustry)
-                    if (generalIndustry.industries != null) {
-                        generalIndustry.industries.forEach { specificIndustry ->
-                            finalResults.add(specificIndustry)
-                        }
+
+                    generalIndustry.industries?.forEach { specificIndustry ->
+                        finalResults.add(specificIndustry)
                     }
                 }
 
-                emit(NetworkResource(data =
-                finalResults.sortedBy { it.name }.map { industryDto ->
+                val allIndustries = finalResults.sortedBy { it.name }.map { industryDto ->
                     converter.convertIndustryToDomain(industryDto)
-                },
-                    code = resultFromData.resultCode
+                }
+                emit(
+                    NetworkResource(
+                        data = allIndustries,
+                        code = resultFromData.resultCode
+                    )
                 )
-                )
-
             }
 
             else -> {
@@ -122,23 +128,105 @@ class FilterRepositoryImpl @Inject constructor(
     }.flowOn(Dispatchers.IO)
 
 
+    override fun getAllPossibleRegions(): Flow<NetworkResource<List<Region>>> = flow {
+
+        val resultFromData = networkClient.getAllCountries()
+        when (resultFromData.resultCode) {
+
+            OK_RESPONSE -> {
+                val finalResults = mutableListOf<RegionDto>()
+                val rawResults = (resultFromData as RegionResponse).results
+
+                rawResults.forEach { country ->
+                    if (country.areas.isNotEmpty()) finalResults.addAll(country.areas)
+                    country.areas.forEach { region ->
+                        if (region.areas.isNotEmpty()) finalResults.addAll(region.areas)
+                        region.areas.forEach { place ->
+                            if (place.areas.isNotEmpty()) finalResults.addAll(place.areas)
+                            place.areas.forEach { point ->
+                                if (point.areas.isNotEmpty()) finalResults.addAll(point.areas)
+                            }
+                        }
+                    }
+                }
+
+                emit(
+                    NetworkResource(
+                        data = finalResults.filter { it.parentId != null }.sortedBy { it.name }
+                            .map { regionDto ->
+                                converter.convertRegionToDomain(regionDto)
+                            }, code = resultFromData.resultCode
+                    )
+                )
+            }
+
+            else -> {
+                emit(NetworkResource(code = resultFromData.resultCode))
+            }
+        }
+
+    }.flowOn(Dispatchers.IO)
+
+    override fun getCountyByRegionId(regionId: String): Flow<NetworkResource<Region>> = flow {
+        val resultFromData = networkClient.getAllRegionsInCountry(regionId)
+        when (resultFromData.resultCode) {
+
+            OK_RESPONSE -> {
+                val rawResults = (resultFromData as SingleRegionResponse).results
+                var finalResult = rawResults
+                var id = finalResult.parentId
+
+                while (id != null) {
+                    finalResult =
+                        (networkClient.getAllRegionsInCountry(id) as SingleRegionResponse).results
+                    id = finalResult.parentId
+                }
+                emit(
+                    NetworkResource(
+                        data = converter.convertRegionToDomain(finalResult),
+                        code = resultFromData.resultCode
+                    )
+                )
+            }
+
+            else -> {
+                emit(NetworkResource(code = resultFromData.resultCode))
+            }
+        }
+
+    }.flowOn(Dispatchers.IO)
+
     override fun getFilter(): Filter? {
         val resultFromData = filterStorage.getFilter()
-        return if (resultFromData == "") {
+
+        return if (resultFromData.isEmpty() || resultFromData =="null") {
             null
-        } else {
-            Gson().fromJson(resultFromData, Filter::class.java)
-        }
+        } else if (filterHasNoValues(Gson().fromJson(resultFromData, Filter::class.java))) {
+            null
+        } else Gson().fromJson(resultFromData, Filter::class.java)
     }
 
     override fun editCountryNameAndId(country: Region) {
         val filterFromData = getFilter()
+        val previousCountryId = filterStorage.getPreviousCountry()
 
-        val editedFilter =
-            filterFromData?.copy(countryName = country.name, regionId = country.id)
-                ?: Filter(countryName = country.name, regionId = country.id)
+        if (previousCountryId == country.id) {
 
-        filterStorage.editFilter(Gson().toJson(editedFilter))
+            val editedFilter =
+                filterFromData?.copy(countryName = country.name, countryId = country.id)
+                    ?: Filter(countryName = country.name, countryId = country.id)
+
+            filterStorage.editFilter(Gson().toJson(editedFilter))
+        } else {
+
+            val editedFilter =
+                filterFromData?.copy(countryName = country.name, countryId = country.id)
+                    ?: Filter(countryName = country.name, countryId = country.id)
+
+            filterStorage.editFilter(Gson().toJson(editedFilter))
+            filterStorage.editPreviousCountry(country.id)
+            clearRegionNameAndId()
+        }
     }
 
     override fun editRegionNameAndId(region: Region) {
@@ -159,12 +247,21 @@ class FilterRepositoryImpl @Inject constructor(
         filterStorage.editFilter(Gson().toJson(editedFilter))
     }
 
-    override fun editExpectedSalary(expectedSalary: Int) {
+    override fun editExpectedSalary(expectedSalary: CharSequence?) {
         val filterFromData = getFilter()
 
-        val editedFilter =
-            filterFromData?.copy(expectedSalary = expectedSalary) ?: Filter(expectedSalary = expectedSalary)
-        filterStorage.editFilter(Gson().toJson(editedFilter))
+        if (expectedSalary.isNullOrBlank()){
+            clearExpectedSalary()
+        }
+        else if (expectedSalary.toString() =="0"){
+            clearExpectedSalary()
+        }
+        else {
+            val editedFilter =
+                filterFromData?.copy(expectedSalary = expectedSalary.toString().toLong())
+                    ?: Filter(expectedSalary = expectedSalary.toString().toLong())
+            filterStorage.editFilter(Gson().toJson(editedFilter))
+        }
     }
 
     override fun editIsOnlyWithSalary(isOnlyWithSalary: Boolean) {
@@ -180,17 +277,24 @@ class FilterRepositoryImpl @Inject constructor(
         val filterFromData = getFilter()
 
         val editedFilter =
-            filterFromData?.copy(countryName = null, regionId = null, regionName = null)
+            filterFromData?.copy(countryName = null, countryId = null)
         filterStorage.editFilter(Gson().toJson(editedFilter))
-
     }
+
+    override fun clearPlace() {
+        val filterFromData = getFilter()
+
+        val editedFilter =
+            filterFromData?.copy(countryName = null, countryId = null, regionName = null, regionId = null)
+        filterStorage.editFilter(Gson().toJson(editedFilter))
+    }
+
 
     override fun clearRegionNameAndId() {
         val filterFromData = getFilter()
 
         val editedFilter = filterFromData?.copy(regionName = null, regionId = null)
         filterStorage.editFilter(Gson().toJson(editedFilter))
-
     }
 
     override fun clearIndustryNameAndId() {
@@ -215,4 +319,16 @@ class FilterRepositoryImpl @Inject constructor(
 
     override fun isFilterEmpty(): Boolean = getFilter() == null
 
+    private fun filterHasNoValues(filter: Filter): Boolean =
+        with(filter) {
+            !isOnlyWithSalary && countryName == null && regionName == null && regionId == null && industryName == null && industryId == null && expectedSalary == null
+        }
+
+    override fun putSearchMode(isSearchingNow: Boolean) {
+        filterStorage.putSearchMode(isSearchingNow)
+    }
+
+    override fun getSearchingMode(): Boolean {
+        return filterStorage.getSearchingMode()
+    }
 }

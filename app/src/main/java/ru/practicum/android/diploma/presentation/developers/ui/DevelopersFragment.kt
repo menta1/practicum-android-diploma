@@ -21,16 +21,14 @@ class DevelopersFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
 
-        }
         (activity?.application as App).appComponent.activityComponent().create().inject(this)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentDevelopersBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -38,6 +36,20 @@ class DevelopersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        with(binding) {
+            firstDeveloper.setOnClickListener {
+                viewModel.openLinkGitHub("https://github.com/menta1")
+            }
+            secondDeveloper.setOnClickListener {
+                viewModel.openLinkGitHub("https://github.com/vlodo-o")
+            }
+            thirdDeveloper.setOnClickListener {
+                viewModel.openLinkGitHub("https://github.com/alexxk2")
+            }
+            fourthDeveloper.setOnClickListener {
+                viewModel.openLinkGitHub("https://github.com/ImNia")
+            }
+        }
     }
 
     override fun onDestroyView() {

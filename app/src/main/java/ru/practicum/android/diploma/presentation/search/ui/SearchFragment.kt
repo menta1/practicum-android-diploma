@@ -1,30 +1,30 @@
 package ru.practicum.android.diploma.presentation.search.ui
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
-import androidx.core.os.bundleOf
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.App
 import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.adapter.VacancyAdapter
-import ru.practicum.android.diploma.presentation.details.ui.DetailsFragment
+import ru.practicum.android.diploma.presentation.search.LoadingPageErrorStates
 import ru.practicum.android.diploma.presentation.search.SearchModelState
 import ru.practicum.android.diploma.presentation.search.view_model.SearchViewModel
 import javax.inject.Inject
 
 
 class SearchFragment : Fragment(), VacancyAdapter.Listener {
+
 
     @Inject
     lateinit var viewModel: SearchViewModel
@@ -41,8 +41,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchBinding.inflate(layoutInflater, container, false)
         return binding.root
@@ -51,32 +50,64 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = VacancyAdapter(this)
+        viewModel.getFilter()
+        viewModel.startSearchIfNewFiltersSelected()
+        viewModel.savedInput.observe(viewLifecycleOwner){savedInput->
+            binding.editSearch.setText(savedInput)
+        }
+        viewModel.isNextPageLoading.observe(viewLifecycleOwner){isNextPageLoading->
+            managePagingProgressVisibility(isNextPageLoading)
+        }
+
+        viewModel.loadingPageErrorState.observe(viewLifecycleOwner){state->
+            manageLoadingPageErrors(state)
+        }
+
+        val adapter = VacancyAdapter(requireContext(), this)
+        val itemDecorator =
+            VacancyAdapter.MarginItemDecorator(resources.getDimensionPixelSize(R.dimen.item_margin_top))
         binding.recyclerVacancy.adapter = adapter
         binding.recyclerVacancy.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerVacancy.addItemDecoration(itemDecorator)
         setVacancies(adapter)
         setupSearchInput()
+        clearTextSearch()
         scrolling(adapter)
         stateView()
         openFilters()
+        manageFilterButtonsVisibility(viewModel.isFilterEmpty())
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.getFilter()
+    }
+
+    override fun onClick(item: Vacancy) {
+        findNavController().navigate(
+            SearchFragmentDirections.actionSearchFragmentToDetailsFragment(item.id)
+        )
     }
 
     private fun stateView() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.viewState.collect { state ->
-                when (state) {
-                    SearchModelState.NoSearch -> stateNoSearch()
+        viewModel.viewStateLiveData.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                SearchModelState.NoSearch -> stateNoSearch()
 
-                    SearchModelState.Loading -> stateLoading()
+                SearchModelState.Loading -> stateLoading()
 
-                    SearchModelState.Search -> stateSearch()
+                SearchModelState.Search -> stateSearch()
 
-                    SearchModelState.Loaded -> stateLoaded()
+                SearchModelState.Loaded -> stateLoaded()
 
-                    SearchModelState.NoInternet -> stateNoInternet()
+                SearchModelState.NoInternet -> stateNoInternet()
 
-                    SearchModelState.FailedToGetList -> stateFailedToGetList()
-                }
+                SearchModelState.FailedToGetList -> stateFailedToGetList()
             }
         }
     }
@@ -102,6 +133,8 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             recyclerVacancyLayout.visibility = View.GONE
             errorNoInternet.noInternetLayout.visibility = View.GONE
             errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
+            binding.pagingProgressBar.visibility= View.GONE
+            hideKeyboard()
         }
     }
 
@@ -138,6 +171,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             searchMessage.visibility = View.GONE
             errorNoInternet.noInternetLayout.visibility = View.VISIBLE
             errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
+            binding.pagingProgressBar.visibility= View.GONE
         }
     }
 
@@ -150,6 +184,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             recyclerVacancyLayout.visibility = View.VISIBLE
             errorNoInternet.noInternetLayout.visibility = View.GONE
             errorFailedGetCat.errorFailedGetCat.visibility = View.VISIBLE
+            binding.pagingProgressBar.visibility= View.GONE
         }
     }
 
@@ -170,16 +205,15 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         })
     }
 
+
     private fun setVacancies(adapter: VacancyAdapter) {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.usersFlow.collect { list ->
-                adapter.setData(list)
-            }
+        viewModel.usersLiveData.observe(viewLifecycleOwner) {
+            adapter.setData(it)
         }
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.usersFound.collect {
-                if (it.isNotBlank())
-                    binding.searchMessage.text = formatVacanciesString(it.toInt())
+
+        viewModel.usersFoundLiveData.observe(viewLifecycleOwner) {
+            if (it.isNotBlank()) {
+                binding.searchMessage.text = formatVacanciesString(it.toInt())
             }
         }
     }
@@ -192,37 +226,74 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         return when {
             lastTwoDigits in 11..19 -> "Найдено $count ${vacanciesWordForms[2]}"
             lastDigit == 1 -> "Найдена $count ${vacanciesWordForms[0]}"
-            lastDigit == 0 -> "Таких вакансий нет"
+            count == 0 -> "Таких вакансий нет"
             lastDigit in 2..4 -> "Найдено $count ${vacanciesWordForms[1]}"
             else -> "Найдено $count ${vacanciesWordForms[2]}"
+        }
+    }
+
+    private fun clearTextSearch(){
+        binding.clearButton.setOnClickListener{
+            binding.editSearch.setText("")
+            showKeyboard()
         }
     }
 
     private fun setupSearchInput() {
         binding.editSearch.addTextChangedListener {
             viewModel.onTextChangedInput(it)
-            binding.editSearch.setOnEditorActionListener { _, actionId, _ ->
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    viewModel.search()
-                }
-                false
+            if (it?.isNotEmpty() == true) {
+                binding.searchButton.visibility = View.GONE
+                binding.clearButton.visibility = View.VISIBLE
+            } else {
+                binding.searchButton.visibility = View.VISIBLE
+                binding.clearButton.visibility = View.GONE
             }
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
-    override fun onClick(item: Vacancy) {
-        val bundle = bundleOf(DetailsFragment.VACANCY to item.id)
-        findNavController().navigate(R.id.action_searchFragment_to_detailsFragment, bundle)
+    private fun manageFilterButtonsVisibility(isFilterEmpty: Boolean) {
+        binding.buttonFiltersEmpty.visibility = if (isFilterEmpty) View.VISIBLE else View.GONE
+        binding.buttonFiltersNotEmpty.visibility = if (isFilterEmpty) View.GONE else View.VISIBLE
     }
 
     private fun openFilters() {
-        binding.buttonFilters.setOnClickListener {
+        binding.buttonFiltersEmpty.setOnClickListener {
             findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)
+        }
+        binding.buttonFiltersNotEmpty.setOnClickListener {
+            findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)
+        }
+    }
+
+    private fun managePagingProgressVisibility(isNewPageLoading: Boolean){
+        binding.pagingProgressBar.visibility = if(isNewPageLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun hideKeyboard() {
+        val inputMethodManager =
+            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(binding.containerView.windowToken, 0)
+    }
+
+    private fun showKeyboard() {
+        val inputMethodManager =
+            activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.showSoftInput(binding.editSearch, 0)
+    }
+
+    private fun manageLoadingPageErrors(state: LoadingPageErrorStates){
+
+        when(state){
+            LoadingPageErrorStates.Default -> {
+
+            }
+            LoadingPageErrorStates.NoInternet -> {
+                Toast.makeText(requireContext(),getString(R.string.no_internet_while_loading_page), Toast.LENGTH_LONG).show()
+            }
+            LoadingPageErrorStates.ServerError -> {
+                Toast.makeText(requireContext(),getString(R.string.server_error_while_loading_page), Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

@@ -2,9 +2,10 @@ package ru.practicum.android.diploma.data.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ru.practicum.android.diploma.domain.models.Phone
 
-@Entity(tableName = "vacancy_table")
+const val VACANCY_DATABASE = "vacancy_table"
+
+@Entity(tableName = VACANCY_DATABASE)
 data class VacancyEntity(
     @PrimaryKey
     val id: Int,
@@ -20,7 +21,7 @@ data class VacancyEntity(
     val schedule: String,
     val description: String,
     val keySkills: List<String>,
-    val phone: List<Phone>?,
+    val phone: List<PhoneDto>?,
     val email: String?,
     val contactPerson: String?,
     val url: String

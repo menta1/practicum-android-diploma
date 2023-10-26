@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.Dispatchers
+import ru.practicum.android.diploma.data.Constants.NO_INTERNET
+import ru.practicum.android.diploma.data.Constants.OK_RESPONSE
 import ru.practicum.android.diploma.domain.details.DetailsInteractor
 import ru.practicum.android.diploma.domain.models.VacancyDetail
 import ru.practicum.android.diploma.domain.share.SharingInteractor
@@ -27,36 +29,45 @@ class DetailsViewModel @Inject constructor(
 
     private var currentVacancy: VacancyDetail? = null
     private var isFavourite: Boolean = false
+
     fun initData(vacancyId: String?) {
         detailsStateLiveData.postValue(DetailsState.Loading)
         if(vacancyId == null) {
             detailsStateLiveData.postValue(DetailsState.Error)
         } else {
             viewModelScope.launch {
-                try {
-                    val networkResource = interactor.getVacancyDetails(vacancyId)
-                    when (networkResource.code) {
-                        -1 -> { detailsStateLiveData.postValue(DetailsState.Error)}
+                isFavourite = interactor.isVacancyInFavourites(vacancyId)
+                favouriteStateLiveData.postValue(isFavourite)
 
-                        200 -> {
-                            currentVacancy = networkResource.data!!
-                            detailsStateLiveData.postValue(DetailsState.Content(networkResource.data))
+                if (isFavourite) {
+                    currentVacancy = interactor.getFavouriteVacancy(vacancyId)
+                    detailsStateLiveData.postValue(DetailsState.Content(currentVacancy!!))
+                }
+                else {
+
+                    try {
+                        val networkResource = interactor.getVacancyDetails(vacancyId)
+                        when (networkResource.code) {
+                            NO_INTERNET -> {
+                                detailsStateLiveData.postValue(DetailsState.Error)
+                            }
+
+                            OK_RESPONSE -> {
+                                currentVacancy = networkResource.data!!
+                                detailsStateLiveData.postValue(DetailsState.Content(networkResource.data))
+                            }
+
+                            else -> {
+                                detailsStateLiveData.postValue(DetailsState.Error)
+                            }
                         }
-
-                        else -> { detailsStateLiveData.postValue(DetailsState.Error)}
+                    } catch (ex: Exception) {
+                        ex.printStackTrace()
+                        detailsStateLiveData.postValue(DetailsState.Error)
                     }
-                } catch (ex: Exception) {
-                    ex.printStackTrace()
-                    detailsStateLiveData.postValue(DetailsState.Error)
+
                 }
             }
-        }
-    }
-
-    fun existInFavourite(vacancyId: String) {
-        viewModelScope.launch {
-            isFavourite = interactor.isVacancyInFavourites(vacancyId)
-            favouriteStateLiveData.postValue(isFavourite)
         }
     }
 

@@ -11,15 +11,18 @@ interface FilterInteractor {
     fun getAllCountries(): Flow<NetworkResource<List<Region>>>
     fun getAllRegionsInCountry(countryId: String): Flow<NetworkResource<List<Region>>>
     fun getAllIndustries():Flow<NetworkResource<List<Industry>>>
+    fun getAllPossibleRegions(): Flow<NetworkResource<List<Region>>>
+    fun getCountyByRegionId(regionId: String): Flow<NetworkResource<Region>>
 
     fun getFilter(): Filter?
 
     fun editCountryNameAndId(country: Region)
     fun editRegionNameAndId(region: Region)
     fun editIndustryNameAndId(industry: Industry)
-    fun editExpectedSalary(expectedSalary: Int)
+    fun editExpectedSalary(expectedSalary: CharSequence?)
     fun editIsOnlyWithSalary(isOnlyWithSalary: Boolean)
 
+    fun clearPlace()
     fun clearCountryNameAndId()
     fun clearRegionNameAndId()
     fun clearIndustryNameAndId()
@@ -27,4 +30,7 @@ interface FilterInteractor {
     fun clearFilter()
 
     fun isFilterEmpty(): Boolean
+
+    fun putSearchMode(isSearchingNow: Boolean)
+    fun getSearchingMode(): Boolean
 }

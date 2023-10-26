@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import ru.practicum.android.diploma.App
 import ru.practicum.android.diploma.R
@@ -17,7 +17,7 @@ import ru.practicum.android.diploma.databinding.FragmentDetailsBinding
 import ru.practicum.android.diploma.domain.models.VacancyDetail
 import ru.practicum.android.diploma.presentation.details.models.DetailsState
 import ru.practicum.android.diploma.presentation.details.view_model.DetailsViewModel
-import java.text.NumberFormat
+import ru.practicum.android.diploma.presentation.utils.getSalaryText
 import javax.inject.Inject
 
 class DetailsFragment : Fragment() {
@@ -28,6 +28,8 @@ class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
 
+    private val args by navArgs<DetailsFragmentArgs>()
+    private val vacancyId by lazy { args.vacancyId }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,10 +46,6 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var vacancyId: String? = null
-        arguments?.let {
-            vacancyId = it.getSerializable(VACANCY) as String
-        }
         setListeners()
 
         viewModel.initData(vacancyId)
@@ -56,13 +54,14 @@ class DetailsFragment : Fragment() {
                 DetailsState.Loading -> {
                     changeLoadingVisibility(true)
                 }
+
                 DetailsState.Error -> {
                     changeContentVisibility(false)
                 }
+
                 is DetailsState.Content -> {
                     changeContentVisibility(true)
                     updateData(state.data)
-                    viewModel.existInFavourite(state.data.id)
                 }
             }
         }
@@ -85,17 +84,12 @@ class DetailsFragment : Fragment() {
     private fun updateData(data: VacancyDetail) {
         binding.textNameVacancy.text = data.name
         binding.textCurrency.text =
-            salaryText(data.salaryFrom, data.salaryTo, data.currency)
+            getSalaryText(data.salaryFrom, data.salaryTo, data.currency, requireContext())
 
         Glide.with(this)
             .load(data.employerLogoUrls)
             .placeholder(R.drawable.logo_not_load)
-            .transform(
-                CenterCrop(),
-                RoundedCorners(
-                    resources.getDimensionPixelSize(R.dimen.round_radius_search)
-                )
-            )
+            .transform(RoundedCorners(resources.getDimensionPixelSize(R.dimen.round_radius_search)))
             .into(binding.employerLogo)
 
         binding.employerName.text = data.employer
@@ -105,7 +99,7 @@ class DetailsFragment : Fragment() {
             getString(R.string.employment_schedule, data.employmentType, data.schedule)
 
         binding.textDescription.text = Html.fromHtml(data.description, Html.FROM_HTML_MODE_COMPACT)
-        if(data.keySkills.isNotEmpty()) {
+        if (data.keySkills.isNotEmpty()) {
             binding.textKeySkills.visibility = View.VISIBLE
             binding.textKeySkillsTitle.visibility = View.VISIBLE
             binding.textKeySkills.text = skillText(data.keySkills)
@@ -114,7 +108,7 @@ class DetailsFragment : Fragment() {
             binding.textKeySkillsTitle.visibility = View.GONE
         }
 
-        if(!data.contactPerson.isNullOrEmpty()) {
+        if (!data.contactPerson.isNullOrEmpty()) {
             binding.textContactPersonName.visibility = View.VISIBLE
             binding.textContactPersonNameTitle.visibility = View.VISIBLE
             binding.textContactPersonName.text = data.contactPerson
@@ -123,7 +117,7 @@ class DetailsFragment : Fragment() {
             binding.textContactPersonNameTitle.visibility = View.GONE
         }
 
-        if(!data.email.isNullOrEmpty()) {
+        if (!data.email.isNullOrEmpty()) {
             binding.textEmail.visibility = View.VISIBLE
             binding.textEmailTitle.visibility = View.VISIBLE
             binding.textEmail.text = data.email
@@ -136,41 +130,28 @@ class DetailsFragment : Fragment() {
             binding.textPhone.visibility = View.VISIBLE
             binding.textPhoneTitle.visibility = View.VISIBLE
             binding.textPhone.text = data.phone.first().number
+
+            if (!data.phone.first().comment.isNullOrEmpty()) {
+                binding.textMessage.visibility = View.VISIBLE
+                binding.textMessageTitle.visibility = View.VISIBLE
+                binding.textMessage.text = data.phone.first().comment
+            } else {
+                binding.textMessage.visibility = View.GONE
+                binding.textMessageTitle.visibility = View.GONE
+            }
+
         } else {
             binding.textPhone.visibility = View.GONE
             binding.textPhoneTitle.visibility = View.GONE
+            binding.textMessage.visibility = View.GONE
+            binding.textMessageTitle.visibility = View.GONE
         }
 
-        if (data.contactPerson == null && data.email == null && data.phone == null) {
+        if (data.contactPerson.isNullOrEmpty() && data.email.isNullOrEmpty() && data.phone.isNullOrEmpty()) {
             binding.textContactTitle.visibility = View.GONE
         } else {
             binding.textContactTitle.visibility = View.VISIBLE
         }
-
-        if (data.phone?.first()?.comment != null) {
-            binding.textMessage.visibility = View.VISIBLE
-            binding.textMessageTitle.visibility = View.VISIBLE
-            binding.textMessage.text = data.phone.first().comment
-        } else {
-            binding.textMessage.visibility = View.GONE
-            binding.textMessageTitle.visibility = View.GONE
-        }
-    }
-    private fun salaryText(salaryFrom: Int?, salaryTo: Int?, currency: String?) =
-        if (salaryFrom != null && salaryTo != null) {
-            getString(R.string.salary_from) + " " +
-                    salaryText(salaryFrom) + " " + getString(R.string.salary_to) + " " +
-                    salaryText(salaryTo) + " " + currency
-        } else if (salaryFrom != null) {
-            getString(R.string.salary_from) + " " + salaryText(salaryFrom) + " " + currency
-        } else if (salaryTo != null) {
-            getString(R.string.salary_to) + " " + salaryText(salaryTo) + " " + currency
-        } else {
-            getString(R.string.without_salary)
-        }
-
-    private fun salaryText(number: Int): String {
-        return NumberFormat.getInstance().format(number)
     }
 
     private fun skillText(skills: List<String>): String {
@@ -181,7 +162,7 @@ class DetailsFragment : Fragment() {
 
     private fun changeContentVisibility(isContent: Boolean) {
         changeLoadingVisibility(false)
-        if(isContent) {
+        if (isContent) {
             binding.detailsBlock.visibility = View.VISIBLE
             binding.detailsErrorBlock.visibility = View.GONE
         } else {
@@ -191,7 +172,7 @@ class DetailsFragment : Fragment() {
     }
 
     private fun changeLoadingVisibility(isLoading: Boolean) {
-        if(isLoading) {
+        if (isLoading) {
             binding.progressBarDetails.visibility = View.VISIBLE
             binding.detailsBlock.visibility = View.GONE
         } else {
@@ -203,7 +184,7 @@ class DetailsFragment : Fragment() {
     private fun setListeners() {
         binding.similarButton.setOnClickListener {
             findNavController().navigate(
-                R.id.action_detailsFragment_to_similarFragment
+                DetailsFragmentDirections.actionDetailsFragmentToSimilarFragment(vacancyId)
             )
         }
 
@@ -222,8 +203,5 @@ class DetailsFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-    companion object {
-        const val VACANCY = "vacancy"
     }
 }

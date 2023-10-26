@@ -1,6 +1,8 @@
 package ru.practicum.android.diploma.data.db.converters
 
+import ru.practicum.android.diploma.data.db.PhoneDto
 import ru.practicum.android.diploma.data.db.VacancyEntity
+import ru.practicum.android.diploma.domain.models.Phone
 import ru.practicum.android.diploma.domain.models.VacancyDetail
 
 class VacancyDetailDbConverters {
@@ -19,7 +21,9 @@ class VacancyDetailDbConverters {
             schedule = vacancy.schedule,
             description = vacancy.description,
             keySkills = vacancy.keySkills,
-            phone = vacancy.phone,
+            phone = vacancy.phone?.map {
+                mapPhoneToDomain(it)
+            },
             email = vacancy.email,
             contactPerson = vacancy.contactPerson,
             url = vacancy.url
@@ -41,10 +45,26 @@ class VacancyDetailDbConverters {
             schedule = vacancy.schedule,
             description = vacancy.description,
             keySkills = vacancy.keySkills,
-            phone = vacancy.phone,
+            phone = vacancy.phone?.map {
+                mapPhoneToData(it)
+            },
             email = vacancy.email,
             contactPerson = vacancy.contactPerson,
             url = vacancy.url
+        )
+    }
+
+    private fun mapPhoneToDomain(phoneDto: PhoneDto): Phone {
+        return Phone(
+            number = phoneDto.number,
+            comment = phoneDto.comment
+        )
+    }
+
+    private fun mapPhoneToData(phone: Phone): PhoneDto {
+        return PhoneDto(
+            number = phone.number,
+            comment = phone.comment
         )
     }
 }

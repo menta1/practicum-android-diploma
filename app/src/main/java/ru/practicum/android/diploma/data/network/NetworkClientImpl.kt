@@ -3,13 +3,17 @@ package ru.practicum.android.diploma.data.network
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import ru.practicum.android.diploma.data.Constants.NO_INTERNET
+import ru.practicum.android.diploma.data.Constants.OK_RESPONSE
+import ru.practicum.android.diploma.data.Constants.SERVER_ERROR
 import ru.practicum.android.diploma.data.network.dto.IndustryResponse
 import ru.practicum.android.diploma.data.network.dto.RegionResponse
 import ru.practicum.android.diploma.data.network.dto.Response
+import ru.practicum.android.diploma.data.network.dto.SingleRegionResponse
 import ru.practicum.android.diploma.data.network.dto.VacancyDetailResponse
+import ru.practicum.android.diploma.data.network.dto.VacancyRequest
 import javax.inject.Inject
 
 class NetworkClientImpl @Inject constructor(
@@ -17,64 +21,59 @@ class NetworkClientImpl @Inject constructor(
     private val context: Context
 ) : NetworkClient {
 
-    override suspend fun search(dto: Any): Response {
+    override suspend fun search(dto: VacancyRequest): Response {
         if (!isConnected()) {
-            Log.d("tag", "-1 ")
-            return Response().apply { resultCode = -1 }
+            return Response().apply { resultCode = NO_INTERNET }
         }
-//        if (dto !is VacancyRequest) {
-//            Log.d("tag", "-400 " + dto)
-//            return Response().apply { resultCode = 400 }
-//        }
         return withContext(Dispatchers.IO) {
             try {
-                val response = hhSearchApi.search(dto as HashMap<String, String>)
-                response.apply { resultCode = 200 }
+                val response = hhSearchApi.search(dto.request)
+                response.apply { resultCode = OK_RESPONSE }
             } catch (e: Exception) {
-               e.printStackTrace()
-                Response().apply { resultCode = 500 }
+                e.printStackTrace()
+                Response().apply { resultCode = SERVER_ERROR }
             }
         }
     }
 
     override suspend fun getAllCountries(): Response {
 
+        if (!isConnected()) {
+            return Response().apply { resultCode = NO_INTERNET }
+        }
         val response = hhSearchApi.getAllCountries()
 
-        if (!isConnected()){
-            return Response().apply { resultCode = -1 }
-        }
-        return if (response.code()==200 && response.body() != null){
-            RegionResponse(results = response.body()!!).apply { resultCode = 200 }
-        } else{
+        return if (response.code() == OK_RESPONSE && response.body() != null) {
+            RegionResponse(results = response.body()!!).apply { resultCode = OK_RESPONSE }
+        } else {
             Response().apply { resultCode = response.code() }
         }
     }
 
     override suspend fun getAllRegionsInCountry(countryId: String): Response {
 
+        if (!isConnected()) {
+            return Response().apply { resultCode = NO_INTERNET }
+        }
         val response = hhSearchApi.getAllRegionsInCountry(countryId)
 
-        if (!isConnected()){
-            return Response().apply { resultCode = -1 }
-        }
-        return if (response.code()==200 && response.body() != null){
-            RegionResponse(results = response.body()!! ).apply { resultCode = 200 }
-        } else{
+        return if (response.code() == OK_RESPONSE && response.body() != null) {
+            SingleRegionResponse(results = response.body()!!).apply { resultCode = OK_RESPONSE }
+        } else {
             Response().apply { resultCode = response.code() }
         }
     }
 
     override suspend fun getAllIndustries(): Response {
 
+        if (!isConnected()) {
+            return Response().apply { resultCode = NO_INTERNET }
+        }
         val response = hhSearchApi.getAllIndustries()
 
-        if (!isConnected()){
-            return Response().apply { resultCode = -1 }
-        }
-        return if (response.code()==200 && response.body() != null){
-            IndustryResponse(results = response.body()!! ).apply { resultCode = 200 }
-        } else{
+        return if (response.code() == OK_RESPONSE && response.body() != null) {
+            IndustryResponse(results = response.body()!!).apply { resultCode = OK_RESPONSE }
+        } else {
             Response().apply { resultCode = response.code() }
         }
     }
@@ -83,15 +82,29 @@ class NetworkClientImpl @Inject constructor(
         val response = hhSearchApi.getVacancyDetail(vacancyId)
 
         if (!isConnected()) {
-            return Response().apply { resultCode = -1 }
+            return Response().apply { resultCode = NO_INTERNET }
         }
-        return if (response.code() == 200 && response.body() != null) {
-            VacancyDetailResponse(result = response.body()!!).apply { resultCode = 200 }
+        return if (response.code() == OK_RESPONSE && response.body() != null) {
+            VacancyDetailResponse(result = response.body()!!).apply { resultCode = OK_RESPONSE }
         } else {
             Response().apply { resultCode = response.code() }
         }
     }
 
+    override suspend fun getSimilarVacancy(vacancyId: String, dto: VacancyRequest): Response {
+        if (!isConnected()) {
+            return Response().apply { resultCode = NO_INTERNET }
+        }
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = hhSearchApi.getSimilarVacancy(vacancyId, dto.request)
+                response.apply { resultCode = OK_RESPONSE }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Response().apply { resultCode = SERVER_ERROR }
+            }
+        }
+    }
 
     private fun isConnected(): Boolean {
         val connectivityManager = context.getSystemService(
