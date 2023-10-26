@@ -8,7 +8,7 @@ import java.util.Locale
 fun getSalaryText(salaryFrom: Int?, salaryTo: Int?, currency: String?, context: Context): String {
     val currencySign = getCurrencySign(currency)
     return when {
-        salaryFrom == 0 && salaryTo != null && salaryTo != 0 -> {
+        salaryFrom == 0 || salaryFrom == null && salaryTo != null && salaryTo != 0 -> {
             context.getString(R.string.salary_to, salaryFormat(salaryTo), currencySign)
         }
         salaryFrom != null && salaryTo == null || salaryTo == 0 -> {
