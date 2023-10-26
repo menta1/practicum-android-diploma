@@ -18,35 +18,35 @@ import ru.practicum.android.diploma.presentation.details.models.DetailsState
 import javax.inject.Inject
 
 class DetailsViewModel @Inject constructor(
-    private val interactor: DetailsInteractor,
+    private val detailsInteractor: DetailsInteractor,
     private val sharingInteractor: SharingInteractor,
 ) : ViewModel() {
     private val detailsStateLiveData = MutableLiveData<DetailsState>()
     fun getDetailsStateLiveData(): LiveData<DetailsState> = detailsStateLiveData
-
-    private val favouriteStateLiveData = MutableLiveData<Boolean>()
-    fun getFavouriteStateLiveData(): LiveData<Boolean> = favouriteStateLiveData
 
     private var currentVacancy: VacancyDetail? = null
     private var isFavourite: Boolean = false
 
     fun initData(vacancyId: String?) {
         detailsStateLiveData.postValue(DetailsState.Loading)
-        if(vacancyId == null) {
+        if (vacancyId == null) {
             detailsStateLiveData.postValue(DetailsState.Error)
         } else {
             viewModelScope.launch {
-                isFavourite = interactor.isVacancyInFavourites(vacancyId)
-                favouriteStateLiveData.postValue(isFavourite)
+                isFavourite = detailsInteractor.isVacancyInFavourites(vacancyId)
 
                 if (isFavourite) {
-                    currentVacancy = interactor.getFavouriteVacancy(vacancyId)
-                    detailsStateLiveData.postValue(DetailsState.Content(currentVacancy!!))
-                }
-                else {
+                    currentVacancy = detailsInteractor.getFavouriteVacancy(vacancyId)
+                    detailsStateLiveData.postValue(
+                        DetailsState.Content(
+                            currentVacancy!!,
+                            isFavourite
+                        )
+                    )
+                } else {
 
                     try {
-                        val networkResource = interactor.getVacancyDetails(vacancyId)
+                        val networkResource = detailsInteractor.getVacancyDetails(vacancyId)
                         when (networkResource.code) {
                             NO_INTERNET -> {
                                 detailsStateLiveData.postValue(DetailsState.Error)
@@ -54,7 +54,12 @@ class DetailsViewModel @Inject constructor(
 
                             OK_RESPONSE -> {
                                 currentVacancy = networkResource.data!!
-                                detailsStateLiveData.postValue(DetailsState.Content(networkResource.data))
+                                detailsStateLiveData.postValue(
+                                    DetailsState.Content(
+                                        networkResource.data,
+                                        isFavourite
+                                    )
+                                )
                             }
 
                             else -> {
@@ -73,7 +78,7 @@ class DetailsViewModel @Inject constructor(
 
     fun setFavourite() {
         currentVacancy?.let {
-            if(isFavourite) deleteVacancy(currentVacancy!!)
+            if (isFavourite) deleteVacancy(currentVacancy!!)
             else saveVacancy(currentVacancy!!)
         }
     }
@@ -104,16 +109,16 @@ class DetailsViewModel @Inject constructor(
 
     private fun saveVacancy(vacancy: VacancyDetail) {
         viewModelScope.launch(Dispatchers.IO) {
-            interactor.saveVacancy(vacancy)
-            favouriteStateLiveData.postValue(true)
+            detailsInteractor.saveVacancy(vacancy)
+            detailsStateLiveData.postValue(DetailsState.Content(currentVacancy!!, true))
             isFavourite = true
         }
     }
 
     private fun deleteVacancy(vacancy: VacancyDetail) {
         viewModelScope.launch(Dispatchers.IO) {
-            interactor.deleteVacancy(vacancy)
-            favouriteStateLiveData.postValue(false)
+            detailsInteractor.deleteVacancy(vacancy)
+            detailsStateLiveData.postValue(DetailsState.Content(currentVacancy!!, false))
             isFavourite = false
         }
     }

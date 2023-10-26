@@ -15,7 +15,7 @@ import javax.inject.Inject
 class DetailsRepositoryImpl @Inject constructor(
     private val vacancyDao: VacancyDao,
     private val converter: VacancyDetailDbConverters,
-    private val networkClient: NetworkClient
+    private val networkClient: NetworkClient,
 ) : DetailsRepository {
 
     override suspend fun saveVacancy(vacancy: VacancyDetail) {

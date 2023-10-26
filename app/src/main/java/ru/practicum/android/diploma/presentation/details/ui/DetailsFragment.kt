@@ -38,7 +38,7 @@ class DetailsFragment : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentDetailsBinding.inflate(layoutInflater, container, false)
         return binding.root
@@ -60,20 +60,21 @@ class DetailsFragment : Fragment() {
                 }
 
                 is DetailsState.Content -> {
-                    changeContentVisibility(true)
-                    updateData(state.data)
+                    if (binding.detailsBlock.visibility != View.VISIBLE) {
+                        changeContentVisibility(true)
+                        updateData(state.data)
+                    }
+
+                    binding.favouriteButton.setImageDrawable(
+                        ResourcesCompat.getDrawable(
+                            resources,
+                            getFavouriteIcon(state.isFavourite),
+                            null
+                        )
+                    )
+
                 }
             }
-        }
-
-        viewModel.getFavouriteStateLiveData().observe(viewLifecycleOwner) { isFavourite ->
-            binding.favouriteButton.setImageDrawable(
-                ResourcesCompat.getDrawable(
-                    resources,
-                    getFavouriteIcon(isFavourite),
-                    null
-                )
-            )
         }
 
     }
