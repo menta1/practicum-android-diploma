@@ -14,11 +14,15 @@ import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.Region
 import ru.practicum.android.diploma.presentation.filter.models.FilterCountryScreenState
+import ru.practicum.android.diploma.presentation.filter.models.FilterIndustryScreenState
 import ru.practicum.android.diploma.presentation.filter.models.FilterRegionScreenState
 import ru.practicum.android.diploma.presentation.filter.models.FilterScreenState
 import javax.inject.Inject
 
 class FilterViewModel @Inject constructor(private val interactor: FilterInteractor) : ViewModel() {
+
+    private val _filterIndustryScreenState = MutableLiveData<FilterIndustryScreenState>()
+    val filterIndustryScreenState: LiveData<FilterIndustryScreenState> = _filterIndustryScreenState
 
     private val _filterScreenState = MutableLiveData<FilterScreenState>()
     val filterScreenState: LiveData<FilterScreenState> = _filterScreenState
@@ -44,8 +48,9 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
     private val _industries = MutableLiveData<List<Industry>>()
     val industries: LiveData<List<Industry>> = _industries
 
-    private  var defaultList: List<Region> = emptyList()
-    private  var industriesDefaultList: List<Industry> = emptyList()
+    private var defaultList: List<Region> = emptyList()
+    private var industriesDefaultList: List<Industry> = emptyList()
+    private var industriesCurrentList: List<Industry> = emptyList()
 
     private var filter: Filter? = null
 
@@ -152,29 +157,26 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
     }
 
     fun getAllIndustries() {
-        _filterRegionScreenState.value = FilterRegionScreenState.Loading
+        _filterIndustryScreenState.value = FilterIndustryScreenState.Loading
 
         viewModelScope.launch(Dispatchers.IO) {
             interactor.getAllIndustries().collect { apiResult ->
                 when (apiResult.code) {
                     NO_INTERNET -> {
-                        _filterRegionScreenState.postValue(FilterRegionScreenState.NoInternet)
-                        _isSelectionButtonVisible.postValue(false)
+                        _filterIndustryScreenState.postValue(FilterIndustryScreenState.NoInternet)
                     }
-
                     OK_RESPONSE -> {
-                        _filterRegionScreenState.postValue(
-                            FilterRegionScreenState.Content(
-                                isListEmpty = false
-                            )
+                        _filterIndustryScreenState.postValue(
+                            FilterIndustryScreenState.Content(industries = apiResult.data?: emptyList(), isSelected = false)
                         )
-                        _industries.postValue(apiResult.data ?: emptyList())
                         industriesDefaultList = apiResult.data ?: emptyList()
+                        industriesCurrentList = apiResult.data ?: emptyList()
+
                     }
 
                     else -> {
-                        _filterRegionScreenState.postValue(FilterRegionScreenState.UnableToGetResult)
-                        _isSelectionButtonVisible.postValue(false)
+                        _filterIndustryScreenState.postValue(FilterIndustryScreenState.UnableToGetResult)
+
                     }
                 }
             }
@@ -322,21 +324,28 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
         else filter?.countryId != null
     }
 
+
     fun handleRadioButtonsChecks(adapterPosition: Int) {
-        _isSelectionButtonVisible.value = true
+        //_isSelectionButtonVisible.value = true
         if (previousCheckedPosition >= 0) {
-            _industries.value?.get(previousCheckedPosition)?.isChecked = false
+            industriesCurrentList[previousCheckedPosition].isChecked = false
         }
-        _industries.value?.get(adapterPosition)?.isChecked = true
+        industriesCurrentList[adapterPosition].isChecked = true
         previousCheckedPosition = adapterPosition
-        hideKeyboard()
+        _filterIndustryScreenState.postValue(FilterIndustryScreenState.Content(industriesCurrentList,true))
+
     }
 
     fun filterIndustryList(searchInput: String) {
-        if (_filterRegionScreenState.value == FilterRegionScreenState.NoInternet || _filterRegionScreenState.value == FilterRegionScreenState.UnableToGetResult){
-            hideKeyboard()
+        if (_filterIndustryScreenState.value == FilterIndustryScreenState.NoInternet){
+            _filterIndustryScreenState.value = FilterIndustryScreenState.NoInternet
             return
         }
+        else if(_filterIndustryScreenState.value == FilterIndustryScreenState.UnableToGetResult){
+            _filterIndustryScreenState.value = FilterIndustryScreenState.UnableToGetResult
+            return
+        }
+
         viewModelScope.launch(Dispatchers.IO) {
 
             var filteredList = mutableListOf<Industry>()
@@ -345,17 +354,21 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
             }.sortedBy { it.name }.toMutableList()
 
             if (filteredList.isEmpty()) {
-                _filterRegionScreenState.postValue(FilterRegionScreenState.Content(true))
-                _industries.postValue(filteredList)
-                _isSelectionButtonVisible.postValue(false)
+                industriesCurrentList = filteredList
+                _filterIndustryScreenState.postValue(FilterIndustryScreenState.Content(industriesCurrentList,false))
+
             } else {
-                if (previousCheckedPosition >= 0) {
-                    _isSelectionButtonVisible.postValue(true)
-                } else {
-                    _isSelectionButtonVisible.postValue(false)
+
+                if (filteredList.filter { it.isChecked  }.isNotEmpty()){
+                    previousCheckedPosition = filteredList.indexOfFirst { it.isChecked }
+                    industriesCurrentList = filteredList
+                    _filterIndustryScreenState.postValue(FilterIndustryScreenState.Content(industriesCurrentList,true))
                 }
-                _filterRegionScreenState.postValue(FilterRegionScreenState.Content(false))
-                _industries.postValue(filteredList)
+                else{
+                    industriesCurrentList = filteredList
+                    _filterIndustryScreenState.postValue(FilterIndustryScreenState.Content(industriesCurrentList,false))
+                }
+
             }
         }
     }
