@@ -5,6 +5,7 @@ import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -16,7 +17,7 @@ import ru.practicum.android.diploma.presentation.utils.getSalaryText
 class VacancyAdapter(
     private val context: Context,
     private val listener: Listener
-): RecyclerView.Adapter<VacancyAdapter.Holder>() {
+) : RecyclerView.Adapter<VacancyAdapter.Holder>() {
 
     private var itemList = emptyList<Vacancy>()
 
@@ -33,8 +34,9 @@ class VacancyAdapter(
     override fun getItemCount(): Int = itemList.size
 
     fun setData(newList: List<Vacancy>) {
+        val diffResult = DiffUtil.calculateDiff(ItemDiffCallback(itemList, newList))
         itemList = newList
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     class Holder(itemView: View, private val context: Context) : RecyclerView.ViewHolder(itemView) {
@@ -67,11 +69,27 @@ class VacancyAdapter(
             state: RecyclerView.State
         ) {
             super.getItemOffsets(outRect, view, parent, state)
-            if(parent.getChildAdapterPosition(view) == 0){
+            if (parent.getChildAdapterPosition(view) == 0) {
                 outRect.top = marginTop
-            }else{
+            } else {
                 outRect.top = 0
             }
+        }
+    }
+
+    class ItemDiffCallback(private val oldList: List<Vacancy>, private val newList: List<Vacancy>) :
+        DiffUtil.Callback() {
+        override fun getOldListSize(): Int {
+            return oldList.size
+        }
+        override fun getNewListSize(): Int {
+            return newList.size
+        }
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].id == newList[newItemPosition].id
+        }
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
         }
     }
 

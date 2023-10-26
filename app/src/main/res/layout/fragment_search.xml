@@ -149,6 +149,10 @@
             layout="@layout/no_internet_layout"
             android:visibility="gone" />
 
+        <include
+            android:id="@+id/error_server"
+            layout="@layout/server_error_layout"
+            android:visibility="gone" />
 
         <ProgressBar
             android:id="@+id/progress_bar"
