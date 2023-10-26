@@ -117,10 +117,9 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
                         OK_RESPONSE -> {
                             _filterRegionScreenState.postValue(
                                 FilterRegionScreenState.Content(
-                                    isListEmpty = false
+                                    apiResult.data ?: emptyList()
                                 )
                             )
-                            _countries.postValue(apiResult.data ?: emptyList())
                             defaultList = apiResult.data ?: emptyList()
                         }
 
@@ -139,10 +138,9 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
                         OK_RESPONSE -> {
                             _filterRegionScreenState.postValue(
                                 FilterRegionScreenState.Content(
-                                    isListEmpty = false
+                                    apiResult.data ?: emptyList()
                                 )
                             )
-                            _countries.postValue(apiResult.data ?: emptyList())
                             defaultList = apiResult.data ?: emptyList()
                         }
 
@@ -184,25 +182,33 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
 
     }
 
-    private fun addCountryWhenItIsNotSelected(regionId: String) {
+    private fun addCountryWhenItIsNotSelected(region: Region) {
 
         viewModelScope.launch(Dispatchers.IO) {
-            interactor.getCountyByRegionId(regionId).collect { apiResult ->
+            interactor.getCountyByRegionId(region.id).collect { apiResult ->
 
                 when (apiResult.code) {
                     NO_INTERNET -> {
-                        //подумать надо ли показывать ошибки и как
+                        _filterRegionScreenState.postValue(FilterRegionScreenState.EscapeScreen)
+                        _isAllowedToNavigate.postValue(true)
+                        delay(BACK_TO_DEFAULT)
+                        _isAllowedToNavigate.postValue(false)
                     }
 
                     OK_RESPONSE -> {
-                        editCountry(apiResult.data!!)
+
+                        editCountryWithoutCheck(apiResult.data!!)
+                        _filterRegionScreenState.postValue(FilterRegionScreenState.EscapeScreen)
                         _isAllowedToNavigate.postValue(true)
                         delay(BACK_TO_DEFAULT)
                         _isAllowedToNavigate.postValue(false)
                     }
 
                     else -> {
-                        //подумать надо ли показывать ошибки и как
+                        _filterRegionScreenState.postValue(FilterRegionScreenState.EscapeScreen)
+                        _isAllowedToNavigate.postValue(true)
+                        delay(BACK_TO_DEFAULT)
+                        _isAllowedToNavigate.postValue(false)
                     }
                 }
             }
@@ -216,18 +222,25 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
 
                 when (apiResult.code) {
                     NO_INTERNET -> {
-                        //подумать надо ли показывать ошибки и как
+                        _filterRegionScreenState.postValue(FilterRegionScreenState.EscapeScreen)
+                        _isAllowedToNavigate.postValue(true)
+                        delay(BACK_TO_DEFAULT)
+                        _isAllowedToNavigate.postValue(false)
                     }
 
                     OK_RESPONSE -> {
                         editCountry(apiResult.data!!)
+                        _filterRegionScreenState.postValue(FilterRegionScreenState.EscapeScreen)
                         _isAllowedToNavigate.postValue(true)
                         delay(BACK_TO_DEFAULT)
                         _isAllowedToNavigate.postValue(false)
                     }
 
                     else -> {
-                        //подумать надо ли показывать ошибки и как
+                        _filterRegionScreenState.postValue(FilterRegionScreenState.EscapeScreen)
+                        _isAllowedToNavigate.postValue(true)
+                        delay(BACK_TO_DEFAULT)
+                        _isAllowedToNavigate.postValue(false)
                     }
                 }
             }
@@ -267,13 +280,19 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
         interactor.editCountryNameAndId(country)
     }
 
+    private fun editCountryWithoutCheck(country: Region){
+        interactor.editCountryNameAndIdWithoutCheck(country)
+    }
+
     fun editRegion(region: Region) {
+
         if (filter?.countryId != null) {
             interactor.editRegionNameAndId(region)
+            _filterRegionScreenState.postValue(FilterRegionScreenState.EscapeScreen)
             _isAllowedToNavigate.value = true
         } else {
-            addCountryWhenItIsNotSelected(region.id)
             interactor.editRegionNameAndId(region)
+            addCountryWhenItIsNotSelected(region)
         }
     }
 
@@ -297,10 +316,15 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
     }
 
     fun filterList(searchInput: String) {
-        if (_filterRegionScreenState.value == FilterRegionScreenState.NoInternet || _filterRegionScreenState.value == FilterRegionScreenState.UnableToGetResult) {
-            hideKeyboard()
+        if (_filterRegionScreenState.value == FilterRegionScreenState.NoInternet){
+            _filterRegionScreenState.value = FilterRegionScreenState.NoInternet
             return
         }
+        else if(_filterRegionScreenState.value == FilterRegionScreenState.UnableToGetResult){
+            _filterRegionScreenState.value = FilterRegionScreenState.UnableToGetResult
+            return
+        }
+
         viewModelScope.launch(Dispatchers.IO) {
 
             var filteredList = mutableListOf<Region>()
@@ -308,13 +332,7 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
                 it.name.contains(searchInput, true)
             }.sortedBy { it.name }.toMutableList()
 
-            if (filteredList.isEmpty()) {
-                _filterRegionScreenState.postValue(FilterRegionScreenState.Content(true))
-                _countries.postValue(filteredList)
-            } else {
-                _filterRegionScreenState.postValue(FilterRegionScreenState.Content(false))
-                _countries.postValue(filteredList)
-            }
+            _filterRegionScreenState.postValue(FilterRegionScreenState.Content(filteredList))
         }
     }
 

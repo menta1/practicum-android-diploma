@@ -33,9 +33,7 @@ class FilterRegionFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
 
-        }
         (activity?.application as App).appComponent.activityComponent().create().inject(this)
     }
 
@@ -58,20 +56,8 @@ class FilterRegionFragment : Fragment() {
 
         viewModel.getFilter()
         viewModel.getAllRegions()
-        viewModel.countries.observe(viewLifecycleOwner) { regions ->
-            regionsAdapter.submitList(regions)
-        }
         viewModel.filterRegionScreenState.observe(viewLifecycleOwner) { state ->
             manageScreenContent(state)
-        }
-
-        viewModel.isAllowedToNavigate.observe(viewLifecycleOwner) { isNavigationAllowed ->
-
-            if (isNavigationAllowed) {
-                val action =
-                    FilterRegionFragmentDirections.actionFilterRegionFragmentToFilterPlaceFragment()
-                findNavController().navigate(action)
-            }
         }
 
         binding.buttonBack.setOnClickListener {
@@ -98,7 +84,6 @@ class FilterRegionFragment : Fragment() {
         binding.closeImage.setOnClickListener {
             binding.editSearch.setText("")
         }
-
     }
 
     override fun onDestroyView() {
@@ -133,7 +118,9 @@ class FilterRegionFragment : Fragment() {
             when (state) {
                 is FilterRegionScreenState.Content -> {
 
-                    if (state.isListEmpty) {
+                    regionsAdapter.submitList(state.regions)
+
+                    if (state.regions.isEmpty()) {
                         layoutErrorNotFound.visibility = View.VISIBLE
                         recyclerRegion.visibility = View.GONE
                         hideKeyboard()
@@ -161,6 +148,7 @@ class FilterRegionFragment : Fragment() {
                     layoutNoInternet.noInternetLayout.visibility = View.VISIBLE
                     layoutUnableToGetResult.unableToGetResultLayout.visibility = View.GONE
                     progressBarCountry.visibility = View.GONE
+                    hideKeyboard()
                 }
 
                 FilterRegionScreenState.UnableToGetResult -> {
@@ -169,6 +157,13 @@ class FilterRegionFragment : Fragment() {
                     layoutNoInternet.noInternetLayout.visibility = View.GONE
                     layoutUnableToGetResult.unableToGetResultLayout.visibility = View.VISIBLE
                     progressBarCountry.visibility = View.GONE
+                    hideKeyboard()
+                }
+
+                FilterRegionScreenState.EscapeScreen -> {
+                        val action =
+                            FilterRegionFragmentDirections.actionFilterRegionFragmentToFilterPlaceFragment()
+                        findNavController().navigate(action)
                 }
             }
         }
