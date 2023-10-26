@@ -29,7 +29,7 @@ class DetailsViewModel @Inject constructor(
 
     fun initData(vacancyId: String?) {
         detailsStateLiveData.postValue(DetailsState.Loading)
-        if(vacancyId == null) {
+        if (vacancyId == null) {
             detailsStateLiveData.postValue(DetailsState.Error)
         } else {
             viewModelScope.launch {
@@ -37,9 +37,13 @@ class DetailsViewModel @Inject constructor(
 
                 if (isFavourite) {
                     currentVacancy = detailsInteractor.getFavouriteVacancy(vacancyId)
-                    detailsStateLiveData.postValue(DetailsState.Content(currentVacancy!!, isFavourite))
-                }
-                else {
+                    detailsStateLiveData.postValue(
+                        DetailsState.Content(
+                            currentVacancy!!,
+                            isFavourite
+                        )
+                    )
+                } else {
 
                     try {
                         val networkResource = detailsInteractor.getVacancyDetails(vacancyId)
@@ -50,7 +54,12 @@ class DetailsViewModel @Inject constructor(
 
                             OK_RESPONSE -> {
                                 currentVacancy = networkResource.data!!
-                                detailsStateLiveData.postValue(DetailsState.Content(networkResource.data, isFavourite))
+                                detailsStateLiveData.postValue(
+                                    DetailsState.Content(
+                                        networkResource.data,
+                                        isFavourite
+                                    )
+                                )
                             }
 
                             else -> {
@@ -69,7 +78,7 @@ class DetailsViewModel @Inject constructor(
 
     fun setFavourite() {
         currentVacancy?.let {
-            if(isFavourite) deleteVacancy(currentVacancy!!)
+            if (isFavourite) deleteVacancy(currentVacancy!!)
             else saveVacancy(currentVacancy!!)
         }
     }

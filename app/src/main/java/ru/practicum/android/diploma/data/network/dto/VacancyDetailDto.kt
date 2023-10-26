@@ -16,55 +16,55 @@ data class VacancyDetailDto(
     @SerializedName("key_skills") val keySkills: List<KeySkill>,
     @SerializedName("name") val name: String,
     @SerializedName("salary") val salary: Salary?,
-    @SerializedName("schedule") val schedule: Schedule
+    @SerializedName("schedule") val schedule: Schedule,
 ) {
 
     data class Area(
-        @SerializedName("name") val name: String
+        @SerializedName("name") val name: String,
     )
 
     data class Contacts(
         @SerializedName("email") val email: String?,
         @SerializedName("name") val name: String?,
-        @SerializedName("phones") val phones: List<Phone>?
+        @SerializedName("phones") val phones: List<Phone>?,
     ) {
         data class Phone(
             @SerializedName("city") val city: String,
             @SerializedName("comment") val comment: String?,
             @SerializedName("country") val country: String,
-            @SerializedName("number") val number: String
+            @SerializedName("number") val number: String,
         )
     }
 
     data class Employer(
         @SerializedName("logo_urls") val logoUrls: LogoUrls?,
-        @SerializedName("name") val name: String
+        @SerializedName("name") val name: String,
     ) {
         data class LogoUrls(
-            @SerializedName("original") val original: String?
+            @SerializedName("original") val original: String?,
         )
     }
 
     data class Employment(
-        @SerializedName("name") val name: String
+        @SerializedName("name") val name: String,
     )
 
     data class Experience(
-        @SerializedName("name") val name: String
+        @SerializedName("name") val name: String,
     )
 
     data class KeySkill(
-        @SerializedName("name") val name: String
+        @SerializedName("name") val name: String,
     )
 
     data class Salary(
         @SerializedName("currency") val currency: String?,
         @SerializedName("from") val from: Int?,
-        @SerializedName("to") val to: Int?
+        @SerializedName("to") val to: Int?,
     )
 
     data class Schedule(
-        @SerializedName("name") val name: String
+        @SerializedName("name") val name: String,
     )
 
 
@@ -89,7 +89,12 @@ data class VacancyDetailDto(
     )
 
     fun getPhones(phones: List<Contacts.Phone?>?): List<Phone>? {
-        return phones?.map { phone -> Phone("+${phone?.country}(${phone?.city})${phone?.number}", phone?.comment) }
+        return phones?.map { phone ->
+            Phone(
+                "+${phone?.country}(${phone?.city})${phone?.number}",
+                phone?.comment
+            )
+        }
     }
 }
 
