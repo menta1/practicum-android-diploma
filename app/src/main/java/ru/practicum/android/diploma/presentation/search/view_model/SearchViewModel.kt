@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.presentation.search.view_model
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -24,7 +25,6 @@ class SearchViewModel @Inject constructor(
     private lateinit var searchText: String
     private var isNewSearch: Boolean = YES_NEW_SEARCH
     private var tempList = ArrayList<Vacancy>()
-    private var lastSearchList: List<Vacancy> = emptyList()
 
     private val _usersFoundLiveData = MutableLiveData<String>().apply {
         postValue("")
@@ -57,7 +57,7 @@ class SearchViewModel @Inject constructor(
 
     fun search() {
         if (searchText.isNotBlank()) {
-            _isNextPageLoading.value = currentPage != 1
+            _isNextPageLoading.value = true
             newSearch(isNewSearch)
             viewModelScope.launch {
                 interactor.search(searchText, currentPage, filter).collect { result ->
@@ -77,9 +77,10 @@ class SearchViewModel @Inject constructor(
                                 _searchStateLiveData.value = SearchModelStates.Content(tempList)
                                 _isNextPageLoading.value = false
                             } else {
-                                lastSearchList = result.first.data ?: emptyList()
+                                tempList.addAll(result.first.data ?: emptyList())
                                 _searchStateLiveData.value =
                                     SearchModelStates.Content(result.first.data!!)
+                                _isNextPageLoading.value = false
                             }
 
                             if (result.first.data.isNullOrEmpty()) {
