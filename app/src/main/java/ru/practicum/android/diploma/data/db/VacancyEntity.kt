@@ -3,9 +3,9 @@ package ru.practicum.android.diploma.data.db
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-const val VACANCY_DATABASE = "vacancy_table"
+const val VACANCY_DATABASE_NAME = "vacancy_table"
 
-@Entity(tableName = VACANCY_DATABASE)
+@Entity(tableName = VACANCY_DATABASE_NAME)
 data class VacancyEntity(
     @PrimaryKey
     val id: Int,
