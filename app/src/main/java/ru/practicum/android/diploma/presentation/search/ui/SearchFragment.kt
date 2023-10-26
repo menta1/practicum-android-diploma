@@ -219,16 +219,10 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     }
 
     private fun formatVacanciesString(count: Int): String {
-        val vacanciesWordForms = listOf("вакансия", "вакансии", "вакансий")
-        val lastTwoDigits = count % 100
-        val lastDigit = lastTwoDigits % 10
-
-        return when {
-            lastTwoDigits in 11..19 -> "Найдено $count ${vacanciesWordForms[2]}"
-            lastDigit == 1 -> "Найдена $count ${vacanciesWordForms[0]}"
-            count == 0 -> "Таких вакансий нет"
-            lastDigit in 2..4 -> "Найдено $count ${vacanciesWordForms[1]}"
-            else -> "Найдено $count ${vacanciesWordForms[2]}"
+        return if(count == 0) {
+            getString(R.string.vacancy_not_found)
+        } else {
+            resources.getQuantityString(R.plurals.vacancies_plurals, count % 100, count)
         }
     }
 
