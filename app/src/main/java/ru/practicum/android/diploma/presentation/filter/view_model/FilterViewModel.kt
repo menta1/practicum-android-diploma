@@ -33,20 +33,11 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
     private val _filterRegionScreenState = MutableLiveData<FilterRegionScreenState>()
     val filterRegionScreenState: LiveData<FilterRegionScreenState> = _filterRegionScreenState
 
-    private val _countries = MutableLiveData<List<Region>>()
-    val countries: LiveData<List<Region>> = _countries
-
     private val _isAllowedToNavigate = MutableLiveData<Boolean>(false)
     val isAllowedToNavigate: LiveData<Boolean> = _isAllowedToNavigate
 
     private val _isSelectionButtonVisible = MutableLiveData<Boolean>(false)
     val isSelectionButtonVisible: LiveData<Boolean> = _isSelectionButtonVisible
-
-    private val _isTimeToHideKeyboard = MutableLiveData<Boolean>(false)
-    val isTimeToHideKeyboard: LiveData<Boolean> = _isTimeToHideKeyboard
-
-    private val _industries = MutableLiveData<List<Industry>>()
-    val industries: LiveData<List<Industry>> = _industries
 
     private var defaultList: List<Region> = emptyList()
     private var industriesDefaultList: List<Industry> = emptyList()
@@ -88,8 +79,10 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
                     }
 
                     OK_RESPONSE -> {
-                        _filterCountryScreenState.postValue(FilterCountryScreenState.Content)
-                        _countries.postValue(apiResult.data ?: emptyList())
+                        _filterCountryScreenState.postValue(FilterCountryScreenState.Content(
+                            apiResult.data ?: emptyList()
+                        ))
+
                     }
 
                     else -> {
@@ -388,14 +381,6 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
                 }
 
             }
-        }
-    }
-
-    private fun hideKeyboard(){
-        viewModelScope.launch {
-            _isTimeToHideKeyboard.postValue(true)
-            delay(BACK_TO_DEFAULT)
-            _isTimeToHideKeyboard.postValue(false)
         }
     }
 
