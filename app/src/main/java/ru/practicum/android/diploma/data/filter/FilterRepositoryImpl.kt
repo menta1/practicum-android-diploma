@@ -229,6 +229,16 @@ class FilterRepositoryImpl @Inject constructor(
         }
     }
 
+    override fun editCountryNameAndIdWithoutCheck(country: Region) {
+        val filterFromData = getFilter()
+
+            val editedFilter =
+                filterFromData?.copy(countryName = country.name, countryId = country.id)
+                    ?: Filter(countryName = country.name, countryId = country.id)
+
+            filterStorage.editFilter(Gson().toJson(editedFilter))
+    }
+
     override fun editRegionNameAndId(region: Region) {
         val filterFromData = getFilter()
 
@@ -331,4 +341,6 @@ class FilterRepositoryImpl @Inject constructor(
     override fun getSearchingMode(): Boolean {
         return filterStorage.getSearchingMode()
     }
+
+
 }
