@@ -4,14 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import ru.practicum.android.diploma.App
+import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSimilarBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
+import ru.practicum.android.diploma.presentation.similar.models.ErrorSimilarScreen
 import ru.practicum.android.diploma.presentation.similar.models.SimilarState
 import ru.practicum.android.diploma.presentation.similar.view_model.SimilarViewModel
 import javax.inject.Inject
@@ -57,12 +60,8 @@ class SimilarFragment : Fragment(), SimilarClickListener {
                     changeContentVisibility(true)
                 }
 
-                SimilarState.Error -> {
-                    problemWithContentVisibility(isNotConnect = false)
-                }
-
-                SimilarState.NoInternet -> {
-                    problemWithContentVisibility(isNotConnect = true)
+                is SimilarState.Error -> {
+                    problemWithContentVisibility(error = state.error)
                 }
 
                 is SimilarState.Content -> {
@@ -87,14 +86,29 @@ class SimilarFragment : Fragment(), SimilarClickListener {
         binding.noInternetLayoutHost.noInternetLayout.visibility = View.GONE
     }
 
-    private fun problemWithContentVisibility(isNotConnect: Boolean) {
-        binding.noInternetLayoutHost.noInternetLayout.visibility =
-            if (isNotConnect) View.VISIBLE else View.GONE
-        binding.serverErrorLayoutHost.serverErrorLayout.visibility =
-            if (isNotConnect) View.GONE else View.VISIBLE
-
-        binding.progressBar.visibility = View.GONE
-        binding.recyclerView.visibility = View.GONE
+    private fun problemWithContentVisibility(error: ErrorSimilarScreen) {
+        when(error) {
+            ErrorSimilarScreen.NOT_INTERNET -> {
+                binding.noInternetLayoutHost.noInternetLayout.visibility = View.VISIBLE
+                binding.serverErrorLayoutHost.serverErrorLayout.visibility = View.GONE
+                binding.progressBar.visibility = View.GONE
+                binding.recyclerView.visibility = View.GONE
+            }
+            ErrorSimilarScreen.ERROR -> {
+                binding.noInternetLayoutHost.noInternetLayout.visibility = View.GONE
+                binding.serverErrorLayoutHost.serverErrorLayout.visibility = View.VISIBLE
+                binding.progressBar.visibility = View.GONE
+                binding.recyclerView.visibility = View.GONE
+            }
+            ErrorSimilarScreen.NOT_INTERNET_FOR_LOADING_DATA -> {
+                Toast.makeText(requireContext(),getString(R.string.no_internet_while_loading_page), Toast.LENGTH_LONG).show()
+                binding.progressBarRecycler.visibility = View.GONE
+            }
+            ErrorSimilarScreen.ERROR_WITH_LOADING_DATA -> {
+                Toast.makeText(requireContext(),getString(R.string.server_error_while_loading_page), Toast.LENGTH_SHORT).show()
+                binding.progressBarRecycler.visibility = View.GONE
+            }
+        }
     }
 
     private fun updateData(data: List<Vacancy>) {
