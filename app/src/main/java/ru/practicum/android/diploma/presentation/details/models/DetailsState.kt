@@ -6,6 +6,7 @@ sealed class DetailsState {
     object Loading: DetailsState()
     object Error: DetailsState()
     data class Content(
-        val data: VacancyDetail
+        val data: VacancyDetail,
+        val isFavourite: Boolean
     ): DetailsState()
 }
