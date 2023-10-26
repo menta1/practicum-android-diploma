@@ -8,12 +8,13 @@ import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.data.Constants.NO_INTERNET
 import ru.practicum.android.diploma.data.Constants.OK_RESPONSE
 import ru.practicum.android.diploma.domain.similar.SimilarInteractor
+import ru.practicum.android.diploma.presentation.similar.models.ErrorSimilarScreen
 import ru.practicum.android.diploma.presentation.similar.models.SimilarState
 import javax.inject.Inject
 
 class SimilarViewModel @Inject constructor(
     private val interactor: SimilarInteractor
-): ViewModel() {
+) : ViewModel() {
     private val similarStateLiveData = MutableLiveData<SimilarState>()
     fun getSimilarStateLiveData(): LiveData<SimilarState> = similarStateLiveData
     private var currentPage = 0
@@ -25,16 +26,29 @@ class SimilarViewModel @Inject constructor(
         currentVacancyId = idVacancy
         currentVacancyId?.let {
             searchSimilarVacancy(it)
-        } ?: similarStateLiveData.postValue(SimilarState.Error)
+        } ?: similarStateLiveData.postValue(
+            SimilarState.Error(
+                ErrorSimilarScreen.ERROR
+            )
+        )
     }
 
     private fun searchSimilarVacancy(idVacancy: String) {
         viewModelScope.launch {
             interactor.getSimilarVacancy(idVacancy, currentPage).collect { result ->
-                when(result.first.code) {
+                when (result.first.code) {
                     NO_INTERNET -> {
-                        similarStateLiveData.postValue(SimilarState.NoInternet)
+                        similarStateLiveData.postValue(
+                            SimilarState.Error(
+                                if (currentPage == 0) {
+                                    ErrorSimilarScreen.NOT_INTERNET
+                                } else {
+                                    ErrorSimilarScreen.NOT_INTERNET_FOR_LOADING_DATA
+                                }
+                            )
+                        )
                     }
+
                     OK_RESPONSE -> {
                         result.first.data?.let { data ->
                             similarStateLiveData.postValue(
@@ -44,8 +58,17 @@ class SimilarViewModel @Inject constructor(
                         currentPage = result.second.page?.plus(1) ?: 0
                         maxPages = result.second.pages ?: 0
                     }
+
                     else -> {
-                        similarStateLiveData.postValue(SimilarState.Error)
+                        similarStateLiveData.postValue(
+                            SimilarState.Error(
+                                if (currentPage == 0) {
+                                    ErrorSimilarScreen.ERROR
+                                } else {
+                                    ErrorSimilarScreen.ERROR_WITH_LOADING_DATA
+                                }
+                            )
+                        )
                     }
                 }
             }
