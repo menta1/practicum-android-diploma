@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import ru.practicum.android.diploma.App
 import ru.practicum.android.diploma.databinding.FragmentFilterSectorBinding
 import ru.practicum.android.diploma.presentation.filter.adapters.IndustriesAdapter
-import ru.practicum.android.diploma.presentation.filter.models.FilterRegionScreenState
+import ru.practicum.android.diploma.presentation.filter.models.FilterIndustryScreenState
 import ru.practicum.android.diploma.presentation.filter.view_model.FilterViewModel
 import ru.practicum.android.diploma.util.debounce
 import javax.inject.Inject
@@ -34,9 +34,6 @@ class FilterSectorFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
         (activity?.application as App).appComponent.activityComponent().create().inject(this)
     }
 
@@ -56,26 +53,15 @@ class FilterSectorFragment : Fragment() {
             debounce(FilterRegionFragment.BEFORE_FILTERING_DELAY, lifecycleScope, false) { input ->
                 viewModel.filterIndustryList(input.toString())
             }
+
         setRecyclerView()
 
         with(viewModel){
             getFilter()
             getAllIndustries()
 
-            industries.observe(viewLifecycleOwner) { industries ->
-                industriesAdapter.submitList(industries)
-            }
-
-            filterRegionScreenState.observe(viewLifecycleOwner) { state ->
+            filterIndustryScreenState.observe(viewLifecycleOwner) { state ->
                 manageScreenContents(state)
-            }
-
-            isSelectionButtonVisible.observe(viewLifecycleOwner) { isItVisible ->
-                binding.selectionButton.visibility = if (isItVisible) View.VISIBLE else View.GONE
-            }
-
-            isTimeToHideKeyboard.observe(viewLifecycleOwner){isTimeToHideKeyBoard->
-                if (isTimeToHideKeyBoard) hideKeyboard()
             }
         }
 
@@ -129,31 +115,42 @@ class FilterSectorFragment : Fragment() {
         }
         binding.recyclerIndustry.adapter = industriesAdapter
         binding.recyclerIndustry.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerIndustry.setHasFixedSize(true)
     }
 
-    private fun manageScreenContents(state: FilterRegionScreenState) {
+    private fun manageScreenContents(state: FilterIndustryScreenState) {
 
         with(binding) {
             when (state) {
 
-                is FilterRegionScreenState.Content -> {
-                    if (state.isListEmpty) {
+                is FilterIndustryScreenState.Content -> {
+
+                    industriesAdapter.submitList(state.industries)
+
+                    if (state.industries.isEmpty()){
                         notFoundError.visibility = View.VISIBLE
                         recyclerIndustry.visibility = View.GONE
-                        hideKeyboard()
                         binding.selectionButton.visibility = View.GONE
-                    } else {
+                        hideKeyboard()
+                    }
+                    else {
                         notFoundError.visibility = View.GONE
                         recyclerIndustry.visibility = View.VISIBLE
+                    }
+
+                    if (state.isSelected){
+                        binding.selectionButton.visibility = View.VISIBLE
+                        hideKeyboard()
+                    }
+                    else{
+                        binding.selectionButton.visibility = View.GONE
                     }
 
                     progressBar.visibility = View.GONE
                     layoutNoInternet.noInternetLayout.visibility = View.GONE
                     failedGetListError.visibility = View.GONE
-                }
 
-                FilterRegionScreenState.Loading -> {
+                }
+                FilterIndustryScreenState.Loading -> {
                     notFoundError.visibility = View.GONE
                     recyclerIndustry.visibility = View.GONE
                     progressBar.visibility = View.VISIBLE
@@ -162,22 +159,25 @@ class FilterSectorFragment : Fragment() {
                     binding.selectionButton.visibility = View.GONE
                 }
 
-                FilterRegionScreenState.NoInternet -> {
+                FilterIndustryScreenState.NoInternet -> {
                     notFoundError.visibility = View.GONE
                     recyclerIndustry.visibility = View.GONE
                     progressBar.visibility = View.GONE
                     layoutNoInternet.noInternetLayout.visibility = View.VISIBLE
                     failedGetListError.visibility = View.GONE
-                    binding.selectionButton.visibility = android.view.View.GONE
+                    binding.selectionButton.visibility = View.GONE
+                    hideKeyboard()
                 }
 
-                FilterRegionScreenState.UnableToGetResult -> {
+                FilterIndustryScreenState.UnableToGetResult -> {
                     notFoundError.visibility = View.GONE
                     recyclerIndustry.visibility = View.GONE
                     progressBar.visibility = View.GONE
                     layoutNoInternet.noInternetLayout.visibility = View.GONE
                     failedGetListError.visibility = View.VISIBLE
                     binding.selectionButton.visibility = View.GONE
+                    hideKeyboard()
+
                 }
             }
         }
