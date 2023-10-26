@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import ru.practicum.android.diploma.App
 import ru.practicum.android.diploma.databinding.FragmentFilterPlaceBinding
-import ru.practicum.android.diploma.presentation.filter.models.FilterScreenState
+import ru.practicum.android.diploma.presentation.filter.models.FilterPlaceScreenState
 import ru.practicum.android.diploma.presentation.filter.view_model.FilterViewModel
 import javax.inject.Inject
 
@@ -24,14 +24,11 @@ class FilterPlaceFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
 
-        }
         (activity?.application as App).appComponent.activityComponent().create().inject(this)
 
-
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            customBackNavigation()
+            viewModel.checkCountryInFilterPlaceAndNavigate()
         }
     }
 
@@ -47,21 +44,13 @@ class FilterPlaceFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.getFilter()
-        viewModel.filterScreenState.observe(viewLifecycleOwner) { state ->
+        viewModel.filterPlaceScreenState.observe(viewLifecycleOwner) { state ->
             manageScreenContent(state)
         }
 
-        viewModel.isAllowedToNavigate.observe(viewLifecycleOwner) { isNavigationAllowed ->
-
-            if (isNavigationAllowed) {
-                val action =
-                    FilterPlaceFragmentDirections.actionFilterPlaceFragmentToFilterSettingsFragment()
-                findNavController().navigate(action)
-            }
-        }
 
         binding.navigationBackButton.setOnClickListener {
-            customBackNavigation()
+            viewModel.checkCountryInFilterPlaceAndNavigate()
         }
 
         binding.filterCountry.setOnClickListener {
@@ -98,7 +87,7 @@ class FilterPlaceFragment : Fragment() {
 
 
         binding.selectionButton.setOnClickListener {
-            customBackNavigation()
+            viewModel.checkCountryInFilterPlaceAndNavigate()
         }
     }
 
@@ -107,20 +96,11 @@ class FilterPlaceFragment : Fragment() {
         _binding = null
     }
 
-    private fun customBackNavigation() {
-        if (viewModel.checkIfSelectionDoneProperly()) {
-            val action =
-                FilterPlaceFragmentDirections.actionFilterPlaceFragmentToFilterSettingsFragment()
-            findNavController().navigate(action)
-        } else {
-            viewModel.addCountryWhenItIsNotSelected()
-        }
-    }
 
-    private fun manageScreenContent(state: FilterScreenState) {
+    private fun manageScreenContent(state: FilterPlaceScreenState) {
         with(binding) {
             when (state) {
-                is FilterScreenState.Content -> {
+                is FilterPlaceScreenState.Content -> {
 
                     if (state.countryName != null) {
                         filterCountry.visibility = View.GONE
@@ -150,7 +130,7 @@ class FilterPlaceFragment : Fragment() {
                     } else selectionButton.visibility = View.VISIBLE
                 }
 
-                FilterScreenState.Default -> {
+                FilterPlaceScreenState.Default -> {
                     filterCountry.visibility = View.VISIBLE
                     filterRegion.visibility = View.VISIBLE
 
@@ -160,6 +140,12 @@ class FilterPlaceFragment : Fragment() {
                     cityCloseButton.visibility = View.GONE
 
                     selectionButton.visibility = View.GONE
+                }
+
+                FilterPlaceScreenState.EscapeScreen -> {
+                    val action =
+                        FilterPlaceFragmentDirections.actionFilterPlaceFragmentToFilterSettingsFragment()
+                    findNavController().navigate(action)
                 }
             }
         }

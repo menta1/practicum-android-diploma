@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.practicum.android.diploma.data.Constants.NO_INTERNET
 import ru.practicum.android.diploma.data.Constants.OK_RESPONSE
@@ -15,11 +14,15 @@ import ru.practicum.android.diploma.domain.models.Industry
 import ru.practicum.android.diploma.domain.models.Region
 import ru.practicum.android.diploma.presentation.filter.models.FilterCountryScreenState
 import ru.practicum.android.diploma.presentation.filter.models.FilterIndustryScreenState
+import ru.practicum.android.diploma.presentation.filter.models.FilterPlaceScreenState
 import ru.practicum.android.diploma.presentation.filter.models.FilterRegionScreenState
 import ru.practicum.android.diploma.presentation.filter.models.FilterScreenState
 import javax.inject.Inject
 
 class FilterViewModel @Inject constructor(private val interactor: FilterInteractor) : ViewModel() {
+
+    private val _filterPlaceScreenState = MutableLiveData<FilterPlaceScreenState>()
+    val filterPlaceScreenState: LiveData<FilterPlaceScreenState> = _filterPlaceScreenState
 
     private val _filterIndustryScreenState = MutableLiveData<FilterIndustryScreenState>()
     val filterIndustryScreenState: LiveData<FilterIndustryScreenState> = _filterIndustryScreenState
@@ -32,9 +35,6 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
 
     private val _filterRegionScreenState = MutableLiveData<FilterRegionScreenState>()
     val filterRegionScreenState: LiveData<FilterRegionScreenState> = _filterRegionScreenState
-
-    private val _isAllowedToNavigate = MutableLiveData<Boolean>(false)
-    val isAllowedToNavigate: LiveData<Boolean> = _isAllowedToNavigate
 
     private val _isSelectionButtonVisible = MutableLiveData<Boolean>(false)
     val isSelectionButtonVisible: LiveData<Boolean> = _isSelectionButtonVisible
@@ -64,6 +64,21 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
 
             } else FilterScreenState.Default
         )
+
+        _filterPlaceScreenState.postValue(
+            if (resultFromData != null) {
+                FilterPlaceScreenState.Content(
+                    countryName = resultFromData.countryName,
+                    regionName = resultFromData.regionName,
+                    industryName = resultFromData.industryName,
+                    expectedSalary = resultFromData.expectedSalary,
+                    isOnlyWithSalary = resultFromData.isOnlyWithSalary
+                )
+
+            } else FilterPlaceScreenState.Default
+        )
+
+
 
         filter = resultFromData
     }
@@ -183,25 +198,18 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
                 when (apiResult.code) {
                     NO_INTERNET -> {
                         _filterRegionScreenState.postValue(FilterRegionScreenState.EscapeScreen)
-                        _isAllowedToNavigate.postValue(true)
-                        delay(BACK_TO_DEFAULT)
-                        _isAllowedToNavigate.postValue(false)
+                        _filterPlaceScreenState.postValue(FilterPlaceScreenState.EscapeScreen)
                     }
 
                     OK_RESPONSE -> {
-
                         editCountryWithoutCheck(apiResult.data!!)
                         _filterRegionScreenState.postValue(FilterRegionScreenState.EscapeScreen)
-                        _isAllowedToNavigate.postValue(true)
-                        delay(BACK_TO_DEFAULT)
-                        _isAllowedToNavigate.postValue(false)
+                        _filterPlaceScreenState.postValue(FilterPlaceScreenState.EscapeScreen)
                     }
 
                     else -> {
                         _filterRegionScreenState.postValue(FilterRegionScreenState.EscapeScreen)
-                        _isAllowedToNavigate.postValue(true)
-                        delay(BACK_TO_DEFAULT)
-                        _isAllowedToNavigate.postValue(false)
+                        _filterPlaceScreenState.postValue(FilterPlaceScreenState.EscapeScreen)
                     }
                 }
             }
@@ -216,24 +224,18 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
                 when (apiResult.code) {
                     NO_INTERNET -> {
                         _filterRegionScreenState.postValue(FilterRegionScreenState.EscapeScreen)
-                        _isAllowedToNavigate.postValue(true)
-                        delay(BACK_TO_DEFAULT)
-                        _isAllowedToNavigate.postValue(false)
+                        _filterPlaceScreenState.postValue(FilterPlaceScreenState.EscapeScreen)
                     }
 
                     OK_RESPONSE -> {
                         editCountry(apiResult.data!!)
                         _filterRegionScreenState.postValue(FilterRegionScreenState.EscapeScreen)
-                        _isAllowedToNavigate.postValue(true)
-                        delay(BACK_TO_DEFAULT)
-                        _isAllowedToNavigate.postValue(false)
+                        _filterPlaceScreenState.postValue(FilterPlaceScreenState.EscapeScreen)
                     }
 
                     else -> {
                         _filterRegionScreenState.postValue(FilterRegionScreenState.EscapeScreen)
-                        _isAllowedToNavigate.postValue(true)
-                        delay(BACK_TO_DEFAULT)
-                        _isAllowedToNavigate.postValue(false)
+                        _filterPlaceScreenState.postValue(FilterPlaceScreenState.EscapeScreen)
                     }
                 }
             }
@@ -282,7 +284,6 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
         if (filter?.countryId != null) {
             interactor.editRegionNameAndId(region)
             _filterRegionScreenState.postValue(FilterRegionScreenState.EscapeScreen)
-            _isAllowedToNavigate.value = true
         } else {
             interactor.editRegionNameAndId(region)
             addCountryWhenItIsNotSelected(region)
@@ -337,7 +338,6 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
 
 
     fun handleRadioButtonsChecks(adapterPosition: Int) {
-        //_isSelectionButtonVisible.value = true
         if (previousCheckedPosition >= 0) {
             industriesCurrentList[previousCheckedPosition].isChecked = false
         }
@@ -388,7 +388,12 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
         interactor.putSearchMode(isSearchingNow)
     }
 
-    companion object {
-        const val BACK_TO_DEFAULT = 100L
+    fun checkCountryInFilterPlaceAndNavigate(){
+        if (checkIfSelectionDoneProperly()) {
+           _filterPlaceScreenState.value = FilterPlaceScreenState.EscapeScreen
+        } else {
+            addCountryWhenItIsNotSelected()
+        }
     }
+
 }
