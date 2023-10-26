@@ -21,13 +21,14 @@ import javax.inject.Inject
 class SimilarRepositoryImpl @Inject constructor(
     private val networkClient: NetworkClient
 ) : SimilarRepository {
-    private val options = VacancyRequest(HashMap())
+
+    private val options = HashMap<String, String>()
     override fun getSimilarVacancy(
         vacancyId: String, page: Int
     ): Flow<Pair<NetworkResource<List<Vacancy>>, PagingInfo>> = flow {
-        options.request[PAGE] = page.toString()
-        options.request[PER_PAGE] = PER_PAGE_ITEMS
-        val response = networkClient.getSimilarVacancy(vacancyId, options)
+        options[PAGE] = page.toString()
+        options[PER_PAGE] = PER_PAGE_ITEMS
+        val response = networkClient.getSimilarVacancy(vacancyId, VacancyRequest(options))
         when (response.resultCode) {
             NO_INTERNET -> {
                 emit(NetworkResource<List<Vacancy>>(code = NO_INTERNET) to PagingInfo())
