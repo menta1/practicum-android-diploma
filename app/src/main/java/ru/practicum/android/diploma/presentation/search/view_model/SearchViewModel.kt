@@ -142,6 +142,7 @@ class SearchViewModel @Inject constructor(
 
         if (isSearchingNow && ::searchText.isInitialized && searchText.isNotBlank()) {
             currentPage = 0
+            tempList.clear()
             search()
         }
     }
