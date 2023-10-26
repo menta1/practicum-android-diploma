@@ -27,9 +27,6 @@ class FilterCountryFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
         (activity?.application as App).appComponent.activityComponent().create().inject(this)
     }
 
@@ -47,9 +44,7 @@ class FilterCountryFragment : Fragment() {
         setRecyclerView()
 
         viewModel.getAllCountries()
-        viewModel.countries.observe(viewLifecycleOwner) { countries ->
-            regionsAdapter.submitList(countries)
-        }
+
         viewModel.filterCountryScreenState.observe(viewLifecycleOwner){state->
             manageScreenContent(state)
         }
@@ -82,7 +77,8 @@ class FilterCountryFragment : Fragment() {
     private fun manageScreenContent(state: FilterCountryScreenState) {
         with(binding) {
             when (state) {
-                FilterCountryScreenState.Content -> {
+                is FilterCountryScreenState.Content -> {
+                    regionsAdapter.submitList(state.countries)
                     recyclerViewCountry.visibility = View.VISIBLE
                     progressBarCountry.visibility = View.GONE
                     layoutNoInternet.noInternetLayout.visibility = View.GONE
