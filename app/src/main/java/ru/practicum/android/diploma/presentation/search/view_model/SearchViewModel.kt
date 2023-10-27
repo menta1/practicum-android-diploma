@@ -1,6 +1,5 @@
 package ru.practicum.android.diploma.presentation.search.view_model
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -26,13 +25,8 @@ class SearchViewModel @Inject constructor(
     private var isNewSearch: Boolean = YES_NEW_SEARCH
     private var tempList = ArrayList<Vacancy>()
 
-    private val _usersFoundLiveData = MutableLiveData<String>().apply {
-        postValue("")
-    }
-    val usersFoundLiveData: LiveData<String> = _usersFoundLiveData
-
     private val _searchStateLiveData = MutableLiveData<SearchModelStates>().apply {
-        postValue(SearchModelStates.NoSearch)
+        postValue(SearchModelStates.NoSearch(filterInteractor.isFilterEmpty()))
     }
     val searchStateLiveData = _searchStateLiveData
 
@@ -43,9 +37,6 @@ class SearchViewModel @Inject constructor(
     }
 
     private var filter: Filter? = null
-
-    private val _savedInput = MutableLiveData<String>()
-    val savedInput: LiveData<String> = _savedInput
 
     private fun newSearch(answer: Boolean) {
         if (answer) {
@@ -69,17 +60,21 @@ class SearchViewModel @Inject constructor(
 
                         OK_RESPONSE -> {
                             _isNextPageLoading.value = false
-                            if (result.second.page?.let { it < 1 } == true) {
-                                _usersFoundLiveData.value = result.second.found.toString()
-                            }
                             if (result.second.page?.let { it >= 1 } == true) {
                                 tempList.addAll(result.first.data ?: emptyList())
-                                _searchStateLiveData.value = SearchModelStates.Content(tempList)
+                                _searchStateLiveData.value = SearchModelStates.Content(
+                                    tempList,
+                                    result.second.found.toString()
+                                )
+
                                 _isNextPageLoading.value = false
                             } else {
                                 tempList.addAll(result.first.data ?: emptyList())
                                 _searchStateLiveData.value =
-                                    SearchModelStates.Content(result.first.data!!)
+                                    SearchModelStates.Content(
+                                        tempList,
+                                        result.second.found.toString()
+                                    )
                                 _isNextPageLoading.value = false
                             }
 
@@ -114,7 +109,7 @@ class SearchViewModel @Inject constructor(
                 searchDebounce(true)
             }
             if (searchText.isBlank()) {
-                _searchStateLiveData.value = SearchModelStates.NoSearch
+                _searchStateLiveData.value = SearchModelStates.NoSearch(filterInteractor.isFilterEmpty())
             }
         } else {
             searchText = inputChar.toString()

@@ -2,6 +2,7 @@ package ru.practicum.android.diploma.presentation.search.ui
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -47,9 +48,6 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getFilter()
         viewModel.startSearchIfNewFiltersSelected()
-        viewModel.savedInput.observe(viewLifecycleOwner) { savedInput ->
-            binding.editSearch.setText(savedInput)
-        }
         val adapter = VacancyAdapter(requireContext(), this)
         val itemDecorator =
             VacancyAdapter.MarginItemDecorator(resources.getDimensionPixelSize(R.dimen.item_margin_top))
@@ -83,7 +81,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     private fun stateView(adapter: VacancyAdapter) {
         viewModel.searchStateLiveData.observe(viewLifecycleOwner) { state ->
             when (state) {
-                SearchModelStates.NoSearch -> stateNoSearch()
+                is SearchModelStates.NoSearch -> stateNoSearch(state.isHasFilters)
 
                 SearchModelStates.Loading -> stateLoading()
 
@@ -91,6 +89,9 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
 
                 is SearchModelStates.Content -> {
                     setVacancies(adapter, state.data)
+                    if (state.foundUsers.isNotBlank()) {
+                        binding.searchMessage.text = formatVacanciesString(state.foundUsers.toInt())
+                    }
                     stateLoaded()
                 }
 
@@ -105,7 +106,8 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         }
     }
 
-    private fun stateNoSearch() {
+    private fun stateNoSearch(isHasFilters: Boolean) {
+        Log.d("tag", "stateNoSearch")
         with(binding) {
             imageSearchNotStarted.visibility = View.VISIBLE
             recyclerVacancy.visibility = View.GONE
@@ -115,10 +117,13 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             errorNoInternet.noInternetLayout.visibility = View.GONE
             errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
             errorServer.serverErrorLayout.visibility = View.GONE
+            buttonFiltersEmpty.visibility = if (isHasFilters) View.VISIBLE else View.GONE
+            buttonFiltersNotEmpty.visibility = if (isHasFilters) View.GONE else View.VISIBLE
         }
     }
 
     private fun stateLoading() {
+        Log.d("tag", "stateLoading")
         with(binding) {
             progressBar.visibility = View.VISIBLE
             imageSearchNotStarted.visibility = View.GONE
@@ -134,6 +139,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     }
 
     private fun stateSearch() {
+        Log.d("tag", "stateSearch")
         with(binding) {
             progressBar.visibility = View.VISIBLE
             imageSearchNotStarted.visibility = View.GONE
@@ -143,10 +149,12 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             errorNoInternet.noInternetLayout.visibility = View.GONE
             errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
             errorServer.serverErrorLayout.visibility = View.GONE
+
         }
     }
 
     private fun stateLoaded() {
+        Log.d("tag", "stateLoaded")
         with(binding) {
             progressBar.visibility = View.GONE
             imageSearchNotStarted.visibility = View.GONE
@@ -157,10 +165,12 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
             pagingProgressBar.visibility = View.GONE
             errorServer.serverErrorLayout.visibility = View.GONE
+
         }
     }
 
     private fun visibilityProgressBar() {
+        Log.d("tag", "visibilityProgressBar")
         with(binding) {
             pagingProgressBar.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
@@ -175,6 +185,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     }
 
     private fun stateNoInternet() {
+        Log.d("tag", "stateNoInternet")
         Toast.makeText(
             requireContext(), getString(R.string.no_internet_while_loading_page), Toast.LENGTH_LONG
         ).show()
@@ -192,6 +203,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     }
 
     private fun stateFailedToGetList() {
+        Log.d("tag", "stateFailedToGetList")
         with(binding) {
             progressBar.visibility = View.GONE
             imageSearchNotStarted.visibility = View.GONE
@@ -206,6 +218,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     }
 
     private fun stateServerError() {
+        Log.d("tag", "stateServerError")
         Toast.makeText(
             requireContext(),
             getString(R.string.server_error_while_loading_page),
@@ -244,11 +257,6 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
 
     private fun setVacancies(adapter: VacancyAdapter, data: List<Vacancy>) {
         adapter.setData(data)
-        viewModel.usersFoundLiveData.observe(viewLifecycleOwner) {
-            if (it.isNotBlank()) {
-                binding.searchMessage.text = formatVacanciesString(it.toInt())
-            }
-        }
     }
 
     private fun formatVacanciesString(count: Int): String {

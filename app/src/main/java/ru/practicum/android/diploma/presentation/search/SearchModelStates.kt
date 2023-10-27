@@ -4,9 +4,12 @@ import ru.practicum.android.diploma.domain.models.Vacancy
 
 sealed interface SearchModelStates {
     data class Content(
-        val data: List<Vacancy>
+        val data: List<Vacancy>,
+        val foundUsers: String
     ): SearchModelStates
-    object NoSearch : SearchModelStates
+    data class NoSearch(
+        val isHasFilters: Boolean
+    ) : SearchModelStates
     object Search : SearchModelStates
     object NewSearch: SearchModelStates
     object Loading : SearchModelStates
