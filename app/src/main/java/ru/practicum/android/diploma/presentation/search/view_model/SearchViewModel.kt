@@ -1,5 +1,6 @@
 package ru.practicum.android.diploma.presentation.search.view_model
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -48,9 +49,11 @@ class SearchViewModel @Inject constructor(
 
     fun search() {
         if (searchText.isNotBlank()) {
+            Log.d("tag", "isNotBlank()")
             _isNextPageLoading.value = true
             newSearch(isNewSearch)
             viewModelScope.launch {
+                Log.d("tag", "launch")
                 interactor.search(searchText, currentPage, filter).collect { result ->
                     when (result.first.code) {
                         NO_INTERNET -> {
@@ -62,6 +65,7 @@ class SearchViewModel @Inject constructor(
                             _isNextPageLoading.value = false
                             if (result.second.page?.let { it >= 1 } == true) {
                                 tempList.addAll(result.first.data ?: emptyList())
+                                Log.d("tag", "{ it >= 1 }")
                                 _searchStateLiveData.value = SearchModelStates.Content(
                                     tempList,
                                     result.second.found.toString()
@@ -106,6 +110,7 @@ class SearchViewModel @Inject constructor(
                 searchText = inputChar.toString()
                 tempList.clear()
                 currentPage = 0
+                isNewSearch = YES_NEW_SEARCH
                 searchDebounce(true)
             }
             if (searchText.isBlank()) {

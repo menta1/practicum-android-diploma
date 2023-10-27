@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
@@ -241,7 +242,6 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         binding.recyclerVacancy.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-
                 if (dy > 0) {
                     val pos =
                         (binding.recyclerVacancy.layoutManager as LinearLayoutManager).findLastVisibleItemPosition()
@@ -286,6 +286,12 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
             if (it?.isNotEmpty() == true) {
                 binding.searchButton.visibility = View.GONE
                 binding.clearButton.visibility = View.VISIBLE
+                binding.editSearch.setOnEditorActionListener { _, actionId, _ ->
+                    if (actionId == EditorInfo.IME_ACTION_DONE) {
+                        hideKeyboard()
+                    }
+                    false
+                }
             } else {
                 binding.searchButton.visibility = View.VISIBLE
                 binding.clearButton.visibility = View.GONE
