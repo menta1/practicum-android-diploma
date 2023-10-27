@@ -43,6 +43,7 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
     private var filter: Filter? = null
 
     private var previousCheckedPosition = -1
+    private var isClearButtonPressed = false
 
 
     fun getFilter() {
@@ -56,10 +57,11 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
                     regionName = resultFromData.regionName,
                     industryName = resultFromData.industryName,
                     expectedSalary = resultFromData.expectedSalary,
-                    isOnlyWithSalary = resultFromData.isOnlyWithSalary
+                    isOnlyWithSalary = resultFromData.isOnlyWithSalary,
+                    isClearButtonPressed = isClearButtonPressed
                 )
 
-            } else FilterScreenState.Default
+            } else FilterScreenState.Default(isClearButtonPressed = isClearButtonPressed)
         )
 
         _filterPlaceScreenState.postValue(
@@ -74,8 +76,6 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
 
             } else FilterPlaceScreenState.Default
         )
-
-
 
         filter = resultFromData
     }
@@ -254,6 +254,7 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
     }
 
     fun clearFiler() {
+        isClearButtonPressed = true
         interactor.clearFilter()
         getFilter()
     }

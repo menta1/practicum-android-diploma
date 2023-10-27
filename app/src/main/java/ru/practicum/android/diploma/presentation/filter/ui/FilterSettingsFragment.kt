@@ -31,11 +31,6 @@ class FilterSettingsFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         (activity?.application as App).appComponent.activityComponent().create().inject(this)
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-
-            viewModel.putSearchingMode(false)
-            findNavController().navigateUp()
-        }
     }
 
     override fun onCreateView(
@@ -61,11 +56,6 @@ class FilterSettingsFragment : Fragment() {
         }
 
         with(binding){
-
-            buttonBack.setOnClickListener {
-                viewModel.putSearchingMode(false)
-                findNavController().navigateUp()
-            }
 
             filterPlaceWorkCloseButton.setOnClickListener { viewModel.clearWorkPlace() }
 
@@ -183,9 +173,10 @@ class FilterSettingsFragment : Fragment() {
 
                     filterSalary.isChecked = state.isOnlyWithSalary
 
+                    setupBackNavigation(state.isClearButtonPressed)
                 }
 
-                FilterScreenState.Default -> {
+                is FilterScreenState.Default -> {
                     filterPlaceWork.visibility = View.VISIBLE
                     filterIndustry.visibility = View.VISIBLE
                     filterIndustrySelected.visibility = View.GONE
@@ -198,6 +189,8 @@ class FilterSettingsFragment : Fragment() {
 
                     filterPlaceWorkCloseButton.visibility = View.GONE
                     filterIndustryCloseButton.visibility = View.GONE
+
+                    setupBackNavigation(state.isClearButtonPressed)
                 }
 
                 is FilterScreenState.SalaryInput -> {
@@ -211,6 +204,18 @@ class FilterSettingsFragment : Fragment() {
     private fun manageClearButtonVisibility(s: CharSequence?) {
         binding.salaryFilterClearButton.visibility =
             if (s.isNullOrBlank()) View.GONE else View.VISIBLE
+    }
+
+    private fun setupBackNavigation(isClearPressed: Boolean){
+        binding.buttonBack.setOnClickListener {
+            viewModel.putSearchingMode(isClearPressed)
+            findNavController().navigateUp()
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            viewModel.putSearchingMode(isClearPressed)
+            findNavController().navigateUp()
+        }
     }
 
     companion object {
