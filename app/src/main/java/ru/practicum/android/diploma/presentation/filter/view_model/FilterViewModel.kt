@@ -36,9 +36,6 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
     private val _filterRegionScreenState = MutableLiveData<FilterRegionScreenState>()
     val filterRegionScreenState: LiveData<FilterRegionScreenState> = _filterRegionScreenState
 
-    private val _isSelectionButtonVisible = MutableLiveData<Boolean>(false)
-    val isSelectionButtonVisible: LiveData<Boolean> = _isSelectionButtonVisible
-
     private var defaultList: List<Region> = emptyList()
     private var industriesDefaultList: List<Industry> = emptyList()
     private var industriesCurrentList: List<Industry> = emptyList()
@@ -263,8 +260,17 @@ class FilterViewModel @Inject constructor(private val interactor: FilterInteract
 
     fun editExpectedSalary(input: CharSequence?) {
         interactor.editExpectedSalary(input)
-        _isSelectionButtonVisible.postValue(!input.isNullOrBlank())
+
+        if (filter == null || filterHasNoValues(filter!!)){
+            _filterScreenState.postValue(FilterScreenState.SalaryInput(!input.isNullOrBlank()))
+        }
+
     }
+
+    private fun filterHasNoValues(filter: Filter): Boolean =
+        with(filter) {
+            !isOnlyWithSalary && countryName == null && regionName == null && regionId == null && industryName == null && industryId == null
+        }
 
     fun editIsOnlyWithSalary(isOnlyWithSalary: Boolean) {
         interactor.editIsOnlyWithSalary(isOnlyWithSalary)
