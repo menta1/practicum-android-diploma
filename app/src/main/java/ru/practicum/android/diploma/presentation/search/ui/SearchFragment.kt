@@ -17,7 +17,6 @@ import ru.practicum.android.diploma.R
 import ru.practicum.android.diploma.databinding.FragmentSearchBinding
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.presentation.adapter.VacancyAdapter
-import ru.practicum.android.diploma.presentation.search.LoadingPageErrorStates
 import ru.practicum.android.diploma.presentation.search.SearchModelState
 import ru.practicum.android.diploma.presentation.search.view_model.SearchViewModel
 import javax.inject.Inject
@@ -31,6 +30,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
 
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
+    private lateinit var adapter: VacancyAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,30 +52,20 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
 
         viewModel.getFilter()
         viewModel.startSearchIfNewFiltersSelected()
-        viewModel.savedInput.observe(viewLifecycleOwner){savedInput->
-            binding.editSearch.setText(savedInput)
-        }
-        viewModel.isNextPageLoading.observe(viewLifecycleOwner){isNextPageLoading->
-            managePagingProgressVisibility(isNextPageLoading)
-        }
 
-        viewModel.loadingPageErrorState.observe(viewLifecycleOwner){state->
-            manageLoadingPageErrors(state)
-        }
-
-        val adapter = VacancyAdapter(requireContext(), this)
+        adapter = VacancyAdapter(requireContext(), this)
         val itemDecorator =
             VacancyAdapter.MarginItemDecorator(resources.getDimensionPixelSize(R.dimen.item_margin_top))
         binding.recyclerVacancy.adapter = adapter
         binding.recyclerVacancy.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerVacancy.addItemDecoration(itemDecorator)
-        setVacancies(adapter)
         setupSearchInput()
         clearTextSearch()
         scrolling(adapter)
         stateView()
         openFilters()
         manageFilterButtonsVisibility(viewModel.isFilterEmpty())
+
     }
 
     override fun onDestroyView() {
@@ -97,17 +87,56 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     private fun stateView() {
         viewModel.viewStateLiveData.observe(viewLifecycleOwner) { state ->
             when (state) {
-                SearchModelState.NoSearch -> stateNoSearch()
+                is SearchModelState.NoSearch -> stateNoSearch()
 
                 SearchModelState.Loading -> stateLoading()
 
                 SearchModelState.Search -> stateSearch()
 
-                SearchModelState.Loaded -> stateLoaded()
+                is SearchModelState.Loaded -> stateLoaded()
 
                 SearchModelState.NoInternet -> stateNoInternet()
 
                 SearchModelState.FailedToGetList -> stateFailedToGetList()
+
+                is SearchModelState.Content -> {
+
+
+
+                    if (state.vacanciesNumber.isNotBlank()) {
+                        binding.searchMessage.text = formatVacanciesString(state.vacanciesNumber.toInt())
+                    }
+                    with(binding) {
+                        progressBar.visibility = View.GONE
+                        imageSearchNotStarted.visibility = View.GONE
+                        recyclerVacancy.visibility = View.VISIBLE
+                        recyclerVacancyLayout.visibility = View.VISIBLE
+                        searchMessage.visibility = View.VISIBLE
+                        errorNoInternet.noInternetLayout.visibility = View.GONE
+                        errorFailedGetCat.errorFailedGetCat.visibility = View.GONE
+                    }
+
+                    if (state.vacancies.size <=20 && !state.isFirstLaunch){
+                        adapter.setData(state.vacancies)
+                        binding.recyclerVacancy.smoothScrollToPosition(0)
+                    }else{
+                        adapter.setData(state.vacancies)
+                    }
+
+                    adapter.setData(state.vacancies)
+
+                }
+                is SearchModelState.NextPageLoading -> {
+                    binding.pagingProgressBar.visibility = if(state.isLoading) View.VISIBLE else View.GONE
+                }
+
+                SearchModelState.NoInternetWhilePaging -> {
+                    Toast.makeText(requireContext(),getString(R.string.no_internet_while_loading_page), Toast.LENGTH_LONG).show()
+                }
+
+                SearchModelState.ServerErrorWhilePaging -> {
+                    Toast.makeText(requireContext(),getString(R.string.server_error_while_loading_page), Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
@@ -206,18 +235,6 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     }
 
 
-    private fun setVacancies(adapter: VacancyAdapter) {
-        viewModel.usersLiveData.observe(viewLifecycleOwner) {
-            adapter.setData(it)
-        }
-
-        viewModel.usersFoundLiveData.observe(viewLifecycleOwner) {
-            if (it.isNotBlank()) {
-                binding.searchMessage.text = formatVacanciesString(it.toInt())
-            }
-        }
-    }
-
     private fun formatVacanciesString(count: Int): String {
         return if(count == 0) {
             getString(R.string.vacancy_not_found)
@@ -252,16 +269,15 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
     }
 
     private fun openFilters() {
+
         binding.buttonFiltersEmpty.setOnClickListener {
+            viewModel.refreshFirstLaunch()
             findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)
         }
         binding.buttonFiltersNotEmpty.setOnClickListener {
+            viewModel.refreshFirstLaunch()
             findNavController().navigate(R.id.action_searchFragment_to_filterSettingsFragment)
         }
-    }
-
-    private fun managePagingProgressVisibility(isNewPageLoading: Boolean){
-        binding.pagingProgressBar.visibility = if(isNewPageLoading) View.VISIBLE else View.GONE
     }
 
     private fun hideKeyboard() {
@@ -276,18 +292,4 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
         inputMethodManager.showSoftInput(binding.editSearch, 0)
     }
 
-    private fun manageLoadingPageErrors(state: LoadingPageErrorStates){
-
-        when(state){
-            LoadingPageErrorStates.Default -> {
-
-            }
-            LoadingPageErrorStates.NoInternet -> {
-                Toast.makeText(requireContext(),getString(R.string.no_internet_while_loading_page), Toast.LENGTH_LONG).show()
-            }
-            LoadingPageErrorStates.ServerError -> {
-                Toast.makeText(requireContext(),getString(R.string.server_error_while_loading_page), Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
 }

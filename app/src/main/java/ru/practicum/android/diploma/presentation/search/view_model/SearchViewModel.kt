@@ -12,7 +12,6 @@ import ru.practicum.android.diploma.domain.filter.FilterInteractor
 import ru.practicum.android.diploma.domain.models.Filter
 import ru.practicum.android.diploma.domain.models.Vacancy
 import ru.practicum.android.diploma.domain.search.SearchInteractor
-import ru.practicum.android.diploma.presentation.search.LoadingPageErrorStates
 import ru.practicum.android.diploma.presentation.search.SearchModelState
 import ru.practicum.android.diploma.util.debounce
 import javax.inject.Inject
@@ -26,24 +25,8 @@ class SearchViewModel @Inject constructor(
     private lateinit var searchText: String
     private var isThereAnyProblem = false
 
-    private val _loadingPageErrorState = MutableLiveData<LoadingPageErrorStates>()
-    val loadingPageErrorState : LiveData<LoadingPageErrorStates> = _loadingPageErrorState
-
-    private val _isNextPageLoading = MutableLiveData(false)
-    val isNextPageLoading: LiveData<Boolean> = _isNextPageLoading
-
-    private val _usersLiveData = MutableLiveData<List<Vacancy>>().apply {
-        postValue(emptyList())
-    }
-    val usersLiveData: LiveData<List<Vacancy>> = _usersLiveData
-
-    private val _usersFoundLiveData = MutableLiveData<String>().apply {
-        postValue("")
-    }
-    val usersFoundLiveData: LiveData<String> = _usersFoundLiveData
-
     private val _viewStateLiveData = MutableLiveData<SearchModelState>().apply {
-        postValue(SearchModelState.NoSearch)
+        postValue(SearchModelState.NoSearch(isFilterEmpty()))
     }
     val viewStateLiveData: LiveData<SearchModelState> = _viewStateLiveData
 
@@ -52,9 +35,9 @@ class SearchViewModel @Inject constructor(
     }
 
     private var filter: Filter? = null
-
-    private val _savedInput = MutableLiveData<String>()
-    val savedInput: LiveData<String> = _savedInput
+    private var isNextPageLoading = false
+    private var currentVacanciesList: List<Vacancy> = emptyList()
+    private var vacanciesNumber = ""
 
     fun search() {
         if (searchText.isNotBlank()) {
@@ -63,7 +46,8 @@ class SearchViewModel @Inject constructor(
                 _viewStateLiveData.value = SearchModelState.Loading
             }
             else {
-                _isNextPageLoading.value = true
+                _viewStateLiveData.value = SearchModelState.NextPageLoading(true)
+                isNextPageLoading = true
             }
 
             viewModelScope.launch {
@@ -75,62 +59,84 @@ class SearchViewModel @Inject constructor(
                         NO_INTERNET ->{
 
                             if (isThereAnyProblem){
-                                _viewStateLiveData.value = SearchModelState.Loaded
-                                _isNextPageLoading.value = false
+                                _viewStateLiveData.value = SearchModelState.Loaded(isFilterEmpty())
+                                _viewStateLiveData.value = SearchModelState.NextPageLoading(false)
+                                isNextPageLoading = false
                                 return@collect
                             }
 
-                            if (_isNextPageLoading.value == true){
+                            if (isNextPageLoading){
                                 isThereAnyProblem = true
-                                _viewStateLiveData.value = SearchModelState.Loaded
-                                _isNextPageLoading.value = false
-                                _loadingPageErrorState.value = LoadingPageErrorStates.NoInternet
+                                _viewStateLiveData.value = SearchModelState.Loaded(isFilterEmpty())
+                                _viewStateLiveData.value = SearchModelState.NextPageLoading(false)
+                                isNextPageLoading = false
+                                _viewStateLiveData.value = SearchModelState.NoInternetWhilePaging
                                 delay(BACK_TO_DEFAULT_STATE_DELAY)
-                                _loadingPageErrorState.value = LoadingPageErrorStates.Default
+                                _viewStateLiveData.value = SearchModelState.Loaded(isFilterEmpty())
                                 return@collect
                             }
                             else {
+                                vacanciesNumber = ""
                                 _viewStateLiveData.value = SearchModelState.NoInternet
                                 return@collect
                             }
                         }
                         OK_RESPONSE -> {
-                            if (result.second.page?.let { it < 1 } == true) {
-                                _usersFoundLiveData.value = result.second.found.toString()
-                            }
-                            _viewStateLiveData.value = SearchModelState.Loaded
+
+                            _viewStateLiveData.value = SearchModelState.Loaded(isFilterEmpty())
                             if (result.second.page?.let { it >= 1 } == true) {
-
+                                _viewStateLiveData.value = SearchModelState.NextPageLoading(false)
                                 val tempList = ArrayList<Vacancy>()
-                                tempList.addAll(_usersLiveData.value?: emptyList())
+                                tempList.addAll(currentVacanciesList)
                                 tempList.addAll(result.first.data?: emptyList())
-                                _usersLiveData.value = tempList
 
-                                _isNextPageLoading.value = false
+                                _viewStateLiveData.value = SearchModelState.Content(
+                                    vacancies = tempList,
+                                    vacanciesNumber = result.second.found.toString(),
+                                    isFirstLaunch = false
+                                )
+                                vacanciesNumber = result.second.found.toString()
+                                currentVacanciesList = tempList
+
+
+                                isNextPageLoading = false
                                 isThereAnyProblem = false
                             } else {
-                                _usersLiveData.value = result.first.data!!
+                                _viewStateLiveData.value = SearchModelState.Loaded(isFilterEmpty())
+                                currentVacanciesList = result.first.data?: emptyList()
+                                vacanciesNumber = result.second.found.toString()
+
+                                _viewStateLiveData.value = SearchModelState.Content(
+                                    vacancies =  result.first.data?: emptyList(),
+                                    vacanciesNumber = result.second.found.toString(),
+                                    isFirstLaunch = false
+                                )
+
                                 isThereAnyProblem = false
                             }
                         }
 
                         else -> {
                             if (isThereAnyProblem){
-                                _viewStateLiveData.value = SearchModelState.Loaded
-                                _isNextPageLoading.value = false
+
+                                _viewStateLiveData.value = SearchModelState.Loaded(isFilterEmpty())
+                                _viewStateLiveData.value = SearchModelState.NextPageLoading(false)
+                                isNextPageLoading = false
                                 return@collect
                             }
 
-                            if (_isNextPageLoading.value == true ){
+                            if (isNextPageLoading){
                                 isThereAnyProblem = true
-                                _viewStateLiveData.value = SearchModelState.Loaded
-                                _loadingPageErrorState.value = LoadingPageErrorStates.ServerError
-                                _isNextPageLoading.value = false
+                                _viewStateLiveData.value = SearchModelState.Loaded(isFilterEmpty())
+                                _viewStateLiveData.value = SearchModelState.ServerErrorWhilePaging
+                                _viewStateLiveData.value = SearchModelState.NextPageLoading(false)
+                                isNextPageLoading = false
                                 delay(BACK_TO_DEFAULT_STATE_DELAY)
-                                _loadingPageErrorState.value = LoadingPageErrorStates.Default
+                                _viewStateLiveData.value = SearchModelState.Loaded(isFilterEmpty())
                                 return@collect
                             }
                             else  {
+                                vacanciesNumber = ""
                                 _viewStateLiveData.value = SearchModelState.FailedToGetList
                                 return@collect
                             }
@@ -155,7 +161,7 @@ class SearchViewModel @Inject constructor(
                 searchDebounce(true)
             }
             if (searchText.isBlank()) {
-                _viewStateLiveData.value = SearchModelState.NoSearch
+                _viewStateLiveData.value = SearchModelState.NoSearch(isFilterEmpty())
             }
         } else {
             searchText = inputChar.toString()
@@ -165,7 +171,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun onLastItemReached() {
-        if (maxPages != currentPage && _isNextPageLoading.value == false) {
+        if (maxPages != currentPage && !isNextPageLoading/*_isNextPageLoading.value == false*/) {
             search()
         }
     }
@@ -184,6 +190,16 @@ class SearchViewModel @Inject constructor(
             search()
         }
     }
+
+    fun refreshFirstLaunch() {
+        if (searchText.isNotBlank() && vacanciesNumber.isNotBlank())//+ в каких случаях еще не отрправлять
+            _viewStateLiveData.value = SearchModelState.Content(
+                vacancies = currentVacanciesList,
+                vacanciesNumber = vacanciesNumber,
+                isFirstLaunch = true
+            )
+    }
+
 
     companion object{
         const val SEARCH_DEBOUNCE_DELAY = 2000L
