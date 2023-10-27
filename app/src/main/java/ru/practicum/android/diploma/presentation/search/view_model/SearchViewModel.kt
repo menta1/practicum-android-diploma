@@ -192,7 +192,7 @@ class SearchViewModel @Inject constructor(
     }
 
     fun refreshFirstLaunch() {
-        if (searchText.isNotBlank() && vacanciesNumber.isNotBlank())//+ в каких случаях еще не отрправлять
+        if (::searchText.isInitialized && searchText.isNotBlank() && vacanciesNumber.isNotBlank())//+ в каких случаях еще не отрправлять
             _viewStateLiveData.value = SearchModelState.Content(
                 vacancies = currentVacanciesList,
                 vacanciesNumber = vacanciesNumber,
