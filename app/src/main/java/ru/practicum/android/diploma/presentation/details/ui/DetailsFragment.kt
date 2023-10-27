@@ -5,6 +5,7 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -34,6 +35,10 @@ class DetailsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity?.application as App).appComponent.activityComponent().create().inject(this)
+
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            customBackNavigation()
+        }
     }
 
     override fun onCreateView(
@@ -194,11 +199,16 @@ class DetailsFragment : Fragment() {
             viewModel.setFavourite()
         }
         binding.backButton.setOnClickListener {
-            findNavController().popBackStack()
+            customBackNavigation()
         }
 
         binding.textEmail.setOnClickListener { viewModel.employerEmail() }
         binding.textPhone.setOnClickListener { viewModel.employerPhone() }
+    }
+
+    private fun customBackNavigation(){
+        viewModel.putSearchingMode(false)
+        findNavController().popBackStack()
     }
 
     override fun onDestroyView() {

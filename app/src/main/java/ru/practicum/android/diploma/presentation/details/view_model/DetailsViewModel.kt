@@ -9,6 +9,7 @@ import kotlinx.coroutines.Dispatchers
 import ru.practicum.android.diploma.data.Constants.NO_INTERNET
 import ru.practicum.android.diploma.data.Constants.OK_RESPONSE
 import ru.practicum.android.diploma.domain.details.DetailsInteractor
+import ru.practicum.android.diploma.domain.filter.FilterInteractor
 import ru.practicum.android.diploma.domain.models.VacancyDetail
 import ru.practicum.android.diploma.domain.share.SharingInteractor
 import ru.practicum.android.diploma.domain.share.model.EmailData
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class DetailsViewModel @Inject constructor(
     private val detailsInteractor: DetailsInteractor,
     private val sharingInteractor: SharingInteractor,
+    private val interactor: FilterInteractor
 ) : ViewModel() {
     private val detailsStateLiveData = MutableLiveData<DetailsState>()
     fun getDetailsStateLiveData(): LiveData<DetailsState> = detailsStateLiveData
@@ -121,5 +123,9 @@ class DetailsViewModel @Inject constructor(
             detailsStateLiveData.postValue(DetailsState.Content(currentVacancy!!, false))
             isFavourite = false
         }
+    }
+
+    fun putSearchingMode(isSearchingNow:Boolean){
+        interactor.putSearchMode(isSearchingNow)
     }
 }
