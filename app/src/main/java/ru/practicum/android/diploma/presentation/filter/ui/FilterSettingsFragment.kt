@@ -29,12 +29,10 @@ class FilterSettingsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
 
-        }
         (activity?.application as App).appComponent.activityComponent().create().inject(this)
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            //navigateBackWithoutSearch()
+
             viewModel.putSearchingMode(false)
             findNavController().navigateUp()
         }
@@ -59,12 +57,6 @@ class FilterSettingsFragment : Fragment() {
             getFilter()
             filterScreenState.observe(viewLifecycleOwner) { state ->
                 manageScreenContent(state)
-            }
-
-            isSelectionButtonVisible.observe(viewLifecycleOwner){isVisible->
-                if (filterScreenState.value == FilterScreenState.Default){
-                    manageSelectionsButtonsVisibility(isVisible)
-                }
             }
         }
 
@@ -207,13 +199,13 @@ class FilterSettingsFragment : Fragment() {
                     filterPlaceWorkCloseButton.visibility = View.GONE
                     filterIndustryCloseButton.visibility = View.GONE
                 }
+
+                is FilterScreenState.SalaryInput -> {
+                    binding.filterSettingClearButton.visibility = if (state.isInputNotEmpty )View.VISIBLE else View.GONE
+                    binding.filterSettingSelectButton.visibility = if (state.isInputNotEmpty  )View.VISIBLE else View.GONE
+                }
             }
         }
-    }
-
-    private fun manageSelectionsButtonsVisibility(isVisible:Boolean   ){
-        binding.filterSettingClearButton.visibility = if (isVisible )View.VISIBLE else View.GONE
-        binding.filterSettingSelectButton.visibility = if (isVisible )View.VISIBLE else View.GONE
     }
 
     private fun manageClearButtonVisibility(s: CharSequence?) {
