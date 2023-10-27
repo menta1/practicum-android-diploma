@@ -124,6 +124,7 @@ class SearchFragment : Fragment(), VacancyAdapter.Listener {
 
                 }
                 is SearchModelState.NextPageLoading -> {
+                    binding.progressBar.visibility = View.GONE
                     binding.pagingProgressBar.visibility = if(state.isLoading) View.VISIBLE else View.GONE
                 }
 

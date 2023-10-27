@@ -158,6 +158,7 @@ class SearchViewModel @Inject constructor(
             if (searchText != inputChar.toString()) {
                 searchText = inputChar.toString()
                 currentPage = 0
+                isThereAnyProblem = false
                 searchDebounce(true)
             }
             if (searchText.isBlank()) {
@@ -166,6 +167,7 @@ class SearchViewModel @Inject constructor(
         } else {
             searchText = inputChar.toString()
             currentPage = 0
+            isThereAnyProblem = false
             searchDebounce(true)
         }
     }
