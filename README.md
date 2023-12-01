@@ -1,6 +1,8 @@
 # Дипломный проект Яндекс.Практикума по курсу ["Android-разработчик"](https://practicum.yandex.ru/android-developer/)
 
 
+
+["Talent Trove"](https://github.com/menta1/practicum-android-diploma/releases/tag/pet_proj)
 # Предварительная настройка проекта
 
 ## Добавление секретного токена для API HeadHunter
