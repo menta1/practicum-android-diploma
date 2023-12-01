@@ -80,4 +80,8 @@ class FilterInteractorImpl @Inject constructor(
     override fun getSearchingMode(): Boolean {
         return repository.getSearchingMode()
     }
+
+    override fun editCountryNameAndIdWithoutCheck(country: Region) {
+        repository.editCountryNameAndIdWithoutCheck(country)
+    }
 }

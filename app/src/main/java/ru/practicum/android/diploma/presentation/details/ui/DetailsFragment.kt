@@ -5,6 +5,7 @@ import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -34,11 +35,15 @@ class DetailsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (activity?.application as App).appComponent.activityComponent().create().inject(this)
+
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            customBackNavigation()
+        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentDetailsBinding.inflate(layoutInflater, container, false)
         return binding.root
@@ -60,20 +65,21 @@ class DetailsFragment : Fragment() {
                 }
 
                 is DetailsState.Content -> {
-                    changeContentVisibility(true)
-                    updateData(state.data)
+                    if (binding.detailsBlock.visibility != View.VISIBLE) {
+                        changeContentVisibility(true)
+                        updateData(state.data)
+                    }
+
+                    binding.favouriteButton.setImageDrawable(
+                        ResourcesCompat.getDrawable(
+                            resources,
+                            getFavouriteIcon(state.isFavourite),
+                            null
+                        )
+                    )
+
                 }
             }
-        }
-
-        viewModel.getFavouriteStateLiveData().observe(viewLifecycleOwner) { isFavourite ->
-            binding.favouriteButton.setImageDrawable(
-                ResourcesCompat.getDrawable(
-                    resources,
-                    getFavouriteIcon(isFavourite),
-                    null
-                )
-            )
         }
 
     }
@@ -193,11 +199,16 @@ class DetailsFragment : Fragment() {
             viewModel.setFavourite()
         }
         binding.backButton.setOnClickListener {
-            findNavController().popBackStack()
+            customBackNavigation()
         }
 
         binding.textEmail.setOnClickListener { viewModel.employerEmail() }
         binding.textPhone.setOnClickListener { viewModel.employerPhone() }
+    }
+
+    private fun customBackNavigation(){
+        viewModel.putSearchingMode(false)
+        findNavController().popBackStack()
     }
 
     override fun onDestroyView() {

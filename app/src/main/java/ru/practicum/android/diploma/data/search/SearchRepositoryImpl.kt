@@ -28,20 +28,19 @@ class SearchRepositoryImpl @Inject constructor(
         expression: String, page: Int, filter: Filter?
     ): Flow<Pair<NetworkResource<List<Vacancy>>, PagingInfo>> = flow {
 
-        val options = VacancyRequest(HashMap())
-
+        val options = HashMap<String, String>()
         filter?.let {
-            filter.countryId?.let { options.request[AREA] = it }
-            filter.regionId?.let { options.request[AREA] = it }
-            filter.industryId?.let { options.request[INDUSTRY] = it }
-            filter.expectedSalary?.let { options.request[SALARY] = it.toString() }
-            options.request[ONLY_WITH_SALARY] = filter.isOnlyWithSalary.toString()
+            filter.countryId?.let { options.put(AREA, it) }
+            filter.regionId?.let { options.put(AREA, it) }
+            filter.industryId?.let { options.put(INDUSTRY, it) }
+            filter.expectedSalary?.let { options.put(SALARY, it.toString()) }
+            options.put(ONLY_WITH_SALARY, filter.isOnlyWithSalary.toString())
         }
+        options[PAGE] = page.toString()
+        options[PER_PAGE] = PER_PAGE_ITEMS
+        options[TEXT] = expression
 
-        options.request[PAGE] = page.toString()
-        options.request[PER_PAGE] = PER_PAGE_ITEMS
-        options.request[TEXT] = expression
-        val response = networkClient.search(options)
+        val response = networkClient.search(VacancyRequest(options))
         when (response.resultCode) {
             NO_INTERNET -> {
                 emit(NetworkResource<List<Vacancy>>(code = NO_INTERNET) to PagingInfo())

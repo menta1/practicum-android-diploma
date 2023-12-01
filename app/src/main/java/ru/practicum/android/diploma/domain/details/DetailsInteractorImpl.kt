@@ -5,7 +5,7 @@ import ru.practicum.android.diploma.util.NetworkResource
 import javax.inject.Inject
 
 class DetailsInteractorImpl @Inject constructor(
-    private val repository: DetailsRepository
+    private val repository: DetailsRepository,
 ) : DetailsInteractor {
     override suspend fun saveVacancy(vacancy: VacancyDetail) {
         repository.saveVacancy(vacancy)

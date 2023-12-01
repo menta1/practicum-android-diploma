@@ -22,8 +22,9 @@ class ViewModelModule {
     fun provideDetailsViewModel(
         interactor: DetailsInteractor,
         sharingInteractor: SharingInteractorImpl,
+        filterInteractor: FilterInteractor
     ): DetailsViewModel {
-        return DetailsViewModel(interactor, sharingInteractor)
+        return DetailsViewModel(interactor, sharingInteractor,filterInteractor)
     }
 
     @Provides

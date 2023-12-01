@@ -29,15 +29,8 @@ class FilterSettingsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
 
-        }
         (activity?.application as App).appComponent.activityComponent().create().inject(this)
-        requireActivity().onBackPressedDispatcher.addCallback(this) {
-            //navigateBackWithoutSearch()
-            viewModel.putSearchingMode(false)
-            findNavController().navigateUp()
-        }
     }
 
     override fun onCreateView(
@@ -60,20 +53,9 @@ class FilterSettingsFragment : Fragment() {
             filterScreenState.observe(viewLifecycleOwner) { state ->
                 manageScreenContent(state)
             }
-
-            isSelectionButtonVisible.observe(viewLifecycleOwner){isVisible->
-                if (filterScreenState.value == FilterScreenState.Default){
-                    manageSelectionsButtonsVisibility(isVisible)
-                }
-            }
         }
 
         with(binding){
-
-            buttonBack.setOnClickListener {
-                viewModel.putSearchingMode(false)
-                findNavController().navigateUp()
-            }
 
             filterPlaceWorkCloseButton.setOnClickListener { viewModel.clearWorkPlace() }
 
@@ -191,9 +173,10 @@ class FilterSettingsFragment : Fragment() {
 
                     filterSalary.isChecked = state.isOnlyWithSalary
 
+                    setupBackNavigation(state.isClearButtonPressed)
                 }
 
-                FilterScreenState.Default -> {
+                is FilterScreenState.Default -> {
                     filterPlaceWork.visibility = View.VISIBLE
                     filterIndustry.visibility = View.VISIBLE
                     filterIndustrySelected.visibility = View.GONE
@@ -206,19 +189,33 @@ class FilterSettingsFragment : Fragment() {
 
                     filterPlaceWorkCloseButton.visibility = View.GONE
                     filterIndustryCloseButton.visibility = View.GONE
+
+                    setupBackNavigation(state.isClearButtonPressed)
+                }
+
+                is FilterScreenState.SalaryInput -> {
+                    binding.filterSettingClearButton.visibility = if (state.isInputNotEmpty )View.VISIBLE else View.GONE
+                    binding.filterSettingSelectButton.visibility = if (state.isInputNotEmpty  )View.VISIBLE else View.GONE
                 }
             }
         }
     }
 
-    private fun manageSelectionsButtonsVisibility(isVisible:Boolean   ){
-        binding.filterSettingClearButton.visibility = if (isVisible )View.VISIBLE else View.GONE
-        binding.filterSettingSelectButton.visibility = if (isVisible )View.VISIBLE else View.GONE
-    }
-
     private fun manageClearButtonVisibility(s: CharSequence?) {
         binding.salaryFilterClearButton.visibility =
             if (s.isNullOrBlank()) View.GONE else View.VISIBLE
+    }
+
+    private fun setupBackNavigation(isClearPressed: Boolean){
+        binding.buttonBack.setOnClickListener {
+            viewModel.putSearchingMode(isClearPressed)
+            findNavController().navigateUp()
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            viewModel.putSearchingMode(isClearPressed)
+            findNavController().navigateUp()
+        }
     }
 
     companion object {

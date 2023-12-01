@@ -16,6 +16,7 @@ interface FilterInteractor {
 
     fun getFilter(): Filter?
 
+    fun editCountryNameAndIdWithoutCheck(country: Region)
     fun editCountryNameAndId(country: Region)
     fun editRegionNameAndId(region: Region)
     fun editIndustryNameAndId(industry: Industry)
