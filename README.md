@@ -1,4 +1,4 @@
-# Дипломный проект Яндекс.Практикума по курсу "Android-разработчик"["Android-разработчик"](https://practicum.yandex.ru/android-developer/)
+# Дипломный проект Яндекс.Практикума по курсу ["Android-разработчик"](https://practicum.yandex.ru/android-developer/)
 
 
 # Предварительная настройка проекта
