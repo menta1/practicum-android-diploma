@@ -1,8 +1,13 @@
 # Дипломный проект Яндекс.Практикума по курсу ["Android-разработчик"](https://practicum.yandex.ru/android-developer/)
 
-
-
 ["Talent Trove"](https://github.com/menta1/practicum-android-diploma/releases/tag/pet_proj)
+
+![Talent Trove - 1](https://github.com/menta1/practicum-android-diploma/assets/81776684/3332b947-bccc-4422-b625-df5b61d7a96c)
+![Talent Trove - 2](https://github.com/menta1/practicum-android-diploma/assets/81776684/cdaa2434-d777-4a24-9866-8479df9b050e)
+![Talent Trove - 3](https://github.com/menta1/practicum-android-diploma/assets/81776684/2399586c-0494-43f7-9196-9c1299bc39bc)
+![Talent Trove - 4](https://github.com/menta1/practicum-android-diploma/assets/81776684/c84c8b50-e018-4b4b-a31d-91ad74f4992a)
+![Talent Trove - 6](https://github.com/menta1/practicum-android-diploma/assets/81776684/13621e79-2adc-4d47-93d7-0104a380167d)
+![Talent Trove - 5](https://github.com/menta1/practicum-android-diploma/assets/81776684/36b50b84-707d-498b-a86b-a56b6171bce3)
 # Предварительная настройка проекта
 
 ## Добавление секретного токена для API HeadHunter
