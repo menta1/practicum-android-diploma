@@ -1,5 +1,7 @@
 # Дипломный проект Яндекс.Практикума по курсу ["Android-разработчик"](https://practicum.yandex.ru/android-developer/) 
 
+#### Стек: MVVM + Clean Architecture | Kotlin, Coroutines, LiveData, Koin, Databinding, Navigation components, Room, Dagger2, Glide, Retrofit2, GSON, SQLite
+
 ### [Скачать "Talent Trove"](https://github.com/menta1/practicum-android-diploma/releases/download/pet_proj/Talent.Trove.apk)
 
 #### Screenshots:
