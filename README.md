@@ -5,7 +5,7 @@
 ### [Скачать "Talent Trove"](https://github.com/menta1/practicum-android-diploma/releases/download/pet_proj/Talent.Trove.apk)
 Приложение поддерживает устройства, начиная с Android 8.0 (minSdkVersion = 26)
 
-####Описание работы приложения под Screenshots
+#### Описание работы приложения под Screenshots
 
 #### Screenshots:
 <img src="https://github.com/menta1/practicum-android-diploma/assets/81776684/3332b947-bccc-4422-b625-df5b61d7a96c" width="250">
@@ -15,7 +15,7 @@
 <img src="https://github.com/menta1/practicum-android-diploma/assets/81776684/13621e79-2adc-4d47-93d7-0104a380167d" width="250">
 <img src="https://github.com/menta1/practicum-android-diploma/assets/81776684/36b50b84-707d-498b-a86b-a56b6171bce3" width="250">
 
-Приложение предоставляет следующую функциональность:
+**Приложение предоставляет следующую функциональность**** :**
 
 - Поиск вакансий;
 - Указание фильтров для поиска;
